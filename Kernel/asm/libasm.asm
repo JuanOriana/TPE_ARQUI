@@ -1,5 +1,6 @@
 GLOBAL cpuVendor
 GLOBAL intToStr
+GLOBAL _inRead
 
 section .text
 	
@@ -70,6 +71,17 @@ intToStr:
 	pop rdi
 	pop rbx
 	pop rcx
+	pop rdx
+	leave
+	ret
+
+_inRead:
+	push rbp
+	mov rbp, rsp
+	push rdx
+	mov rax, 0
+	mov rdx, rdi
+	in al, dx
 	pop rdx
 	leave
 	ret

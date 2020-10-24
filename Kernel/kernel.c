@@ -4,6 +4,9 @@
 #include <moduleLoader.h>
 #include <naiveConsole.h>
 #include <idtLoader.h>
+#include <videoDriver.h>
+#include <kbDriver.h>
+
 extern uint8_t text;
 extern uint8_t rodata;
 extern uint8_t data;
@@ -79,11 +82,7 @@ void * initializeKernelBinary()
 	ncNewline();
 	ncNewline();
 	ncClear();
-	load_idt();
-	while (1)
-	{
-	}
-	
+
 	return getStackBase();
 }
 
@@ -107,5 +106,18 @@ int main()
 	ncNewline();
 
 	ncPrint("[Finished]");
+	ncClear();
+	load_idt();
+
+
+	while (1)
+	{
+		char c = getChar();
+		char param[2] = "\0";
+		param[0] = c;
+		if (c != -1)
+			ncPrint(param);
+	}
+
 	return 0;
 }
