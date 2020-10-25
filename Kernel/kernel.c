@@ -83,6 +83,9 @@ void * initializeKernelBinary()
 	ncNewline();
 	ncClear();
 
+	//NUESTROS INITS
+	initVideo(0x0000000000005C00);
+
 	return getStackBase();
 }
 
@@ -109,11 +112,24 @@ int main()
 	ncClear();
 	load_idt();
 
-	for (int i=300;i<600;i++)
-		for(int j=400;j<600;j++)
-			printPixel(i, j, 0xab1631);
+	// char naso[] = "Naso la concha de tu madre";
+	int x=10;
+	int y =10;
+	char c;
+	// for (int i=0;i<27;i++)
+	// 	renderChar(naso[i],x+i*18,y, 0xFF036F);
 
-	while(1){}
+	//SOLO PROPOSITOS DE TESTEO
+	while(1){
+		if ( (c=getChar())!=-1){
+			if (x>900){
+				x=10;
+				y+=24;
+			}
+			renderChar(c, x, y, 0xFF036F);
+			x+=18;
+		}
+	}
 
 	return 0;
 }

@@ -26,11 +26,10 @@ void load_idt() {
 
   _cli();
   
-  setup_IDT_entry (0x21, (uint64_t)&_irq01Handler);
+  setup_IDT_entry (0x21, (uint64_t)&_irq01Handler); //Teclado
             
 
-	//Solo interrupcion timer tick habilitadas
-	picMasterMask(0xFD); 
+	picMasterMask(0xFD); //Mask teclado + t-tick 
 	picSlaveMask(0xFF);
         
 	_sti();
