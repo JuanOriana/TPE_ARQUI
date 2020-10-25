@@ -189,7 +189,7 @@ int renderArea(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y
 	// segun https://jared.geek.nz/2014/jan/custom-fonts-for-microcontrollers
 int renderChar(unsigned char c, unsigned int x, unsigned int y, unsigned int color)
 {
-	if (x < 0 || y < 0 || x + (CHAR_WIDTH * FONT_SCALING) > width || y + (CHAR_HEIGHT * FONT_SCALING) > height)
+	if (x < 0 || y < 0 || x + (ABS_WIDTH) > width || y + (ABS_HEIGHT) > height)
 		return -1;
 
 	// Convert the character to an index
@@ -199,13 +199,13 @@ int renderChar(unsigned char c, unsigned int x, unsigned int y, unsigned int col
 	else
 		c -= ' ';
 
-	// 'font' es un arreglo multidimensional de [96][char_width]
-	// que es un arreglo 1D de tamano 96*char_width.
+	// 'font' es un arreglo multidimensional de [96][FONT_WIDTH]
+	// que es un arreglo 1D de tamano 96*FONT_WIDTH.
 	const uint8_t *chr = font[c];
 
 	// Draw pixels
-	for (int i = 0; i < CHAR_WIDTH; i++){
-		for (int j = 0; j < CHAR_HEIGHT; j++){
+	for (int i = 0; i < FONT_WIDTH; i++){
+		for (int j = 0; j < FONT_HEIGHT; j++){
 			if (chr[i] & (1 << j)) //En esta posicion hay un bit encendido
 				renderArea(x + i*FONT_SCALING,y+j*FONT_SCALING,
 							x+(i+1)*FONT_SCALING, y + (j+1)*FONT_SCALING, color);

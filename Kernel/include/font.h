@@ -3,8 +3,10 @@
 #ifndef _FONT_H_
 #define _FONT_H_
 
-#define CHAR_WIDTH  6
-#define CHAR_HEIGHT 8
-#define FONT_SCALING 3
+#define FONT_WIDTH  6
+#define FONT_HEIGHT 8
+#define FONT_SCALING 2
 
+#define ABS_WIDTH (FONT_WIDTH*FONT_SCALING)
+#define ABS_HEIGHT (FONT_HEIGHT*FONT_SCALING)
 #endif

@@ -121,11 +121,7 @@ int main()
 	//SOLO PROPOSITOS DE TESTEO
 	while(1){
 		if ( (c=getChar())!=-1){
-			if (c=='\n'){
-				cleanScreen();
-				continue;
-			}
-			putChar(c,0x0524FF);
+			putChar(c,0x35FFFF);
 		}
 	}
 

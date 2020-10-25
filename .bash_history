@@ -336,3 +336,25 @@ make clean; make all
 make clean; make all
 make clean; make all
 make clean; make all
+cd root
+make clean; make all
+make clean; make all
+make clean; make all
+make clean; make all
+make clean; make all
+cd root
+make clean; make all
+cd root
+make clean; make all
+make clean; make all
+make clean; make all
+make clean; make all
+cd root
+cd root
+make clean; make all
+make clean; make all
+cd root
+make clean; make all
+make clean; make all
+make clean; make all
+make clean; make all

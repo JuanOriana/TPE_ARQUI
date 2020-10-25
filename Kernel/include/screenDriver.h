@@ -4,5 +4,6 @@
 void initVideo();
 int putChar(char c, unsigned int color);
 void cleanScreen();
-
+void newLine();
+void backspace();
 #endif
