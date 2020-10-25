@@ -4,7 +4,8 @@
 #include <moduleLoader.h>
 #include <naiveConsole.h>
 #include <idtLoader.h>
-#include <videoDriver.h>
+#include <graphicRenderer.h>
+#include <screenDriver.h>
 #include <kbDriver.h>
 
 extern uint8_t text;
@@ -113,8 +114,6 @@ int main()
 	load_idt();
 
 	// char naso[] = "Naso la concha de tu madre";
-	int x=10;
-	int y =10;
 	char c;
 	// for (int i=0;i<27;i++)
 	// 	renderChar(naso[i],x+i*18,y, 0xFF036F);
@@ -122,12 +121,11 @@ int main()
 	//SOLO PROPOSITOS DE TESTEO
 	while(1){
 		if ( (c=getChar())!=-1){
-			if (x>900){
-				x=10;
-				y+=24;
+			if (c=='\n'){
+				cleanScreen();
+				continue;
 			}
-			renderChar(c, x, y, 0xFF036F);
-			x+=18;
+			putChar(c,0x0524FF);
 		}
 	}
 
