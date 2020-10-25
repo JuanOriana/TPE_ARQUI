@@ -43,14 +43,17 @@ struct vbe_mode_info_structure
 } __attribute__((packed));
 
 struct vbe_mode_info_structure *screenData = (void *)0x0000000000005C00;
+//TODO: INICIALIZAR CONSTANTES EN LUGAR DE LLAMAR A SCREENDATA->
 
-int printPixel(unsigned int x, unsigned int y, unsigned char R, unsigned char G, unsigned char B)
+int printPixel(unsigned int x, unsigned int y, unsigned int color)
 {
-	char* pos = screenData->framebuffer;
-	for (int i=0;i<1500000;i++){
-		*pos=200;
-		pos++;
-	}
+	if (x < 0 || y < 0 || x > screenData->width || y > screenData->height)
+		return -1;
+
+	char *pos = (char *)((uint64_t)screenData->framebuffer + (x + y * screenData->width) * 3);
+	*pos = (color & 0x0000FF);
+	*(pos+1) = (color & 0x00FF00) >> 8;
+	*(pos+2) = (color & 0xFF0000) >> 16;
 	return 0;
 
 }

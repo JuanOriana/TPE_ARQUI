@@ -109,8 +109,9 @@ int main()
 	ncClear();
 	load_idt();
 
-
-	printPixel(1,1,255,255,255);
+	for (int i=300;i<600;i++)
+		for(int j=400;j<600;j++)
+			printPixel(i, j, 0xab1631);
 
 	while(1){}
 

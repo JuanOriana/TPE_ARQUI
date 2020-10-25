@@ -3,6 +3,6 @@
 
 #include <stdint.h>
 
-int printPixel(unsigned int x, unsigned int y, unsigned char R, unsigned char G, unsigned char B);
+int printPixel(unsigned int x, unsigned int y, unsigned int color);
 
 #endif
