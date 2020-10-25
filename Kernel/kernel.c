@@ -110,14 +110,9 @@ int main()
 	load_idt();
 
 
-	while (1)
-	{
-		char c = getChar();
-		char param[2] = "\0";
-		param[0] = c;
-		if (c != -1)
-			ncPrint(param);
-	}
+	printPixel(1,1,255,255,255);
+
+	while(1){}
 
 	return 0;
 }

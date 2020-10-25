@@ -214,3 +214,28 @@ cd root;make clean;make all;exit
 cd root;make clean;make all;exit
 make all
 cd root;make clean;make all;exit
+make clean
+cd root; make clean
+make all
+make all
+make clean; make all
+make all
+make all
+make clean
+make all
+make all
+make all
+make all
+make all
+make all
+make all
+make all
+make all
+make all
+make all
+make all
+make all
+make all
+make all
+make all
+exit
