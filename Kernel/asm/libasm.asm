@@ -1,6 +1,7 @@
 GLOBAL cpuVendor
 GLOBAL intToStr
 GLOBAL _inRead
+GLOBAL _getReg
 
 section .text
 	
