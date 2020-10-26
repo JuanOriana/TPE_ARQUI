@@ -36,8 +36,8 @@ void newLine(){
     cursorPosX=0;
     cursorPosY += ABS_HEIGHT;
     if (cursorPosY>=maxY){
-        //SCROLL UP
-        cleanScreen();
+        scrollUp(ABS_HEIGHT);
+        cursorPosY = maxY - ABS_HEIGHT;
     }
 
 }

@@ -151,8 +151,13 @@ haltcpu:
 	ret
 
 ;int 80h
+;TODO: No necesita pushear states?
 _syscallHandler:
 	call syscallDispatcher
+	
+	mov al, 20h ; signal pic EOI (End of Interrupt)
+	out 20h, al
+
 	iretq
 
 

@@ -217,3 +217,22 @@ int renderChar(unsigned char c, unsigned int x, unsigned int y, unsigned int col
 void clearAll(){
 	renderArea(0,0,width,height,BG_COLOR);
 }
+
+int scrollUp(int pixels){
+	if (pixels>height){
+		clearAll();
+		return -1;
+	}
+	char *pos = (char *)((uint64_t)screenData->framebuffer);
+	for (int i = 0; i < width; i++){
+		for (int j=0;j<height-pixels;j++){
+			for (int k=0;k<3;k++){ // per color
+				*pos = *(pos + (pixels * width) * 3);
+				pos++;
+			}
+		}
+	}
+	renderArea(0,height-pixels,width,height,0x000000);
+	return 0;
+
+}

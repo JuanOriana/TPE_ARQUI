@@ -27,7 +27,7 @@ void load_idt() {
   _cli();
   
   setup_IDT_entry (0x21, (uint64_t)&_irq01Handler); //Teclado
-  setup_IDT_entry(0x80, (uint64_t)&_syscallHandler);
+  setup_IDT_entry(0x80, (uint64_t)&_syscallHandler); 
             
 
 	picMasterMask(0xFD); //Mask teclado + t-tick 
