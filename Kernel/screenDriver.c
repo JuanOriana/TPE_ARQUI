@@ -2,6 +2,8 @@
 #include <screenDriver.h>
 #include <fontConsts.h>
 
+#define ENTER_KEY 13
+
 int cursorPosX=0;
 int cursorPosY=0;
 int maxX,maxY;
@@ -18,7 +20,7 @@ int putChar(char c,unsigned int color){
     if (cursorPosX+ABS_WIDTH>maxX) //Me paso de ancho con esta insercion? Si es asi salto
         newLine();
 
-    if (c=='\n'){ //newline
+    if (c=='\n'||c==ENTER_KEY){ //newline
         newLine();
         return 1;
     }

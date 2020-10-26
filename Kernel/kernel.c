@@ -87,6 +87,7 @@ void * initializeKernelBinary()
 
 	//NUESTROS INITS
 	initVideo(0x0000000000005C00);
+	initKb();
 
 	return getStackBase();
 }
@@ -122,7 +123,7 @@ int main()
 	//SOLO PROPOSITOS DE TESTEO
 	while(1){
 		if ( (c=getChar())!=-1){
-			putChar(c,0x35FFFF);
+			putChar(c,0xFFFFFF);
 		}
 	}
 

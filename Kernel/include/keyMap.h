@@ -1,37 +1,86 @@
 #ifndef KEY_MAP_H
 #define KEY_MAP_H
 
-static const char keyMap[128] =
+//Resource: https://www.cs.umd.edu/~hollings/cs412/s98/project/proj1/index.html
+
+#define ESC 27 /* ASCII escape */
+
+
+/* Scancodes for shift and capslock keys: */
+
+#define LSHIFT_PRESSED 0x2A  /* Scan codes for shift press, */
+#define LSHIFT_RELEASED 0xAA /* shift release and capslock  */
+#define RSHIFT_PRESSED 0x36  /* keys.                       */
+#define RSHIFT_RELEASED 0xB6
+#define CAPSLOCK 0x3A
+#define CAPSLOCK_RELEASED 0xBA
+
+
+#define BACKSPACE 8 /* Ascii codes for Backspace, Tab and enter */
+#define TAB 9       /* keys.                                    */
+#define ENTER_KEY 13
+
+char scanToAscii[58][2] = /* Array containing ascii codes for
+			       appropriate scan codes */
     {
-        0, 27, '1', '2', '3', '4', '5', '6', '7', '8',                   /* 9 */
-        '9', '0', '-', '=', '\b', '\t', 'q', 'w', 'e', 'r',              /* 19 */
-        't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', 0,                 /* 29   - Control */
-        'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',                /* 39 */
-        '\'', '`', 0, /*Left Shift*/ '\\', 'z', 'x', 'c', 'v', 'b', 'n', /* 49 */
-        'm', ',', '.', '/', 0, /*Right Shift*/ '*',                      /*55*/
-        0,                                                               /* Alt -56*/
-        ' ',                                                             /* Space bar -57*/
-        0,                                                               /* Caps lock -58*/
-        /*- F1 key ... > */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                /* < ... F10 */
-        0,                                                               /* Num lock -68*/
-        0,                                                               /* Scroll Lock -69*/
-        0,                                                               /* Home key -70*/
-        17,                                                              /* Up Arrow -71*/
-        0,                                                               /* Page Up -72*/
-        '-',                                                             /* Minus -73*/
-        18,                                                              /* Left Arrow */
-        0,
-        20,  /* Right Arrow */
-        '+', /* Plus -78*/
-        0,   /* 79 - End key*/
-        19,  /* Down Arrow */
-        0,   /* Page Down */
-        0,   /* Insert Key */
-        0,   /* Delete Key */
-        0, 0, 0,
-        0, /* F11 Key */
-        0, /* F12 Key */
-        0, /* All other keys are undefined */
+        {0, 0},
+        {ESC, ESC},
+        {'1', '!'},
+        {'2', '@'},
+        {'3', '#'},
+        {'4', '$'},
+        {'5', '%'},
+        {'6', '^'},
+        {'7', '&'},
+        {'8', '*'},
+        {'9', '('},
+        {'0', ')'},
+        {'-', '_'},
+        {'=', '+'},
+        {8, 8},
+        {9, 9},
+        {'q', 'Q'},
+        {'w', 'W'},
+        {'e', 'E'},
+        {'r', 'R'},
+        {'t', 'T'},
+        {'y', 'Y'},
+        {'u', 'U'},
+        {'i', 'I'},
+        {'o', 'O'},
+        {'p', 'P'},
+        {'[', '{'},
+        {']', '}'},
+        {13, 13},
+        {0, 0},
+        {'a', 'A'},
+        {'s', 'S'},
+        {'d', 'D'},
+        {'f', 'F'},
+        {'g', 'G'},
+        {'h', 'H'},
+        {'j', 'J'},
+        {'k', 'K'},
+        {'l', 'L'},
+        {';', ':'},
+        {39, 34},
+        {'`', '~'},
+        {0, 0},
+        {'\\', '|'},
+        {'z', 'Z'},
+        {'x', 'X'},
+        {'c', 'C'},
+        {'v', 'V'},
+        {'b', 'B'},
+        {'n', 'N'},
+        {'m', 'M'},
+        {',', '<'},
+        {'.', '>'},
+        {'/', '?'},
+        {0, 0},
+        {0, 0},
+        {0, 0},
+        {' ', ' '},
 };
 
 #endif

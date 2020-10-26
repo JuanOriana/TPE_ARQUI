@@ -3,7 +3,7 @@
 #include <defs.h>
 
 #define BUFFER_SIZE 128
-
+void initKb();
 int getChar();
 void keyboardHandler();
 
