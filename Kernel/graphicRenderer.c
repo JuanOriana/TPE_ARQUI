@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <graphicRenderer.h>
-#include <font.h>
+#include <fontConsts.h>
 
 const unsigned char font[96][6] = {
     {0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //
