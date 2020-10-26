@@ -428,3 +428,21 @@ make clean; make all
 make clean; make all
 make clean; make all
 make clean; make all
+make clean; make all
+cd root
+make clean; make all
+exit
+cd root
+make clean; make all
+ls
+exit
+cd root/Toolchain
+make lal
+make all
+cd ..
+make all
+make all
+cd root
+make clean; make all
+./run.sh
+make clean
