@@ -9,8 +9,6 @@ static int writeIndex = 0;
 static int elemCount = 0;
 
 
-
-
 void keyboardHandler()
 {
     if (_inRead(0x64) != 0) // Se puede leer el port?

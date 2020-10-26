@@ -386,3 +386,8 @@ make clean
 make clean; make all
 make clean
 make clean; make all
+make all
+exit
+cd root
+make all
+exit

@@ -2,10 +2,12 @@
 #include <syscalls.h>
 #include <syscall_dispatcher.h>
 
-static uint64_t (*systemCalls[])(uint64_t rsi, uint64_t rdx, uint64_t r10) = {
-    sys_register
+static uint64_t (*systemCalls[])(void * rsi, void * rdx, void * r10) = {
+    sys_register, //0
+    sys_write,     //1
+    // sys_read
 };
 
-uint64_t syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10) {
+uint64_t syscallDispatcher(uint64_t rdi, void * rsi, void * rdx, void * r10) {
     return (*systemCalls[rdi])(rsi, rdx, r10);
 }
