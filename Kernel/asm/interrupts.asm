@@ -14,7 +14,9 @@ GLOBAL _irq04Handler
 GLOBAL _irq05Handler
 
 GLOBAL _exception0Handler
+GLOBAL _syscallHandler
 
+EXTERN syscallDispatcher
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 
@@ -148,6 +150,10 @@ haltcpu:
 	hlt
 	ret
 
+;int 80h
+_syscallHandler:
+	call syscallDispatcher
+	iretq
 
 
 SECTION .bss

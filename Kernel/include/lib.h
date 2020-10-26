@@ -9,5 +9,6 @@ void * memcpy(void * destination, const void * source, uint64_t length);
 char *cpuVendor(char *result);
 void intToStr(char *buff, int n);
 int _inRead(int n);
+uint64_t _getReg(uint64_t reg);
 
 #endif
