@@ -1,6 +1,6 @@
 #include <graphicRenderer.h>
 #include <screenDriver.h>
-#include <font.h>
+#include <fontConsts.h>
 
 int cursorPosX=0;
 int cursorPosY=0;

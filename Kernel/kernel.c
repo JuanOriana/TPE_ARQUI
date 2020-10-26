@@ -7,7 +7,7 @@
 #include <graphicRenderer.h>
 #include <screenDriver.h>
 #include <kbDriver.h>
-#include <syscall_dispatcher.h>
+#include <syscallDispatcher.h>
 
 extern uint8_t text;
 extern uint8_t rodata;

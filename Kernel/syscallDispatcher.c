@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <syscalls.h>
-#include <syscall_dispatcher.h>
+#include <syscallDispatcher.h>
 
 static uint64_t (*systemCalls[])(uint64_t rsi, uint64_t rdx, uint64_t r10) = {
     sys_register
