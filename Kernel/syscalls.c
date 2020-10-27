@@ -32,10 +32,9 @@ uint64_t sys_write(uint64_t fd, uint64_t buffer, uint64_t length)
 
     while (length > 0)
     {
-        if (*buff != '\0')
-        {
-            putChar(*buff, color);
-        }
+        if (*buff == '\0' || *buff==-1)
+            break;
+        putChar(*buff, color);
         buff++;
         length--;
     }
