@@ -10,5 +10,6 @@ char *cpuVendor(char *result);
 void intToStr(char *buff, int n);
 int _inRead(int n);
 uint64_t _getReg(uint64_t reg);
+char* intToBase(long int num, char* str, int base);
 
 #endif
