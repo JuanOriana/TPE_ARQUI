@@ -46,7 +46,7 @@ void keyboardHandler()
 
         if (c == '\r') //Normal\izado de saltos de linea.
             c='\n';
-        
+
         if (c != 0)
         {
             buffer[wrIdx] = c;
@@ -59,7 +59,7 @@ void keyboardHandler()
             else
                 rdIdx = (rdIdx + 1) % BUFF_SIZE;
         }
-        
+
     }
 }
 

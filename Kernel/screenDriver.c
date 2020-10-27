@@ -16,6 +16,7 @@ void initVideo(){
     cleanScreen();
 }
 
+
 int putChar(char c,unsigned int color){
     if (cursorPosX+ABS_WIDTH>maxX) //Me paso de ancho con esta insercion? Si es asi salto
         newLine();

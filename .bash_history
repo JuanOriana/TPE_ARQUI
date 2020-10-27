@@ -452,3 +452,18 @@ make clean; make all
 make clean; make all
 make clean
 make clean; make all
+make all
+cd ..
+ls
+cd root/
+ls
+make all
+make all
+ake all
+make all
+make all
+make all
+make all
+make all
+make all
+exit

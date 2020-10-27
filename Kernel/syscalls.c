@@ -8,6 +8,7 @@
 
 #define STDOUT_COL 0xFFFFFF
 #define STDERR_COL 0xFF0000
+static int fontColour = STDOUT_COL;
 
 static const char *registers[] = {"RAX", "RBX", "RCX", "RDX", "RBP", "RDI", "RSI", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15"};
 
@@ -35,7 +36,7 @@ uint64_t sys_write(uint64_t fd, uint64_t buffer, uint64_t length)
     switch (fd)
     {
     case STDOUT:
-        color= STDOUT_COL;
+        color= fontColour;
         break;
     case STDERR:
         color = STDERR_COL;
@@ -67,3 +68,15 @@ uint64_t sys_write(uint64_t fd, uint64_t buffer, uint64_t length)
 //     }
 //     return 0;
 // }
+
+ void sysClear()
+{
+    cleanScreen();
+}
+
+uint64_t sysFontColour(uint64_t fc)
+{
+    if(fc == STDERR_COL) { return 1;}
+    fontColour = fc;
+    return 0;
+}
