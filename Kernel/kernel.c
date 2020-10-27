@@ -121,17 +121,6 @@ int main()
 	// 	renderChar(naso[i],x+i*18,y, 0xFF036F);
 
 	//SOLO PROPOSITOS DE TESTEO
-
-	uint64_t boke = "boke";
-	syscallDispatcher(3,0x0000FF,0,0);
-	syscallDispatcher(1,1,boke,4);
-	syscallDispatcher(3,0xFFFF00,0,0);
-	syscallDispatcher(1,1,boke,4);
-	syscallDispatcher(3,0x0000FF,0,0);
-	syscallDispatcher(1,1,boke,4);
-
-
-
 	while(1){
 		if ( (c=getChar())!=-1){
 			putChar(c,0xFFFFFF);

@@ -28,7 +28,7 @@ uint64_t sysPrintReg(uint64_t rsi, uint64_t rdx, uint64_t r10) {
     return 0;
 }
 
-uint64_t sys_write(uint64_t fd, uint64_t buffer, uint64_t length)
+uint64_t sysWrite(uint64_t fd, uint64_t buffer, uint64_t length)
 {
     char* buff = (char*)buffer;
     unsigned int color;
@@ -69,12 +69,13 @@ uint64_t sys_write(uint64_t fd, uint64_t buffer, uint64_t length)
 //     return 0;
 // }
 
- void sysClear()
+uint64_t sysClear(uint64_t rsi, uint64_t rdx, uint64_t r10)
 {
     cleanScreen();
+    return 0;
 }
 
-uint64_t sysFontColour(uint64_t fc)
+uint64_t sysFontColour(uint64_t fc, uint64_t rdx, uint64_t r10)
 {
     if(fc == STDERR_COL) { return 1;}
     fontColour = fc;

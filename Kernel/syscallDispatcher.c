@@ -4,7 +4,7 @@
 
 static uint64_t (*systemCalls[])(uint64_t rsi, uint64_t rdx, uint64_t r10) = {
     sysPrintReg, //0
-    sys_write,    //1
+    sysWrite,    //1
     // sys_read
     sysClear,  //3
     sysFontColour //4
