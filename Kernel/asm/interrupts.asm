@@ -161,5 +161,8 @@ _syscallHandler:
 	iretq
 
 
+
+
+
 SECTION .bss
 	aux resq 1
