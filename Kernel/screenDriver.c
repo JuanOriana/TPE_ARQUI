@@ -4,9 +4,9 @@
 
 #define ENTER_KEY 13
 
-int cursorPosX=0;
-int cursorPosY=0;
-int maxX,maxY;
+static int cursorPosX = 0;
+static int cursorPosY = 0;
+static int maxX, maxY;
 
 void initVideo(){
     initRenderer(0x0000000000005C00);

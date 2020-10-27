@@ -143,8 +143,8 @@ struct vbe_mode_info_structure
 
 struct vbe_mode_info_structure *screenData;
 
-int width=0;
-int height=0;
+static int width = 0;
+static int height = 0;
 
 void initRenderer(long int infoLoc){
 	screenData = (void *)infoLoc;
