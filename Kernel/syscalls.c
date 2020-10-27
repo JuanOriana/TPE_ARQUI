@@ -2,8 +2,8 @@
 #include <lib.h>
 #include <screenDriver.h>
 
-#define STDOUT 0
-#define STDIN 1
+#define STDIN 0
+#define STDOUT 1
 #define STDERR 2
 
 #define STDOUT_COL 0xFFFFFF
