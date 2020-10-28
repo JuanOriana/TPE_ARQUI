@@ -2,6 +2,7 @@
 #include <lib.h>
 #include <screenDriver.h>
 #include <syscalls.h>
+#include <kbDriver.h>
 
 #define STDIN 0
 #define STDOUT 1
@@ -76,14 +77,11 @@ uint64_t sysPrintMem(uint64_t address, uint64_t bytes, uint64_t r10) {
     return 0;
 }
 
-// uint64_t sys_read(uint64_t fd, char * buffer, uint64_t length) {
-//     if (fd != STDIN) {
-//         return -1;
-//     }
-//     while (length > 0) {
-//         *buffer = kbFlag();
-//         buffer++;
-//         length--;
-//     }
-//     return 0;
-// }
+uint64_t sysRead(uint64_t fd, char * buffer, uint64_t length) {
+    if (fd != STDIN) {
+        return -1;
+    }
+    
+    return dumpBuffer(buffer,length);
+
+}
