@@ -197,7 +197,7 @@ _getReg:
         jmp .exit
     
     .getR15:
-        mov rax, 255
+        mov rax, r15
         jmp .exit
 
 _getMem;
