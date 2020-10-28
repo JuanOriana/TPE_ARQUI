@@ -2,6 +2,7 @@ GLOBAL cpuVendor
 GLOBAL intToStr
 GLOBAL _inRead
 GLOBAL _getReg
+GLOBAL _getMem
 
 section .text
 	
@@ -196,5 +197,15 @@ _getReg:
         jmp .exit
     
     .getR15:
-        mov rax, r15
+        mov rax, 255
         jmp .exit
+
+_getMem;
+    push rbp
+	mov rbp,rsp
+
+	mov al, byte[rdi]
+
+	mov rsp,rbp
+	pop rbp
+	ret

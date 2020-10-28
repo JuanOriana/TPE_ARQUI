@@ -52,54 +52,38 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 	return destination;
 }
 
-char* intToBase(long int num, char* str, int base) 
+char *intToHexa(long int num, char *str, int bytes) 
 { 
-    int i = 0; 
-    int isNegative = 0; 
-  
+    int i = 0;
+
     /* Handle 0 explicitely, otherwise empty string is printed for 0 */
     if (num == 0) 
-    { 
-        if(base == 16){
-            str[i++] = '0';
-            str[i++] = 'x';
-        }
-        // str[i++] = '0'; 
-        while (i < 18) {
+    {
+        str[i++] = '0';
+        str[i++] = 'x';
+
+        while (i < bytes*2 + 2) {
             str[i++] = '0';
         }
+
         str[i] = '\0'; 
         return str; 
     } 
   
-    // In standard itoa(), negative numbers are handled only with  
-    // base 10. Otherwise numbers are considered unsigned. 
-    if (num < 0 && base == 10) 
-    { 
-        isNegative = 1; 
-        num = -num; 
-    } 
-  
     // Process individual digits 
-    while (num != 0) 
+    while (i < bytes*2 && num != 0) 
     { 
-        int rem = num % base; 
+        int rem = num % 16; 
         str[i++] = (rem > 9)? (rem - 10) + 'a' : rem + '0'; 
-        num = num/base; 
+        num = num/16; 
     } 
-  
-    // If number is negative, append '-' 
-    if (isNegative) 
-        str[i++] = '-'; 
-  
-      // If base = 16 append 0x
-    if (base == 16){
-        while (i < 16) {
-            str[i++] = '0';
-        }
-        str[i++] = 'x';
+
+    while (i < bytes*2) {
         str[i++] = '0';
     }
+
+    str[i++] = 'x';
+    str[i++] = '0';
     str[i] = '\0'; // Append string terminator 
   
     // Reverse the string 
@@ -109,7 +93,7 @@ char* intToBase(long int num, char* str, int base)
 } 
 
 
-void swap ( char *str1, char *str2) {
+void swap (char *str1, char *str2) {
   int tmp;
   tmp = *str1;
   *str1 = *str2;

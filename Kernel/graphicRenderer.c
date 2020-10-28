@@ -153,7 +153,6 @@ void initRenderer(long int infoLoc){
 
 }
 
-
 int getHeight(){
 	return height;
 }
