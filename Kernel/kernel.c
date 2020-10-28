@@ -8,6 +8,7 @@
 #include <screenDriver.h>
 #include <kbDriver.h>
 #include <syscallDispatcher.h>
+#include <rtc.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -115,17 +116,23 @@ int main()
 	ncClear();
 	load_idt();
 
-	// char naso[] = "Naso la concha de tu madre";
-	char c;
-	// for (int i=0;i<27;i++)
-	// 	renderChar(naso[i],x+i*18,y, 0xFF036F);
 
-	//SOLO PROPOSITOS DE TESTEO
-	while(1){
-		if ( (c=getChar())!=-1){
-			putChar(c,0xFFFFFF);
-		}
-	}
+	// char text[10];
+	//intToStr(text,getTime(2));
+	// syscallDispatcher(1,1,(uint64_t)text,10);
+
+
+	//  char naso[] = "Naso la concha de tu madre";
+	// char c;
+	//  for (int i=0;i<27;i++)
+	//  	renderChar(naso[i],x+i*18,y, 0xFF036F);
+
+	// //SOLO PROPOSITOS DE TESTEO
+	// while(1){
+	// 	if ( (c=getChar())!=-1){
+	// 		putChar(c,0xFFFFFF);
+	// 	}
+	// }
 
 	return 0;
 }

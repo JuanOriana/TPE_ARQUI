@@ -467,3 +467,28 @@ make all
 make all
 make all
 exit
+cd ../root
+make all
+ls
+make all
+make all
+exit
+make all
+cd ../root
+make all
+exit
+cd ../root
+make all
+exit
+cd ../root
+make all
+exit
+cd ../root
+make all
+exit
+cd ../root
+make all
+exit
+cd ../root
+make all
+exit

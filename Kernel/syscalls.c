@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <lib.h>
+#include <rtc.h>
 #include <screenDriver.h>
 
 #define STDIN 0
@@ -80,4 +81,8 @@ uint64_t sysFontColour(uint64_t fc, uint64_t rdx, uint64_t r10)
     if(fc == STDERR_COL) { return 1;}
     fontColour = fc;
     return 0;
+}
+
+uint64_t sysTime(uint64_t selector, uint64_t rdx, uint64_t r10){
+    return getTime(selector);
 }
