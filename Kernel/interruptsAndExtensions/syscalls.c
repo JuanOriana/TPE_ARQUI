@@ -93,6 +93,6 @@ uint64_t sysRead(uint64_t fd, uint64_t buffer, uint64_t length)
         return -1;
     }
     char* buff = (char *) buffer;
-    return dumpBuffer(buff,length);
+    dumpBuffer(buff,length);
 
 }

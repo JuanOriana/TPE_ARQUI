@@ -6,13 +6,16 @@
 
 // WRAPPEO DE FUNCIONES DE ASM Y ALGUNAS PRECISIONES PARA USO DE USUARIO
 
-
+#define BUFFER_SIZE 512
+char buffer[BUFFER_SIZE] = {0};
+int buffSize=0;
 int print(char *str, ...)
 {
-    va_list vl;
+    va_list args;
     int i = 0, j = 0;  // i lectura en str  - j pos en buffer
     char buff[100] = {0}, tmp[20];
-    va_start(vl, str);
+    char *str_arg;
+    va_start(args, str);
     while (str && str[i])
     {
         if (str[i] == '%')
@@ -22,15 +25,22 @@ int print(char *str, ...)
             {
                 case 'c':
                 {
-                    buff[j] = (char)va_arg(vl, int);
+                    buff[j] = (char)va_arg(args, int);
                     j++;
                     break;
                 }
                 case 'd':
                 {
-                    intToStr(tmp,va_arg(vl,int));
+                    intToStr(tmp, va_arg(args, int));
                     strcpy(&buff[j], tmp);
                     j += strlen(tmp);
+                    break;
+                }
+                case 's':
+                {
+                    str_arg = va_arg(args, char *);
+                    strcpy(&buff[j], str_arg);
+                    j += strlen(str_arg);
                     break;
                 }
             }
@@ -42,29 +52,111 @@ int print(char *str, ...)
         }
         i++;
     }
-    write(1,buff,j);
-    va_end(vl);
+    writer(1,buff,j);
+    va_end(args);
     return j;
 }
 
 
-int printErr(char *buff, int length){
-    return write(2, buff, length);
-}
-
 int putChar(char c){
     char buff[2] = {0};
     buff[0] = c;
-    return write(1,buff,2);
+    return writer(1,buff,2);
 }
 
-int scan(char* buff, int length){
-    return read(0,buff,length);
+int readLn()
+{
+    int c;
+
+    while ((c = getChar()) != '\n' )
+    {
+        if (c == '\b')
+        {
+            if (buffSize > 0)
+            {
+                buffSize--;
+                putChar('\b');
+            }
+        }
+        else if (c != -1)
+        {
+            if (buffSize < BUFFER_SIZE - 1)
+            {
+                buffer[buffSize++] = c;
+            }
+            putChar(c);
+        }
+    }
+    putChar('\n');
+    buffer[buffSize++] = '\0';
+    return buffSize;
 }
 
-char getChar(){
+int scan(const char *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+
+    clearBuff();
+    readLn();
+    int fmtIdx = 0;
+    int bufferIdx=0;
+    int ret=0;
+    int flag = 0;
+
+    char *auxStr;
+    int auxNum =0;
+    while (format[fmtIdx] != '\0' &&  buffer[bufferIdx] != '\0' && !flag)
+    {
+        if (format[fmtIdx] != '%')
+        {
+            if (format[fmtIdx] != buffer[bufferIdx])
+            {
+                flag = -1;
+            }
+            else
+            {
+                fmtIdx++;
+                bufferIdx++;
+            }
+        }
+        else
+        {
+            fmtIdx++;
+            switch (format[fmtIdx])
+            {
+            case 'd':
+            case 'i':
+                *(int *)va_arg(args, int *) = strToInt(&buffer[bufferIdx], &auxNum);
+                bufferIdx += auxNum;
+                ret++;
+                break;
+            case 'c':
+                *(char *)va_arg(args, char *) = buffer[bufferIdx];
+                bufferIdx++;
+                ret++;
+                break;
+            case 's': //String hasta espacio
+                auxStr = va_arg(args, char *);
+                strcpy(auxStr,& buffer[bufferIdx]);
+                bufferIdx += strlen(auxStr);
+                break;
+
+            default:
+                flag = -1;
+                break;
+            }
+        }
+    }
+    return ret * flag;
+}
+
+int getChar()
+{
     char buff[2] = {0};
-    return read(0, buff, 2);
+    int ret = reader(0, buff, 2);
+    if (ret <= 0)
+        return -1;
     return buff[0];
 }
 
@@ -73,12 +165,11 @@ int strlen(const char *s)
     int i;
     for (i = 0; s[i] != '\0'; i++);
     return i;
-}
-
+    }
 
 char *strcpy(char *destination, const char *source)
 {
-    
+
     if (destination == (void *)0)
         return destination;
 
@@ -93,46 +184,39 @@ char *strcpy(char *destination, const char *source)
 
     *destination = '\0';
     return ptr;
+ }
+
+ //https://www.geeksforgeeks.org/write-your-own-atoi/
+ int strToInt(char *str, int* size)
+ {
+     if (*str == '\0')
+         return 0;
+    *size=0;
+     int res = 0;
+     int sign = 1;
+     int i = 0;
+
+     if (str[0] == '-')
+     {
+         sign = -1;
+         i++;
+         *size +=1;
+     }
+     for (; str[i] != '\0'; ++i)
+     {
+         if (str[i] <= '0' || str[i] >= '9')
+             return sign * res;
+         res = res * 10 + str[i] - '0';
+         *size += 1;
+     }
+
+     return sign * res;
 }
 
-int atoi(char* str)
-{
-    if (*str == '\0')
-        return 0;
- 
-    // Initialize result
-    int res = 0;
- 
-    // Initialize sign as positive
-    int sign = 1;
- 
-    // Initialize index of first digit
-    int i = 0;
- 
-    // If number is negative,
-    // then update sign
-    if (str[0] == '-')
-    {
-        sign = -1;
- 
-        // Also update index of first digit
-        i++;
-    }
- 
-    // Iterate through all digits of
-    // input string and update result
-    for (; str[i] != '\0'; ++i)
-    {
- 
-        // You may add some lines
-        // to write error message
-        if (str[i] <= '0' || str[i] >= '9')
-            return 0;
- 
-        // to error stream
-        res = res * 10 + str[i] - '0';
-    }
- 
-    // Return result with sign
-    return sign * res;
+void clearBuff(){
+    buffSize = 0;
+    do {
+        reader(0,buffer,512);
+    }   
+    while (getChar()!=-1);
 }
