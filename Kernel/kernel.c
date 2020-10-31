@@ -89,6 +89,7 @@ void * initializeKernelBinary()
 	//NUESTROS INITS
 	initVideo(0x0000000000005C00);
 	initKb();
+	load_idt();
 
 	return getStackBase();
 }
@@ -114,7 +115,6 @@ int main()
 
 	ncPrint("[Finished]");
 	ncClear();
-	load_idt();
 
 
 	// char text[10];
