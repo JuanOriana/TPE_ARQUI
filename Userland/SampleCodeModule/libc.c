@@ -94,3 +94,45 @@ char *strcpy(char *destination, const char *source)
     *destination = '\0';
     return ptr;
 }
+
+int atoi(char* str)
+{
+    if (*str == '\0')
+        return 0;
+ 
+    // Initialize result
+    int res = 0;
+ 
+    // Initialize sign as positive
+    int sign = 1;
+ 
+    // Initialize index of first digit
+    int i = 0;
+ 
+    // If number is negative,
+    // then update sign
+    if (str[0] == '-')
+    {
+        sign = -1;
+ 
+        // Also update index of first digit
+        i++;
+    }
+ 
+    // Iterate through all digits of
+    // input string and update result
+    for (; str[i] != '\0'; ++i)
+    {
+ 
+        // You may add some lines
+        // to write error message
+        if (str[i] <= '0' || str[i] >= '9')
+            return 0;
+ 
+        // to error stream
+        res = res * 10 + str[i] - '0';
+    }
+ 
+    // Return result with sign
+    return sign * res;
+}

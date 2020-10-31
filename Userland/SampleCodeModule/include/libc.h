@@ -9,6 +9,7 @@ int scan(char *buff, int length);
 char getChar();
 int strlen(const char *s);
 char *strcpy(char *destination, const char *source);
+int atoi(char* str);
 
 
 #endif
