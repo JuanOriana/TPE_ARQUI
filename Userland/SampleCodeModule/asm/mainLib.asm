@@ -1,6 +1,6 @@
 GLOBAL intToStr
-GLOBAL read
-GLOBAL write
+GLOBAL reader
+GLOBAL writer
 GLOBAL scClear
 GLOBAL timeInfo
 
@@ -56,7 +56,7 @@ intToStr:
 ; IN- RDI - FD
 ;    RSI - Buffer
 ;    RDX - size
-read:
+reader:
     push rbp
     mov rbp,rsp;
 
@@ -75,6 +75,7 @@ read:
     pop rdx
     pop rsi
     pop rdi
+    
 
     leave
     ret
@@ -84,7 +85,7 @@ read:
 ;IN- RDI - FD
 ;    RSI - Buffer
 ;    RDX - size
-write:
+writer:
     push rbp
     mov rbp,rsp;
 

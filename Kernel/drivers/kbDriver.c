@@ -64,9 +64,9 @@ void keyboardHandler()
 }
 
 
-char getChar()
+int loadChar()
 {
-    if (activeSize == 0) 
+    if (activeSize <= 0) 
         return -1;
 
     int c = buffer[rdIdx];
@@ -80,11 +80,12 @@ int dumpBuffer(char* destination, int size){
     //Si la destinacion es muy pequeña el buffer NO se vacia, solo lee los elementos pertinentes
 
     // Si el tamaño es 0 ni si quiera es posible devolver un string legible!
-    if (size<=0)
+    if (size<=0 || activeSize<=0)
         return -1;
+
     int idx=0;
-    while (idx<size-1 && !activeSize){
-        destination[idx]=getChar();
+    while (idx<size-1 && activeSize){
+        destination[idx] = loadChar();
         idx++;
     }
     destination[idx]=0;
