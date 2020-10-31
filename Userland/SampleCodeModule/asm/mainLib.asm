@@ -132,8 +132,6 @@ chFont:
     mov rsi,rdi
     mov rdi, 3
     int 80h
-    
-    mov rdi
 
     pop rsi
     pop rdi
@@ -152,8 +150,6 @@ timeInfo:
     mov rsi,rdi
     mov rdi, 6
     int 80h
-    
-    mov rdi
 
     pop rsi
     pop rdi
