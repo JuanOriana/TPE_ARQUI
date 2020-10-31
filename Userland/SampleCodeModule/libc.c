@@ -6,8 +6,9 @@
 
 // WRAPPEO DE FUNCIONES DE ASM Y ALGUNAS PRECISIONES PARA USO DE USUARIO
 
-
-char buffer[256]= {0};
+#define BUFFER_SIZE 256
+char buffer[BUFFER_SIZE] = {0};
+int buffSize =0;
 
 int print(char *str, ...)
 {
@@ -64,19 +65,48 @@ int putChar(char c){
     return write(1,buff,2);
 }
 
+int readLn()
+{
+    int bufferIndex = 0;
+    int c;
+
+    while ((c = getChar()) != '\n')
+    {
+        if (c == '\b')
+        {
+            if (bufferIndex > 0)
+            {
+                bufferIndex--;
+                putChar('\b');
+            }
+        }
+        else if (c != EOF && c > 31)
+        {
+            if (bufferIndex <= BUFFER_SIZE)
+            {
+                buffer[bufferIndex++] = c;
+            }
+            putchar(c);
+        }
+    }
+    putchar('\n');
+    buffer[bufferIndex++] = '\0';
+    return bufferIndex;
+}
+
 int scan(const char *format, ...)
 {
     va_list args;
     va_start(args, format);
 
-    readLine(buffer);
+    readLn(buffer);
     int buffIdx = 0;
     int fmtIdx = 0;
+    int ret=0;
 
     int result = 0;
     int flag = 0;
 
-    int auxIdx = 0;
     char *auxStr;
     int *auxNum;
 
@@ -101,35 +131,19 @@ int scan(const char *format, ...)
             {
             case 'd':
             case 'i':
-                *(int *)va_arg(args, int *) = itoa(&buff[j], &out_loc, 10);
-                buffIdx += out_loc - &buffer[buffIdx];
-                fmtIdx++;
+                *(int *)va_arg(args, int *) = atoi(&buffer[j], auxNum, 10);
+                buffIdx += *auxNum;
+                ret++;
                 break;
             case 'c':
                 *(char *)va_arg(args, char *) = buffer[j];
-                j++;
+                buffIdx++;
                 ret++;
                 break;
             case 's': //String hasta espacio
                 auxStr = va_arg(args, char *);
-                auxIndex = bufferIndex;
-                while (buffer[bufferIndex] != ' ' && buffer[bufferIndex] != '\0')
-                {
-                    *auxStr = buffer[bufferIndex];
-                    auxStr++;
-                    bufferIndex++;
-                }
-                if (bufferIndex > auxIndex)
-                {
-                    auxStr[auxIndex] = '\0';
-                    result++;
-                }
-                else
-                {
-                    auxStr[auxIndex] = '\0';
-                    flag = 1;
-                }
-                formatIndex++;
+                strcpy(&buffer[j], auxStr);
+                j += strlen(auxStr);
                 break;
 
             default:
@@ -137,39 +151,66 @@ int scan(const char *format, ...)
                 break;
             }
         }
-        return flag;
+        return ret*flag;
     }
 
-    char getChar()
+char getChar()
+{
+    char buff[2] = {0};
+     read(0, buff, 2);
+    return buff[0];
+}
+
+int strlen(const char *s)
+{
+    int i;
+    for (i = 0; s[i] != '\0'; i++);
+    return i;
+    }
+
+char *strcpy(char *destination, const char *source)
+{
+
+    if (destination == (void *)0)
+        return destination;
+
+    char *ptr = destination;
+
+    while (*source != '\0')
     {
-        char buff[2] = {0};
-        return read(0, buff, 2);
-        return buff[0];
+        *destination = *source;
+        destination++;
+        source++;
     }
 
-    int strlen(const char *s)
-    {
-        int i;
-        for (i = 0; s[i] != '\0'; i++)
-            ;
-        return i;
-    }
+    *destination = '\0';
+    return ptr;
+ }
 
-    char *strcpy(char *destination, const char *source)
-    {
+ //https://www.geeksforgeeks.org/write-your-own-atoi/
+ int atoi(char *str, int* size)
+ {
+     if (*str == '\0')
+         return 0;
+    *size=0;
+     int res = 0;
+     int sign = 1;
+     int i = 0;
+     end_loc = str;
 
-        if (destination == (void *)0)
-            return destination;
+     if (str[0] == '-')
+     {
+         sign = -1;
+         i++;
+         *size++;
+     }
+     for (; str[i] != '\0'; ++i)
+     {
+         if (str[i] <= '0' || str[i] >= '9')
+             return sign * res;
+         res = res * 10 + str[i] - '0';
+         *size++;
+     }
 
-        char *ptr = destination;
-
-        while (*source != '\0')
-        {
-            *destination = *source;
-            destination++;
-            source++;
-        }
-
-        *destination = '\0';
-        return ptr;
-    }
+     return sign * res;
+}
