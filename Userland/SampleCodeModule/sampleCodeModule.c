@@ -1,14 +1,12 @@
 /* sampleCodeModule.c */
-#include <mainLib.h>
+#include <libc.h>
 
 
 
 int main() {
 	//All the following code may be removed 
-	char* str = "Hola!";
+	print("El valor esperado es: %d",10);
 	while(1){
-		write(1, str, 10);
 	}
-
 	return 0;
 }
