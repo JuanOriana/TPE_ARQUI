@@ -78,12 +78,15 @@ char getChar()
 int dumpBuffer(char* destination, int size){
     //Se dumpea la cantidad de elementos posibles!
     //Si la destinacion es muy pequeña el buffer NO se vacia, solo lee los elementos pertinentes
-    int flag = size<=activeSize?-1:0;
+
+    // Si el tamaño es 0 ni si quiera es posible devolver un string legible!
+    if (size<=0)
+        return -1;
     int idx=0;
     while (idx<size-1 && !activeSize){
         destination[idx]=getChar();
         idx++;
     }
     destination[idx]=0;
-    return flag;
+    return idx;
 }

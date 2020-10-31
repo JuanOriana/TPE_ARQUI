@@ -6,7 +6,7 @@
 void initKb();
 void keyboardHandler();
 char getChar();
-// 0 si se pudo dumpear todo el buffer, -1 en caso contrario.
+// devuelve cuantos chars se pudieron dumpear
 int dumpBuffer(char *destination, int size);
 
 #endif 

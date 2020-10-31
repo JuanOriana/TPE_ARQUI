@@ -44,16 +44,18 @@ uint64_t sysWrite(uint64_t fd, uint64_t buffer, uint64_t length)
         return-1;
     }
 
+    int inserted = 0;
     while (length > 0)
     {
         if (*buff == '\0' || *buff==-1)
             break;
         putChar(*buff, color);
         buff++;
+        inserted++;
         length--;
     }
 
-    return 0;
+    return inserted;
 }
 
 uint64_t sysClear(uint64_t rsi, uint64_t rdx, uint64_t rcx)
