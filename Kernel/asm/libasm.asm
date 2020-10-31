@@ -30,6 +30,7 @@ cpuVendor:
 	pop rbp
 	ret
 
+
 ; -----------------------------------------------------------------------------
 ; intToStr -- Convert a binary interger into an string
 ;  IN:   RSI = binary integer
