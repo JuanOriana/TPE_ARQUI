@@ -12,5 +12,6 @@ int strlen(const char *s);
 char *strcpy(char *destination, const char *source);
 int strToInt(char *str, int *size);
 void clearBuff();
+int abs(int n);
 
 #endif

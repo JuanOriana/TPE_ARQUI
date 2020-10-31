@@ -217,6 +217,10 @@ void clearBuff(){
     buffSize = 0;
     do {
         reader(0,buffer,512);
-    }   
+    }
     while (getChar()!=-1);
+}
+
+int abs(int num){
+    return num < 0? -num : num;
 }

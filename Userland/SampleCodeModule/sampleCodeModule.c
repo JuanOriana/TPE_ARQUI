@@ -1,8 +1,6 @@
 /* sampleCodeModule.c */
 #include <libc.h>
 
-
-
 int main() {
 	//All the following code may be removed 
 	char str[3];

@@ -110,3 +110,5 @@ int checkRook(int side, int fromX, int fromY, int toX, int toY ){
         return side*board[toY][toX] <= 0;
     }
 }
+
+//TODO : EL RESTO DE LOS MOVS
