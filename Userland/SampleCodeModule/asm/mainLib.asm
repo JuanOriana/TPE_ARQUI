@@ -4,6 +4,8 @@ GLOBAL writer
 GLOBAL scClear
 GLOBAL timeInfo
 GLOBAL chFont
+GLOBAL memInfo
+GLOBAL regInfo
 GLOBAL drawFig
 
 
@@ -111,6 +113,42 @@ chFont:
 
     mov rsi,rdi
     mov rdi, 3
+    int 80h
+
+    pop rsi
+    pop rdi
+    leave
+    ret
+
+memInfo:
+    push rbp
+    mov rbp,rsp
+    push rdi
+    push rsi
+    push rdx
+    push rcx
+
+    mov rcx, rdx ;bytes en rcx
+    mov rdx, rsi ;address en rdx
+    mov rsi,rdi ;buffer en rsi
+    mov rdi, 4 
+    int 80h
+
+    pop rcx
+    pop rdx
+    pop rsi
+    pop rdi
+    leave
+    ret
+
+regInfo:
+    push rbp
+    mov rbp,rsp
+    push rdi
+    push rsi
+
+    mov rsi, rdi ;buffer en rsi
+    mov rdi, 5 
     int 80h
 
     pop rsi
