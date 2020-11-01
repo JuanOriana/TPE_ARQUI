@@ -28,7 +28,7 @@ void shellMainLoop(){
         command[0]=0;
         param[0]=0;
 
-        scan("\\%s %s",command,param);
+        scan("!%s %s",command,param);
         if (strcmp(command,"help")==0)
             help();
         else if (strcmp(command,"color")==0){
@@ -43,6 +43,7 @@ void shellMainLoop(){
             print("\\help ");
             chFont(NICE_YELLOW);
             print("para mas informacion.\n");
+            chFont(fontColor);
 
         }
 
@@ -79,7 +80,7 @@ void shellWelcome()
 void printCommandDesc(char *name, char *desc)
 {
     chFont(NICE_GREEN);
-    print("\\%s  ---  ", name);
+    print("!%s  ---  ", name);
     chFont(NICE_PINK);
     print("%s\n", desc);
     chFont(fontColor);
@@ -88,7 +89,7 @@ void printCommandDesc(char *name, char *desc)
 void help(){
     scClear();
     chFont(NICE_YELLOW);
-    print("   Todos los comandos comienzan con backslash!\n    Esta es la lista de los posibles parametros: \n\n");
+    print("   Todos los comandos comienzan con un signo de exclamacion!\n    Esta es la lista de los posibles parametros: \n\n");
     printCommandDesc("help", "Informacion de comandos");
     printCommandDesc("chess","Jugar una partida de ajedrez");
     printCommandDesc("time","Se imprime el tiempo actual");
