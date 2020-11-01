@@ -33,6 +33,8 @@ void shellMainLoop(){
             help();
         else if (strcmp(command,"color")==0){
             int newColor = strToInt(param,&aux);
+            if (newColor<0 || newColor>PINK) //PINK == color maximo
+                continue;
             fontColor = colors[newColor];
             chFont(fontColor);
             } 
@@ -73,7 +75,7 @@ void shellWelcome()
     print("Hola y bienvenido a Pollo-OS! Este es un trabajo practico especial para\n la materia Arquitectura de Computadoras.\n\n");
     print("Para conocer los comandos habilitados, escriba ");
     chFont(NICE_PINK);
-    print("\\help \n\n\n");
+    print("!help \n\n\n");
     chFont(NICE_WHITE);
 }
 
