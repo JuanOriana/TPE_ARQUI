@@ -30,7 +30,7 @@ void load_idt() {
   setup_IDT_entry(0x80, (uint64_t)&_syscallHandler); 
             
 
-	picMasterMask(0xFD); //Mask teclado + t-tick 
+	picMasterMask(0xFD); //Mask teclado 
 	picSlaveMask(0xFF);
         
 	_sti();
