@@ -189,5 +189,37 @@ int checkQueen(int side, int fromX, int fromY, int toX, int toY){
     //Caso contrario es diagonal
     return checkBishop(side,fromX,fromY,toX,toY);
 }
+//Faltaria chequear si el rey ya se movio, quizas alguna variable booleana externa? Consultar con chicken little
+int castling(int side, int fromX, int fromY, int toX, int toY){
+    //Chequeo que parto de un rey y me dirijo hacia una torre
+    if((fromY != 0 || toY !=0) || (fromY!= 7 || toY !=7)
+    || (fromX != 4 || toX !=7) || (fromX!= 4 || toX !=0)
+    || (abs(board[fromY][toY]) != 6 )) { return 0;}
 
+    if(side == BLACK) {
+        //Enroque largo
+        if(checkRook(side,0,0,3,0)) {
+            //Primero muevo la torre, luego el rey
+            move(0,0,3,0); move(4,0,2,0);
+            return 1;
+        }
+        //Enroque corto
+        if(checkRook(side,7,0,5,0)) {
+            move(7,0,5,0); move(4,0,6,0);
+            return 1;
+        }
+    }
+    else {//Idem con rey blanco
+        if(checkRook(side,0,7,3,7)) {
+            move(0,7,3,7); move(4,7,2,7);
+            return 1;
+        }
+        //Enroque corto
+        if(checkRook(side,7,7,5,7)) {
+            move(7,7,5,7); move(4,7,6,7);
+            return 1;
+        }
+    }
+    return 0;
+}
 
