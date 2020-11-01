@@ -4,8 +4,8 @@
 
 int static runningState = 1;
 int static fontColor = NICE_WHITE;
-int static colors[] = {NICE_WHITE,NICE_RED,NICE_YELLOW,NICE_BLUE,NICE_PINK};
-enum colorPick {WHITE, RED, YELLLOW, BLUE, PINK};
+int static colors[] = {NICE_WHITE,NICE_RED,NICE_YELLOW,NICE_BLUE,NICE_GREEN,NICE_PINK};
+enum colorPick {WHITE, RED, YELLLOW, BLUE, GREEN, PINK};
 
 void shellWelcome();
 void shellMainLoop();
@@ -28,11 +28,13 @@ void shellMainLoop(){
         command[0]=0;
         param[0]=0;
 
-        scan("\\%s %s",command,param);
+        scan("!%s %s",command,param);
         if (strcmp(command,"help")==0)
             help();
         else if (strcmp(command,"color")==0){
             int newColor = strToInt(param,&aux);
+            if (newColor<0 || newColor>PINK) //PINK == color maximo
+                continue;
             fontColor = colors[newColor];
             chFont(fontColor);
             } 
@@ -41,8 +43,9 @@ void shellMainLoop(){
             print("No entendi tu comando! escriba ");
             chFont(NICE_PINK);
             print("\\help ");
-            chFont(fontColor);
+            chFont(NICE_YELLOW);
             print("para mas informacion.\n");
+            chFont(fontColor);
 
         }
 
@@ -72,14 +75,14 @@ void shellWelcome()
     print("Hola y bienvenido a Pollo-OS! Este es un trabajo practico especial para\n la materia Arquitectura de Computadoras.\n\n");
     print("Para conocer los comandos habilitados, escriba ");
     chFont(NICE_PINK);
-    print("\\help \n\n\n");
+    print("!help \n\n\n");
     chFont(NICE_WHITE);
 }
 
 void printCommandDesc(char *name, char *desc)
 {
     chFont(NICE_GREEN);
-    print("\\%s  ---  ", name);
+    print("!%s  ---  ", name);
     chFont(NICE_PINK);
     print("%s\n", desc);
     chFont(fontColor);
@@ -88,7 +91,7 @@ void printCommandDesc(char *name, char *desc)
 void help(){
     scClear();
     chFont(NICE_YELLOW);
-    print("   Todos los comandos comienzan con backslash!\n    Esta es la lista de los posibles parametros: \n\n");
+    print("   Todos los comandos comienzan con un signo de exclamacion!\n    Esta es la lista de los posibles parametros: \n\n");
     printCommandDesc("help", "Informacion de comandos");
     printCommandDesc("chess","Jugar una partida de ajedrez");
     printCommandDesc("time","Se imprime el tiempo actual");
