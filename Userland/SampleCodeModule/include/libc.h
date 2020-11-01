@@ -16,5 +16,6 @@ char *intToStr(int num, char *str, int base);
 void clearBuff();
 int abs(int n);
 int strcmp(const char *str1, const char *str2);
+char *intToHexa(long int num, char *str, int bytes);
 
 #endif

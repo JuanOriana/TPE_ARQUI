@@ -302,3 +302,42 @@ void clearBuff(){
 int abs(int num){
     return num < 0? -num : num;
 }
+
+char *intToHexa(long int num, char *str, int bytes) 
+{ 
+    int i = 0;
+    int n = abs(num);
+
+    /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+    if (n == 0) 
+    {
+        str[i++] = '0';
+        str[i++] = 'x';
+
+        while (i < bytes*2 + 2) {
+            str[i++] = '0';
+        }
+
+        str[i] = '\0'; 
+        return str; 
+    } 
+  
+    // Process individual digits 
+    while (i < bytes*2 && n != 0) 
+    { 
+        int rem = n % 16; 
+        str[i++] = (rem >= 10)? (rem - 10) + 65 : rem + 48; 
+        n = n/16; 
+    } 
+
+    while (i < bytes*2) {
+        str[i++] = '0';
+    }
+
+    str[i++] = 'x';
+    str[i++] = '0';
+    str[i] = '\0'; // Append string terminator 
+  
+    // Reverse the string 
+    return reverse(str, 0, i-1); 
+} 
