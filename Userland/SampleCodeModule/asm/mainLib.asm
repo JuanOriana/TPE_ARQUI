@@ -4,10 +4,9 @@ GLOBAL writer
 GLOBAL scClear
 GLOBAL timeInfo
 GLOBAL chFont
-GLOBAL memInfo
-GLOBAL regInfo
 GLOBAL drawFig
-
+GLOBAL getMem
+GLOBAL getRegs
 
 ; read - lee de un fd determinado
 ; IN- RDI - FD
@@ -120,41 +119,6 @@ chFont:
     leave
     ret
 
-memInfo:
-    push rbp
-    mov rbp,rsp
-    push rdi
-    push rsi
-    push rdx
-    push rcx
-
-    mov rcx, rdx ;bytes en rcx
-    mov rdx, rsi ;address en rdx
-    mov rsi,rdi ;buffer en rsi
-    mov rdi, 4 
-    int 80h
-
-    pop rcx
-    pop rdx
-    pop rsi
-    pop rdi
-    leave
-    ret
-
-regInfo:
-    push rbp
-    mov rbp,rsp
-    push rdi
-    push rsi
-
-    mov rsi, rdi ;buffer en rsi
-    mov rdi, 5 
-    int 80h
-
-    pop rsi
-    pop rdi
-    leave
-    ret
 
 ;timeInfo - obtiene info del tiempo
 ;IN - RDI selector de data
@@ -174,3 +138,49 @@ timeInfo:
     leave
     ret
 
+; getMem - recibe el valor de memoria en un vecctor
+;IN- RDI - buffer
+;    RSI - address
+;    RDX - bytes
+getMem:
+    push rbp
+    mov rbp,rsp;
+
+    push rdi
+    push rsi
+    push rdx
+    push rcx
+
+    mov rcx ,rdx ;bytes en rdx
+    mov rdx, rsi  ;address en rdx
+    mov rsi,rdi   ; buff en rsi
+    mov rdi,4     ; id int
+    int 80h
+
+    pop rcx
+    pop rdx
+    pop rsi
+    pop rdi
+
+    leave
+    ret
+
+
+    
+;getRegs - abtiene el valor de los 15 registros
+;IN - RDI buffer
+getRegs:
+
+    push rbp
+    mov rbp,rsp
+    push rdi
+    push rsi
+
+    mov rsi,rdi
+    mov rdi, 5
+    int 80h
+
+    pop rsi
+    pop rdi
+    leave
+    ret

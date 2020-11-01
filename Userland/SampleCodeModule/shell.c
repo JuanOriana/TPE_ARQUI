@@ -7,14 +7,17 @@ int static runningState = 1;
 int static fontColor = NICE_WHITE;
 int static colors[] = {NICE_WHITE,NICE_RED,NICE_YELLOW,NICE_BLUE,NICE_GREEN,NICE_PINK};
 enum colorPick {WHITE, RED, YELLLOW, BLUE, GREEN, PINK};
+static const char *registers[] = {"RAX:", "RBX:", "RCX:", "RDX:", "RBP:", "RDI:", "RSI:", "R8 :", "R9 :", "R10:", "R11:", "R12:", "R13:", "R14:", "R15:"};
 
 void shellWelcome();
 void shellMainLoop();
 void shellExit();
 void help();
 void printTime();
+void printMem(long long address);
+void printRegisters();
 
- void shellRun()
+void shellRun()
 {
 
     shellWelcome();
@@ -44,6 +47,14 @@ void shellMainLoop(){
             }
         else if (strcmp(command,"time")==0)
             printTime();
+        else if(strcmp(command,"clear")==0)
+            scClear();
+        else if (strcmp(command, "printmem") == 0){
+            if (param[0]!=0)
+                printMem(strToInt(param,&aux));
+        }
+        else if (strcmp(command, "inforeg") == 0)
+            printRegisters();
         else if (strcmp(command, "exit") == 0) 
             return;
         else{
@@ -76,6 +87,7 @@ void printLogo(){
 }
 
 void shellExit(){
+    
     scClear();
     chFont(NICE_YELLOW);
     printLogo();
@@ -109,6 +121,31 @@ void printCommandDesc(char *name, char *desc)
     chFont(fontColor);
 }
 
+void printMem(long long address){
+    unsigned char buff[33];
+    char hexa[10];
+    getMem(buff,address,32);
+    print("\n");
+    print("Memoria en address %d :\n\n",address);
+    for (int i=0;i<32;i++){
+        intToHexa((char)buff[i],hexa,1);
+        print("%s ",hexa);
+    }
+    print("\n\n");
+}
+
+void printRegisters(){
+    unsigned long long buff[16];
+    char hexa[10];
+    print("\n");
+    getRegs(buff);
+    for (int i=0;i<15;i++){
+        intToHexa((char)buff[i],hexa,8);
+        print("%s%s\n",registers[i],hexa);
+    }
+    print("\n\n");
+}
+
 void help(){
     scClear();
     chFont(NICE_YELLOW);
@@ -116,7 +153,10 @@ void help(){
     printCommandDesc("help", "Informacion de comandos");
     printCommandDesc("chess","Jugar una partida de ajedrez");
     printCommandDesc("time","Se imprime el tiempo actual");
+    printCommandDesc("clear", "Se limpia la pantalla");
     printCommandDesc("color (numero del 0 al 5 )","Cambiar color de la fuente");
+    printCommandDesc("printmem (direcciones)","Dump de 32 bytes desde la direccion dada");
+    printCommandDesc("inforeg","Se imprime el valor de los registros");
     print("\n\n\n");
 }
 
