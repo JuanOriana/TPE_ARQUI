@@ -4,8 +4,8 @@
 
 int static runningState = 1;
 int static fontColor = NICE_WHITE;
-int static colors[] = {NICE_WHITE,NICE_RED,NICE_YELLOW,NICE_BLUE,NICE_PINK};
-enum colorPick {WHITE, RED, YELLLOW, BLUE, PINK};
+int static colors[] = {NICE_WHITE,NICE_RED,NICE_YELLOW,NICE_BLUE,NICE_GREEN,NICE_PINK};
+enum colorPick {WHITE, RED, YELLLOW, BLUE, GREEN, PINK};
 
 void shellWelcome();
 void shellMainLoop();
@@ -41,7 +41,7 @@ void shellMainLoop(){
             print("No entendi tu comando! escriba ");
             chFont(NICE_PINK);
             print("\\help ");
-            chFont(fontColor);
+            chFont(NICE_YELLOW);
             print("para mas informacion.\n");
 
         }
