@@ -7,6 +7,7 @@
 static int cursorPosX = 0;
 static int cursorPosY = 0;
 static int maxX, maxY;
+static int figLine=0;
 
 void initVideo(){
     initRenderer(0x0000000000005C00);
@@ -35,12 +36,27 @@ int putChar(char c,unsigned int color){
     return res;
 }
 
+//Posiiconamiento de figuras del tamano del DOBLE de una letra
+int putFig(int*fig, unsigned int color){
+    if (cursorPosX + ABS_WIDTH*2 > maxX) //Me paso de ancho con esta insercion? Si es asi salto
+        newLine();
+    figLine=1;
+    int res = renderFig(fig, cursorPosX, cursorPosY, color);
+    cursorPosX += ABS_WIDTH*2;
+    return res;
+}
+
 void newLine(){
+    int scrollDist = ABS_HEIGHT;
+    //Si puse una figura en este linea, debo saltar el doble!
+    if (figLine)
+        scrollDist*=2;
+    figLine=0;
     cursorPosX=0;
-    cursorPosY += ABS_HEIGHT;
+    cursorPosY += scrollDist;
     if (cursorPosY>=maxY){
-        scrollUp(ABS_HEIGHT);
-        cursorPosY = maxY - ABS_HEIGHT;
+        scrollUp(scrollDist);
+        cursorPosY = maxY - scrollDist;
     }
 
 }

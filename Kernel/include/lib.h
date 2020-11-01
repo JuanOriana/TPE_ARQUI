@@ -11,6 +11,5 @@ void intToStr(char *buff, int n);
 int _inRead(int n);
 uint64_t _getReg(uint64_t reg);
 uint64_t _getMem(uint64_t address);
-char *intToHexa(long int num, char *str, int bytes);
 
 #endif
