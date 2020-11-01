@@ -3,7 +3,7 @@
 #ifndef _FONT_H_
 #define _FONT_H_
 
-#define FONT_WIDTH  7
+#define FONT_WIDTH  6
 #define FONT_HEIGHT 8
 #define FONT_SCALING 2
 

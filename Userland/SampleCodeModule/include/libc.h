@@ -10,8 +10,11 @@ int getChar();
 int readLn();
 int strlen(const char *s);
 char *strcpy(char *destination, const char *source);
+char *strcpyTilSpace(char *destination, const char *source);
 int strToInt(char *str, int *size);
+char *intToStr(int num, char *str, int base);
 void clearBuff();
 int abs(int n);
+int strcmp(const char *str1, const char *str2);
 
 #endif
