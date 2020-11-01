@@ -58,6 +58,25 @@ uint64_t sysWrite(uint64_t fd, uint64_t buffer, uint64_t length)
     return inserted;
 }
 
+uint64_t sysFig(uint64_t fd, uint64_t fig, uint64_t rcx)
+{
+    int *figure = (int *)fig;
+    unsigned int color;
+
+    switch (fd)
+    {
+    case STDOUT:
+        color = fontColour;
+        break;
+    case STDERR:
+        color = STDERR_COL;
+        break;
+    default:
+        return -1;
+    }
+
+    return putFig(figure,color);
+}
 uint64_t sysClear(uint64_t rsi, uint64_t rdx, uint64_t rcx)
 {
     cleanScreen();

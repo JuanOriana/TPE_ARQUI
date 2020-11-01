@@ -234,5 +234,21 @@ int scrollUp(int pixels){
 	}
 	renderArea(0,height-pixels,width,height,0x000000);
 	return 0;
+}
 
+//Posibilidad de printear figuras de 12*16
+
+int renderFig(int* fig,unsigned int x, unsigned int y, unsigned int color){
+    if (x < 0 || y < 0 || x + (ABS_WIDTH)*2 > width || y + (ABS_HEIGHT)*2 > height)
+        return -1;
+    for (int i = 0; i < FONT_WIDTH*2; i++)
+    {
+        for (int j = 0; j < FONT_HEIGHT*2; j++)
+        {
+            if (fig[i] & (1 << j)) //En esta posicion hay un bit encendido
+                renderArea(x + i * FONT_SCALING, y + j * FONT_SCALING,
+                           x + (i + 1) * FONT_SCALING, y + (j + 1) * FONT_SCALING, color);
+        }
+    }
+    return 0;
 }

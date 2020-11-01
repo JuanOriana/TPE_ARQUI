@@ -3,6 +3,14 @@
 enum wpieces {WPAWN=1,WBISHOP=2,WKNIGHT=3,WROOK=4,WQUEEN=5,WKING=6};
 enum bpieces {BPAWN=-1,BBISHOP=-2,BKNIGHT=-3,BROOK=-4,BQUEEN=-5,BKING=-6};
 
+Fint pawn[12] = {0xFFFF, 0x8001, 0x8001, 0xB001, 0xB871, 0xBFF1, 0xBFF1, 0xB871, 0xB001, 0x8001, 0x8001, 0xFFFF};
+int rook[12] = {0xFFFF, 0x8001, 0xA071, 0xB8F1, 0xBFE1, 0xBFF1, 0xBFF1, 0xBFE1, 0xB8F1, 0xA071, 0x8001, 0xFFFF};
+int bishop[12] = {0xFFFF, 0x8001, 0xE001, 0xF0C1, 0xFFF1, 0xFFFD, 0xFFCD, 0xFFD1, 0xF0C1, 0xE001, 0x8001, 0xFFFF};
+int king[12] = {0xFFFF, 0x8001, 0xE001, 0xF091, 0xFFD1, 0xFFFD, 0xFFFD, 0xFFD1, 0xF091, 0xE001, 0x8001, 0xFFFF};
+int queen[12] = {0xFFFF, 0x8001, 0xE031, 0xF0E1, 0xFFD9, 0xDDFF, 0xFFBB, 0xFFBB, 0xF0E1, 0xE031, 0x8001, 0xFFFF};
+int knight[12] = {0xFFFF, 0x8001, 0xE1E1, 0x7CF1, 0xFBF9, 0xFFB9, 0xFFFB, 0xFFFB, 0xFFFB, 0xF8F9, 0x8001, 0xFFFF};
+int empty[12] = {0xFFFF, 0x8001, 0x8001, 0x8001, 0x8001, 0x8001, 0x8001, 0x8001, 0x8001, 0x8001, 0x8001, 0xFFFF};
+
 #define SIZE 8
 
 char board[SIZE][SIZE] ={
@@ -61,6 +69,7 @@ int checkMove(int fromX, int fromY, int toX, int toY)
             return checkKing(side,fromX,fromY,toX,toY);
             break;
     }
+    return 0;
 }
 int checkBounds(int x,int y){
     if(x<0 || x>SIZE-1 || y<0 || y>SIZE-1)
@@ -95,12 +104,12 @@ int checkRook(int side, int fromX, int fromY, int toX, int toY ){
         //Se mueve hacia la derecha?
         if(fromX < toX){
             //No puede haber piezas de fromX+1 a toX-1
-            for (int x= fromX+1; x<=toX;x++)
+            for (int x= fromX+1; x<toX;x++)
                 if (board[toY][x]!=0)
                     return 0;
             return side*board[toY][toX]  <= 0;
         }
-        else for(int x = fromX - 1; x >=toX ; x--){
+        else for(int x = fromX - 1; x >toX ; x--){
                 if (board[toY][x]!=0)
                     return 0;
             return side*board[toY][toX]  <= 0;
@@ -113,13 +122,13 @@ int checkRook(int side, int fromX, int fromY, int toX, int toY ){
 
         //Idem en Y
         if(fromY < toX){
-            for (int y= fromY+1; y<=toY;y++)
+            for (int y= fromY+1; y<toY;y++)
                 if (board[y][toX]!=0)
                     return 0;
             return side*board[toY][toX] <= 0;
         }
         else {
-             for (int y= fromY-1; y>=toY;y--)
+             for (int y= fromY-1; y>toY;y--)
                 if (board[y][toX]!=0)
                     return 0;
             return side*board[toY][toX] <= 0;
@@ -140,32 +149,32 @@ int checkKnight(int side, int fromX, int fromY, int toX, int toY ){
 int checkBishop(int side, int fromX, int fromY, int toX, int toY ){
     int absDisX = abs(fromX - toX);
     int absDisY = abs(fromY - toY);
-    if(absDisX == 0 || absDisY == 0) { return 0;}
+    if(absDisX == 0 || absDisY == 0 || absDisX!=absDisY) { return 0;}
     //Tengo 4 casos, hacia esquina inf izq, inf der, sup izq, sup der
     //Caso 1; hacia sup der
     if(fromX < toX && fromY < toY){
-        for(int i  =  fromX + 1; i <= toX; i++){
+        for(int i  =  fromX + 1; i < toX; i++){
             if(board[i][i] != 0) { return 0; }
         }
         return side*board[toY][toX] <= 0;
     }
     //Caso 2 : hacia inf izq
     if(fromX > toX && fromY > toY){
-        for(int i  =  fromX -1 ; i >= toX; i--){
+        for(int i  =  fromX -1 ; i > toX; i--){
             if(board[i][i] != 0) { return 0; }
         }
         return side*board[toY][toX] <= 0;
     }
     //Caso3 : hacia sup izq
     if(fromX > toX && fromY < toY){
-        for(int i  =  fromX -1 ; i >= toX; i--){
+        for(int i  =  fromX -1 ; i > toX; i--){
             if(board[i][toY - i] != 0) { return 0; }
         }
         return side*board[toY][toX] <= 0;
     }
     //Caso 4 : hacia inf der
     if(fromX < toX && fromY > toY){
-        for(int i  =  fromX + 1 ; i <= toX; i++){
+        for(int i  =  fromX + 1 ; i <=toX; i++){
             if(board[i][toY - i] != 0) { return 0; }
         }
         return side*board[toY][toX] <= 0;
@@ -192,6 +201,7 @@ int checkQueen(int side, int fromX, int fromY, int toX, int toY){
 //Faltaria chequear si el rey ya se movio, quizas alguna variable booleana externa? Consultar con chicken little
 int castling(int side, int fromX, int fromY, int toX, int toY){
     //Chequeo que parto de un rey y me dirijo hacia una torre
+    //IF remplazable con flag de movimiento
     if((fromY != 0 || toY !=0) || (fromY!= 7 || toY !=7)
     || (fromX != 4 || toX !=7) || (fromX!= 4 || toX !=0)
     || (abs(board[fromY][toY]) != 6 )) { return 0;}

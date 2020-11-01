@@ -13,5 +13,6 @@ int renderPixel(unsigned int x, unsigned int y, unsigned int color);
 int renderChar(unsigned char c, unsigned int x, unsigned int y, unsigned int color);
 void clearAll();
 int scrollUp(int pixels);
+int renderFig(int *fig, unsigned int x, unsigned int y, unsigned int color);
 
 #endif

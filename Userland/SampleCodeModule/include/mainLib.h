@@ -7,5 +7,6 @@ int reader(int fd, char *buffer, int length);
 void scClear();
 void chFont(int color);
 int timeInfo(int selector);
+int drawFig(int fd, int* fig);
 
 #endif
