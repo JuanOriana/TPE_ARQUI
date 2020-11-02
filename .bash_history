@@ -1,9 +1,3 @@
-make clean; make all
-make clean; make all
-cd root
-make clean; make all
-make clean; make all
-make clean; make all
 cd root
 make clean; make all
 make clean; make all
@@ -494,6 +488,12 @@ make clean; make all
 make clean; make all
 make clean; make all
 make clean; make all
+make clean; make all
+make clean; make all
+make clean; make all
+make clean; make all
+cd rooot
+cd root
 make clean; make all
 make clean; make all
 make clean; make all
