@@ -71,8 +71,11 @@ void shellMainLoop(){
     return;
 }
 void printTime(){
+    chFont(NICE_YELLOW);
     print("\n  El tiempo actual es: \n");
-    print("   %d/%d/%d  %d-%d-%d\n\n", getDays(), getMonth(), getYear(), getHours(), getMinutes(), getSeconds());
+    chFont(NICE_RED);
+    print("   %d/%d/%d  %d:%d:%d\n\n", getDays(), getMonth(), getYear(), getHours(), getMinutes(), getSeconds());
+    chFont(fontColor);
 }
 void printLogo(){
     print("\n\n");
@@ -136,12 +139,16 @@ void printMem(long long address){
 
 void printRegisters(){
     unsigned long long buff[16];
-    char hexa[10];
+    char hexa[20];
     print("\n");
     getRegs(buff);
     for (int i=0;i<15;i++){
-        intToHexa((char)buff[i],hexa,8);
-        print("%s%s\n",registers[i],hexa);
+        intToHexa((long long)buff[i],hexa,8);
+        chFont(NICE_YELLOW);
+        print("%s",registers[i]);
+        chFont(NICE_WHITE);
+        print("%s\n",hexa);
+        chFont(fontColor);
     }
     print("\n\n");
 }

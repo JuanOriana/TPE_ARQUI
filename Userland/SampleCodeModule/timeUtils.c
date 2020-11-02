@@ -14,7 +14,7 @@ int getMinutes()
 }
 
 int getHours(){
-    return timeInfo(HOUR) + UTC;
+    return (timeInfo(HOUR) + UTC + 24 )%24;
 }
 
 int getDays()
