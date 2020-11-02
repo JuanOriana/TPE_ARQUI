@@ -14,11 +14,13 @@ GLOBAL _irq04Handler
 GLOBAL _irq05Handler
 
 GLOBAL _exception0Handler
+GLOBAL _exception6Handler
 GLOBAL _syscallHandler
 
 EXTERN syscallDispatcher
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
+EXTERN goToSampleCodeModule
 
 SECTION .text
 
@@ -75,12 +77,15 @@ SECTION .text
 
 
 %macro exceptionHandler 1
+	mov rsi, rsp ;Puntero al stack generado por la excepcion
 	pushState
-
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
 
 	popState
+	sub rsp, 8*8
+	sti ;Reactivo las interrupciones
+	call goToSampleCodeModule; Reinicio el shell
 	iretq
 %endmacro
 
@@ -144,6 +149,9 @@ _irq05Handler:
 ;Zero Division Exception
 _exception0Handler:
 	exceptionHandler 0
+
+_exception6Handler:
+	exceptionHandler 6
 
 haltcpu:
 	cli
