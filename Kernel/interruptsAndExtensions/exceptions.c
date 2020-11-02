@@ -13,11 +13,9 @@ void exceptionDispatcher(int exceptionSelector,uint64_t rsp){
     {
     case ZERO_EXCEPTION_ID:
         sysWrite(2,"Excepcion: Division por cero\n",29);
-        //PRINT REGISTROS
         break;
     case INVALID_OP_CODE:
         sysWrite(2,"Excepcion: Codigo Invalido\n",26);
-        //PRINT REGISTROS
     default:
         break;
     }
