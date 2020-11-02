@@ -95,8 +95,8 @@ uint64_t sysTime(uint64_t selector, uint64_t rdx, uint64_t rcx)
 uint64_t sysGetMem(uint64_t buffer, uint64_t address, uint64_t bytes)
 {
     unsigned char *array = (unsigned char *)buffer;
-    for (int i = 1; i <= bytes; i++, address++) {
-        array[i] = _getMem(address);
+    for (int i = 0; i < bytes; i++) {
+        array[i] = _getMem(address+i);
     }
     return 0;
 }
