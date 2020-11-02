@@ -303,10 +303,10 @@ int abs(int num){
     return num < 0? -num : num;
 }
 
-char *intToHexa(long int num, char *str, int bytes) 
+char *intToHexa(long long num, char *str, int bytes) 
 { 
     int i = 0;
-    int n = abs(num);
+    long long n = abs(num);
 
     /* Handle 0 explicitely, otherwise empty string is printed for 0 */
     if (n == 0) 

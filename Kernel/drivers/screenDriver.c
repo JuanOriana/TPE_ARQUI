@@ -1,6 +1,6 @@
 #include <graphicRenderer.h>
 #include <screenDriver.h>
-#include <fontConsts.h>
+#include <font.h>
 
 #define ENTER_KEY 13
 
@@ -8,6 +8,9 @@ static int cursorPosX = 0;
 static int cursorPosY = 0;
 static int maxX, maxY;
 static int figLine=0;
+
+#define FIG_WIDTH  12
+#define FIG_HEIGHT 16
 
 void initVideo(){
     initRenderer(0x0000000000005C00);
@@ -38,11 +41,11 @@ int putChar(char c,unsigned int color){
 
 //Posiiconamiento de figuras del tamano del DOBLE de una letra
 int putFig(int*fig, unsigned int color){
-    if (cursorPosX + ABS_WIDTH*2 > maxX) //Me paso de ancho con esta insercion? Si es asi salto
+    if (cursorPosX + FIG_WIDTH * FIG_SCALING > maxX) //Me paso de ancho con esta insercion? Si es asi salto
         newLine();
     figLine=1;
     int res = renderFig(fig, cursorPosX, cursorPosY, color);
-    cursorPosX += ABS_WIDTH*2;
+    cursorPosX += FIG_WIDTH * FIG_SCALING;
     return res;
 }
 
@@ -50,7 +53,7 @@ void newLine(){
     int scrollDist = ABS_HEIGHT;
     //Si puse una figura en este linea, debo saltar el doble!
     if (figLine)
-        scrollDist*=2;
+        scrollDist = FIG_HEIGHT * FIG_SCALING;
     figLine=0;
     cursorPosX=0;
     cursorPosY += scrollDist;
