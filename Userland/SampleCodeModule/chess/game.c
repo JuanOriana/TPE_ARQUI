@@ -14,10 +14,6 @@ static int gameBoard[SIZE][SIZE] ={
     {WROOK,WKNIGHT,WBISHOP,WQUEEN,WKING,WBISHOP,WKNIGHT,WROOK}  //7
 };
 
-int legalMove(int x, int y)
-{
-    return (x >= 'A' && x <= 'H' && y >= '1' && y <= '8');
-}
 
 int movePiece(int fromX, int fromY, int toX, int toY)
 {
