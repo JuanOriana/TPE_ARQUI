@@ -2,6 +2,7 @@
 #include <mainLib.h>
 #include <libc.h>
 #include <timeUtils.h>
+#include <game.h>
 
 int static runningState = 1;
 int static fontColor = NICE_WHITE;
@@ -53,6 +54,8 @@ void shellMainLoop(){
             if (param[0]!=0)
                 printMem(strToInt(param,&aux));
         }
+        else if (strcmp(command, "chess") == 0)
+            chess();
         else if (strcmp(command, "inforeg") == 0)
             printRegisters();
         else if (strcmp(command, "exit") == 0) 
