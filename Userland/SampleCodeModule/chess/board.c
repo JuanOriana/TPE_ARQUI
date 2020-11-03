@@ -47,6 +47,8 @@ int checkMove(int board[SIZE][SIZE], int fromX, int fromY, int toX, int toY)
         return flag;
 
     int piece = board[fromY][fromX];
+    if (piece==0)
+        return 0;
     int side = piece / abs(piece);
 
     switch (piece)
@@ -88,10 +90,10 @@ int checkBounds(int x,int y){
 int checkPawn(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY)
 {
 
-    int absDistY = side*(toY - fromY);
+    int absDistY = side*(fromY-toY);
     int absDistX = abs(toX-fromX);
     //Chequeos de movimiento vertical
-    if (side * (absDistY) <= 0 || absDistY > 2
+    if (absDistY <= 0 || absDistY > 2
         || (side == BLACK && fromY != 1 && absDistY == 2) || (side == WHITE && fromY != 6 && absDistY == 2))
         return 0;
 

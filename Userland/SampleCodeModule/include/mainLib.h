@@ -5,7 +5,7 @@
 int writer(int fd, char* buffer, int length);
 int reader(int fd, char *buffer, int length);
 void scClear();
-void chFont(int color);
+void chFont(long int color);
 int timeInfo(int selector);
 int drawFig(int fd, int* fig);
 int getMem(unsigned char *buff, unsigned long long address, int bytes);
