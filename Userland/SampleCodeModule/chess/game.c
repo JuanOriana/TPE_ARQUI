@@ -25,12 +25,12 @@ int movePiece(int fromX, int fromY, int toX, int toY)
 {
     int fX = fromX - 'A';
     int tX = toX - 'A';
-    int fY = fromY - '0';
-    int tY = toY - '0';
+    int fY = 8 -(fromY - '0');
+    int tY = 8 - (toY - '0');
     if (checkMove(gameBoard, fX, fY, tX, tY))
     {
-        gameBoard[toY][toX] = gameBoard[fromY][fromX];
-        gameBoard[fromY][fromX] = 0;
+        gameBoard[tY][tX] = gameBoard[fY][fX];
+        gameBoard[fY][fX] = 0;
         return 1;
     }
     return 0;

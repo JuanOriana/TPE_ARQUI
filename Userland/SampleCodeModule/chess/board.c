@@ -42,7 +42,7 @@ void initializeBoard(int board[SIZE][SIZE])
 
 int checkMove(int board[SIZE][SIZE], int fromX, int fromY, int toX, int toY)
 {
-    int flag = (checkBounds(fromX, fromY) && checkBounds(toX,toY));
+    int flag = checkBounds(fromX, fromY) * checkBounds(toX,toY);
     if (!flag)
         return flag;
 
@@ -53,8 +53,7 @@ int checkMove(int board[SIZE][SIZE], int fromX, int fromY, int toX, int toY)
     {
         case (WPAWN):
         case (BPAWN):
-                checkPawn(board,side,fromX,fromY,toX,toY);
-            return flag;
+            return checkPawn(board,side,fromX,fromY,toX,toY);
             break;
 
         case(WROOK):
@@ -82,8 +81,8 @@ int checkMove(int board[SIZE][SIZE], int fromX, int fromY, int toX, int toY)
 }
 int checkBounds(int x,int y){
     if(x<0 || x>SIZE-1 || y<0 || y>SIZE-1)
-        return -1;
-    return 0;
+        return 0;
+    return 1;
 }
 
 int checkPawn(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY)
