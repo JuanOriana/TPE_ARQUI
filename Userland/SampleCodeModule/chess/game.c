@@ -3,17 +3,42 @@
 #include <timeUtils.h>
 #include <mainLib.h>
 
-static int board[8][8];
+static int gameBoard[SIZE][SIZE] ={
+    {BROOK,BKNIGHT,BBISHOP,BQUEEN,BKING,BBISHOP,BKNIGHT,BROOK}, //0
+    {BPAWN,BPAWN,BPAWN,BPAWN,BPAWN,BPAWN,BPAWN,BPAWN},
+    {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
+    {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
+    {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
+    {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
+    {WPAWN,WPAWN,WPAWN,WPAWN,WPAWN,WPAWN,WPAWN,WPAWN},
+    {WROOK,WKNIGHT,WBISHOP,WQUEEN,WKING,WBISHOP,WKNIGHT,WROOK}  //7
+};
 
-void movePiece(char fromX,char fromY,char toX,char toY){
-    move(board,fromX -'A','8' - fromY, toX - 'A', '8'- toY);
+int legalMove(int x, int y)
+{
+    return (x >= 'A' && x <= 'H' && y >= '1' && y <= '8');
+}
+
+int movePiece(int fromX, int fromY, int toX, int toY)
+{
+    int fX = fromX - 'A';
+    int tX = toX - 'A';
+    int fY = fromY - '0';
+    int tY = toY - '0';
+    if (checkMove(gameBoard, fX, fY, tX, tY))
+    {
+        gameBoard[toY][toX] = gameBoard[fromY][fromX];
+        gameBoard[fromY][fromX] = 0;
+        return 1;
+    }
+    return 0;
 }
 
 void initializeGame(){
-    initializeBoard(board);
-    printBoard(board);
+    initializeBoard(gameBoard);
+    printBoard(gameBoard);
     hold(3);
     scClear();
     movePiece('A','7','A','5');
-    printBoard(board);
+    printBoard(gameBoard);
 }
