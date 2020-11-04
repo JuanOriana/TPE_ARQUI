@@ -11,8 +11,14 @@ int player2Time = 60;
 int currentPlayer = 1;
 char* players[] = {"negro","","blanco"};
 
+//Resulta mas conveniente por chequeos de jaques ir llevando posicion de los reyes (GUARDADO EN X,Y)
+int wKingPos[2] = {4,7};
+int bKingPos[2] = {3,0};
+int checked =0;
+int winner=0; // -1 gana negro / 0 esta en juego / 1 gana blanco / >1 tablas 
+
 static int gameBoard[SIZE][SIZE] ={
-    {BROOK,BKNIGHT,BBISHOP,BQUEEN,BKING,BBISHOP,BKNIGHT,BROOK}, //0
+    {BROOK,BKNIGHT,BBISHOP,BKING,BQUEEN,BBISHOP,BKNIGHT,BROOK}, //0
     {BPAWN,BPAWN,BPAWN,BPAWN,BPAWN,BPAWN,BPAWN,BPAWN},
     {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
     {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
@@ -32,14 +38,29 @@ void movePiece(char *from, char *to)
         tX += ('A' - 'a');
     int fY = 8 - (from[1] - '0');
     int tY = 8 - (to[1] - '0');
+
+    //Asumo que no es MI rey porque el movimiento debe ser valido
+    if (abs(gameBoard[tY][tX])==KING)
+        winner=currentPlayer;
+    if (gameBoard[fY][fX]==WKING){
+        wKingPos[0]=tX;
+        wKingPos[1]=tY;
+    }
+    if (gameBoard[fY][fX] == BKING)
+    {
+        bKingPos[0] = tX;
+        bKingPos[1] = tY;
+    }
     gameBoard[tY][tX] = gameBoard[fY][fX];
     gameBoard[fY][fX] = 0;
 }
 
 void initializeGame(){
+    wKingPos[0]=4;wKingPos[1]=7;bKingPos[0]=3;bKingPos[1]=0;
     activeGame=1;
     player1Time=player2Time=60;
     currentPlayer=1;
+    winner=0;
     initializeBoard(gameBoard);
 }
 
@@ -75,19 +96,36 @@ int  checkInput(char* from, char* to){
         return -3;
     return 1;
 }
+void endGame(){
+    chFont(0xDD5599);
+    print(" \n\n\n\n                                  El ganador fue el %s!!!\n\n",players[winner+1]);
+    print("                               Muchas gracias por jugar a \"Chess - The Game\". Nos vemos!\n");
+    hold(6);
+    scClear();
+    chFont(WCOLOR);
+}
+void checkConditions(){
+    checked=0;
+    int* kingPos=currentPlayer==WHITE?wKingPos:bKingPos;
 
+    if (isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1))
+        checked=1;
+    return;
+}
 void play(){
     //IMPLEMENTAR;
     char from[4];
     char to[4];
     int flag=0;
-    while(1){
+    while(!winner){
         from[1]=0;
         to[1]=0;
         scClear();
         printBoard(gameBoard);
         chFont(0xDD22DD);
-        print("\n\nMueve el %s",players[currentPlayer+1]);
+        if (checked)
+            print("\n\n    CHECK!\n");
+        print("Mueve el %s",players[currentPlayer+1]);
         chFont(WCOLOR);
         print("\nIngresa un movimiento o \"stop\" para pausar: ");
         scan("%s %s",from,to);
@@ -102,30 +140,31 @@ void play(){
                 print("Uso (movs alfa-num): mov1 mov2\n");
                 chFont(WCOLOR);
                 hold(3);
-                continue;
                 break;
             case -2:
                 chFont(0xD9302E);
                 print("ERROR - le toma jugar al %s\n",players[currentPlayer+1]);
                 chFont(WCOLOR);
                 hold(3);
-                continue;
                 break;
             case -3:
                 chFont(0xD9302E);
-                print("ERROR - esto no es un movimeinto valido de ajedrez");
+                print("ERROR - esto no es un movimiento valido de ajedrez");
                 chFont(WCOLOR);
                 hold(3);
-                continue;
                 break;
             // no hubo erroes
             default:
                 movePiece(from,to);
-                currentPlayer*=-1;
-                continue;
+                currentPlayer *= -1;
+                checkConditions();
                 break;
         }
-    }
+    } 
+
+    scClear();
+    printBoard(gameBoard);
+    endGame();
     return;
 }
 
@@ -170,6 +209,7 @@ void chess(){
     while(1){
         print("\n\nCHESS - The Game\n");
         command[0] = 0;
+        print(">>>");
         scan("%s", command);
         if (strcmp(command,"newgame")==0){
             initializeGame();

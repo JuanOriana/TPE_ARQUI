@@ -20,7 +20,7 @@ int checkKing(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, in
 int checkQueen(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY);
 
 int initialBoard[SIZE][SIZE] = {
-    {BROOK, BKNIGHT, BBISHOP, BQUEEN, BKING, BBISHOP, BKNIGHT, BROOK}, //0
+    {BROOK, BKNIGHT, BBISHOP, BKING, BQUEEN, BBISHOP, BKNIGHT, BROOK}, //0
     {BPAWN, BPAWN, BPAWN, BPAWN, BPAWN, BPAWN, BPAWN, BPAWN},
     {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
     {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
@@ -198,6 +198,7 @@ int checkBishop(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, 
 
 int checkKing(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY)
 {
+    return 1;
     int absDisX = abs(fromX - toX);
     int absDisY = abs(fromY - toY);
     if(absDisX <= 1  && absDisY <=1 && !(absDisX ==0 && absDisX==0)) { return side*board[toY][toX] <= 0;}
@@ -250,7 +251,18 @@ int castling(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int
     }
     return 0;
 }
+//Devuelve si un lado tiene posibilidad de ataque sobre una celda en particular
+int isAttacked(int board[SIZE][SIZE],int x, int y, int side){
+    //Busco todas mis piezas en el tablero
+    for (int i=0; i<SIZE;i++)
+        for (int j=0; j<SIZE;j++)
+            //Hay un movimiento legal de una de mis piezas?  
+            if (board[i][j] * side > 0 && checkMove(board, i, j, x, y))
+                return 1;
+    return 0;
+    
 
+}
 void printBoard(int board[SIZE][SIZE]){
     for(int i = 0; i < SIZE; i++){
         print("%d",SIZE - i );
