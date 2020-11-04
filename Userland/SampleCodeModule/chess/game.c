@@ -144,12 +144,13 @@ void checkConditions(){
     checked=surrounded=0;
     int * kingPos = currentPlayer==WHITE?wKingPos:bKingPos;
     checked= isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
-    //surrounded= isSurrounded(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
+    surrounded= isSurrounded(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
     if (surrounded){
         if (checked)
             winner= currentPlayer*-1;
-        else
-            winner=2;
+        //STALEMATE NO NECESARIAMENTE CUMPLE ESTA CONDICION
+        // else
+        //     winner=2;
     }   
     return;
 }
