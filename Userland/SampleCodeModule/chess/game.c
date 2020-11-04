@@ -118,7 +118,7 @@ void checkConditions(){
     
 
 
-    if (isAttacked(gameBoard,3,4,currentPlayer*-1))
+    if (isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1))
         checked=1;
     return;
 }

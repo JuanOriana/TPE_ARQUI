@@ -257,7 +257,7 @@ int isAttacked(int board[SIZE][SIZE],int x, int y, int side){
     for (int i=0; i<SIZE;i++)
         for (int j=0; j<SIZE;j++)
             //Hay un movimiento legal de una de mis piezas?  
-            if (board[j][i] * side > 0 && checkMove(board, i, j, x, y))
+            if (board[j][i] * side > 0 && checkMove(board, i, j, x, y))\
                 return 1;
     return 0;
     
