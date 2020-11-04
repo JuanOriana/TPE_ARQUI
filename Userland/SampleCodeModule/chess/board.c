@@ -166,30 +166,30 @@ int checkBishop(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, 
     if(absDisX == 0 || absDisY == 0 || absDisX!=absDisY) { return 0;}
     //Tengo 4 casos, hacia esquina inf izq, inf der, sup izq, sup der
     //Caso 1; hacia sup der
-    if(fromX < toX && fromY < toY){
+    if(fromX < toX && fromY > toY){
         for(int i  =  fromX + 1; i < toX; i++){
-            if(board[i][i] != 0) { return 0; }
+            if(board[fromY - i + fromX][i] != 0) { return 0; }
         }
         return side*board[toY][toX] <= 0;
     }
     //Caso 2 : hacia inf izq
-    if(fromX > toX && fromY > toY){
+    if(fromX > toX && fromY < toY){
         for(int i  =  fromX -1 ; i > toX; i--){
-            if(board[i][i] != 0) { return 0; }
+            if(board[fromY - i + fromX][i] != 0) { return 0; }
         }
         return side*board[toY][toX] <= 0;
     }
     //Caso3 : hacia sup izq
-    if(fromX > toX && fromY < toY){
+    if(fromX > toX && fromY > toY){
         for(int i  =  fromX -1 ; i > toX; i--){
-            if(board[i][toY - i] != 0) { return 0; }
+            if(board[fromY + i - fromX][i] != 0) { return 0; }
         }
         return side*board[toY][toX] <= 0;
     }
     //Caso 4 : hacia inf der
-    if(fromX < toX && fromY > toY){
+    if(fromX < toX && fromY < toY){
         for(int i  =  fromX + 1 ; i < toX; i++){
-            if(board[i][toY - i] != 0) { return 0; }
+            if(board[fromY + i - fromX][i] != 0) { return 0; }
         }
         return side*board[toY][toX] <= 0;
     }
