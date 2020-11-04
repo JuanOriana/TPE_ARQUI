@@ -8,7 +8,8 @@ int checkMove(int board[SIZE][SIZE], int fromX, int fromY, int toX, int toY);
 int castling(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY);
 void printBoard(int board[SIZE][SIZE]);
 int checkBounds(int x, int y);
-int isAttacked(int board[SIZE][SIZE], int x, int y, int side);
+int isAttacked(int board[SIZE][SIZE], int x, int y, int attacker);
+int isSurrounded(int board[SIZE][SIZE], int x, int y, int attacker);
 
 #define WHITE 1
 #define BLACK -1

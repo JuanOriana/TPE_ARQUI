@@ -9,23 +9,24 @@ int player1Time = 60;
 int player2Time = 60;
 // 1 blanco, -1 negro
 int currentPlayer = 1;
+int surrounded=0;
 char* players[] = {"negro","","blanco"};
 
 //Resulta mas conveniente por chequeos de jaques ir llevando posicion de los reyes (GUARDADO EN X,Y)
 int wKingPos[2] = {4,7};
-int bKingPos[2] = {3,0};
+int bKingPos[2] = {4,0};
 int checked =0;
-int winner=0; // -1 gana negro / 0 esta en juego / 1 gana blanco / >1 tablas 
+int winner=0; // -1 gana negro / 0 esta en juego / 1 gana blanco / >1 tablas
 
-static int gameBoard[SIZE][SIZE] ={
-    {BROOK,BKNIGHT,BBISHOP,BKING,BQUEEN,BBISHOP,BKNIGHT,BROOK}, //0
-    {BPAWN,BPAWN,BPAWN,BPAWN,BPAWN,BPAWN,BPAWN,BPAWN},
-    {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-    {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-    {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-    {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
-    {WPAWN,WPAWN,WPAWN,WPAWN,WPAWN,WPAWN,WPAWN,WPAWN},
-    {WROOK,WKNIGHT,WBISHOP,WQUEEN,WKING,WBISHOP,WKNIGHT,WROOK}  //7
+static int gameBoard[SIZE][SIZE] = {
+    {BROOK, BKNIGHT, BBISHOP, BQUEEN, BKING, BBISHOP, BKNIGHT, BROOK}, //0
+    {BPAWN, BPAWN, BPAWN, BPAWN, BPAWN, BPAWN, BPAWN, BPAWN},
+    {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+    {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+    {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+    {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+    {WPAWN, WPAWN, WPAWN, WPAWN, WPAWN, WPAWN, WPAWN, WPAWN},
+    {WROOK, WKNIGHT, WBISHOP, WQUEEN, WKING, WBISHOP, WKNIGHT, WROOK} //7
 };
 
 void movePiece(char *from, char *to)
@@ -42,6 +43,7 @@ void movePiece(char *from, char *to)
     //Asumo que no es MI rey porque el movimiento debe ser valido
     if (abs(gameBoard[tY][tX])==KING)
         winner=currentPlayer;
+
     if (gameBoard[fY][fX]==WKING){
         wKingPos[0]=tX;
         wKingPos[1]=tY;
@@ -51,6 +53,10 @@ void movePiece(char *from, char *to)
         bKingPos[0] = tX;
         bKingPos[1] = tY;
     }
+    if (gameBoard[fY][fX]==WPAWN && tY==7)
+        gameBoard[fY][fX]=WQUEEN;
+    if (gameBoard[fY][fX] == BPAWN &&tY == 0)
+        gameBoard[fY][fX] = BQUEEN;
     gameBoard[tY][tX] = gameBoard[fY][fX];
     gameBoard[fY][fX] = 0;
 }
@@ -60,8 +66,7 @@ void initializeGame(){
     activeGame=1;
     player1Time=player2Time=60;
     currentPlayer=1;
-    checked=0;
-    winner=0;
+    surrounded=winner=checked=0;
     initializeBoard(gameBoard);
 }
 
@@ -99,27 +104,38 @@ int  checkInput(char* from, char* to){
 }
 void endGame(){
     chFont(0xDD5599);
-    print(" \n\n\n\n                                  El ganador fue el %s!!!\n\n",players[winner+1]);
+    if (winner<=1){
+        if (surrounded&&checked){
+            print("\n                                                    ---- CHECK MATE ------\n");
+        }
+        print(" \n\n\n\n                                  El ganador fue el %s!!!\n\n",players[winner+1]);
+    }
+    else{
+        print("\n                                                    TABLAS!\n");
+        print("                                            Hubo empate por ");
+        if (surrounded)
+            print("rey ahogado\n\n");
+        else
+            print("jugadas repetidas\n\n");
+
+    }
     print("                               Muchas gracias por jugar a \"Chess - The Game\". Nos vemos!\n");
     hold(6);
     scClear();
     chFont(WCOLOR);
+    activeGame = 0;
 }
 void checkConditions(){
-    checked=0;
-    int kingPos[2];
-    if (currentPlayer==WHITE){
-        kingPos[0]=wKingPos[0];kingPos[1]=wKingPos[1];
+    checked=surrounded=0;
+    int * kingPos = currentPlayer==WHITE?wKingPos:bKingPos;
+    checked= isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
+    surrounded= isSurrounded(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
+    if (surrounded){
+        if (checked)
+            winner= currentPlayer*-1;
+        else
+            winner=2;
     }
-    else
-    {
-        kingPos[0] = bKingPos[0];kingPos[1]=bKingPos[1];
-    }
-    
-
-
-    if (isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1))
-        checked=1;
     return;
 }
 void play(){
@@ -207,7 +223,7 @@ void welcomeMessage(){
     chFont(0xFF00);
     print("exit");
     chFont(WCOLOR);
-    print(" para salir de la aplicacion.\n\n\n Gracias por jugar!!!\n\n\n");
+    print(" para salir de la aplicacion.\n Gracias por jugar!!!\n\n\n");
     return;
 }
 

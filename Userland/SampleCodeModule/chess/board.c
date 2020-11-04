@@ -20,7 +20,7 @@ int checkKing(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, in
 int checkQueen(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY);
 
 int initialBoard[SIZE][SIZE] = {
-    {BROOK, BKNIGHT, BBISHOP, BKING, BQUEEN, BBISHOP, BKNIGHT, BROOK}, //0
+    {BROOK, BKNIGHT, BBISHOP, BQUEEN, BKING, BBISHOP, BKNIGHT, BROOK}, //0
     {BPAWN, BPAWN, BPAWN, BPAWN, BPAWN, BPAWN, BPAWN, BPAWN},
     {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
     {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
@@ -251,18 +251,33 @@ int castling(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int
     return 0;
 }
 //Devuelve si un lado tiene posibilidad de ataque sobre una celda en particular
-int isAttacked(int board[SIZE][SIZE],int x, int y, int side){
+int isAttacked(int board[SIZE][SIZE], int x, int y, int attacker)
+{
     //Busco todas mis piezas en el tablero
     for (int i=0; i<SIZE;i++)
         for (int j=0; j<SIZE;j++)
-            //Hay un movimiento legal de una de mis piezas?  
-            if (board[j][i] * side > 0 && checkMove(board, i, j, x, y))
+            //Hay un movimiento legal de una de mis piezas?
+            if (board[j][i] * attacker > 0 && checkMove(board, i, j, x, y))
                 return 1;
     return 0;
-    
-
 }
-void printBoard(int board[SIZE][SIZE]){
+//Devuelve si una pieza no tiene movimientos posibles a su alrededor
+int isSurrounded(int board[SIZE][SIZE], int x, int y, int attacker){
+    for (int i=-1;i<=1;i++){
+        for (int j=-1;j<=1;j++){
+            if (j==0&&i==0)
+                continue;
+            //Me puedo mover a un lugar que no este atacado?
+            if (checkMove(board, x, y, x + i, y + j) && !isAttacked(board, x + i, y + j, attacker))
+                return 0;
+        }
+    }
+    return 1;
+
+} 
+
+void printBoard(int board[SIZE][SIZE])
+{
     for(int i = 0; i < SIZE; i++){
         print("%d",SIZE - i );
         for(int j = 0; j < SIZE ; j++){
@@ -317,4 +332,3 @@ void printBoard(int board[SIZE][SIZE]){
     }
     print("\n");
 }
-
