@@ -188,12 +188,12 @@ int checkBishop(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, 
     }
     //Caso 4 : hacia inf der
     if(fromX < toX && fromY > toY){
-        for(int i  =  fromX + 1 ; i <=toX; i++){
+        for(int i  =  fromX + 1 ; i < toX; i++){
             if(board[i][toY - i] != 0) { return 0; }
         }
         return side*board[toY][toX] <= 0;
     }
-    return -1;
+    return 0;
 }
 
 int checkKing(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY)
@@ -257,7 +257,7 @@ int isAttacked(int board[SIZE][SIZE],int x, int y, int side){
     for (int i=0; i<SIZE;i++)
         for (int j=0; j<SIZE;j++)
             //Hay un movimiento legal de una de mis piezas?  
-            if (board[i][j] * side > 0 && checkMove(board, i, j, x, y))
+            if (board[j][i] * side > 0 && checkMove(board, i, j, x, y))
                 return 1;
     return 0;
     

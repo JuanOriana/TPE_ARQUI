@@ -60,6 +60,7 @@ void initializeGame(){
     activeGame=1;
     player1Time=player2Time=60;
     currentPlayer=1;
+    checked=0;
     winner=0;
     initializeBoard(gameBoard);
 }
@@ -106,9 +107,18 @@ void endGame(){
 }
 void checkConditions(){
     checked=0;
-    int* kingPos=currentPlayer==WHITE?wKingPos:bKingPos;
+    int kingPos[2];
+    if (currentPlayer==WHITE){
+        kingPos[0]=wKingPos[0];kingPos[1]=wKingPos[1];
+    }
+    else
+    {
+        kingPos[0] = bKingPos[0];kingPos[1]=bKingPos[1];
+    }
+    
 
-    if (isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1))
+
+    if (isAttacked(gameBoard,3,4,currentPlayer*-1))
         checked=1;
     return;
 }
