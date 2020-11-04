@@ -3,6 +3,7 @@
 #include <timeUtils.h>
 #include <mainLib.h>
 #include <libc.h>
+#include <stdlib.h>
 
 int activeGame=0;
 int player1Time = 60;
@@ -11,6 +12,10 @@ int player2Time = 60;
 int currentPlayer = 1;
 int surrounded=0;
 char* players[] = {"negro","","blanco"};
+
+char log[512] = {0};
+int logSize=0;
+char initials[] = {'P','B','N','R','Q','K'};
 
 //Resulta mas conveniente por chequeos de jaques ir llevando posicion de los reyes (GUARDADO EN X,Y)
 int wKingPos[2] = {4,7};
@@ -31,14 +36,22 @@ static int gameBoard[SIZE][SIZE] = {
 
 void movePiece(char *from, char *to)
 {
-    int fX = from[0] - 'A';
-    if (from[0] >= 'a' && from[0] <= 'z')
-        fX += ('A' - 'a');
-    int tX = to[0] - 'A';
-    if (to[0] >= 'a' && to[0] <= 'z')
-        tX += ('A' - 'a');
+    if (from[0] >= 'A' && from[0] <= 'Z')
+        from[0] += ('a' - 'A');
+    if (to[0] >= 'A' && to[0] <= 'Z')
+        to[0] += ('a' - 'A');
+
+    int fX = from[0] - 'a';
+    int tX = to[0] - 'a';
     int fY = 8 - (from[1] - '0');
     int tY = 8 - (to[1] - '0');
+
+    //Cargo inicial pieza
+    log[logSize++] = initials[abs(gameBoard[fY][fX]) - 1];
+    //Cargo mov
+    log[logSize++] = to[0];
+    log[logSize++] = tY + '0';
+    log[logSize++] = 0;
 
     //Asumo que no es MI rey porque el movimiento debe ser valido
     if (abs(gameBoard[tY][tX])==KING)
@@ -67,6 +80,7 @@ void initializeGame(){
     player1Time=player2Time=60;
     currentPlayer=1;
     surrounded=winner=checked=0;
+    logSize=0;
     initializeBoard(gameBoard);
 }
 
@@ -125,19 +139,21 @@ void endGame(){
     chFont(WCOLOR);
     activeGame = 0;
 }
+
 void checkConditions(){
     checked=surrounded=0;
     int * kingPos = currentPlayer==WHITE?wKingPos:bKingPos;
     checked= isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
-    surrounded= isSurrounded(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
+    //surrounded= isSurrounded(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
     if (surrounded){
         if (checked)
             winner= currentPlayer*-1;
         else
             winner=2;
-    }
+    }   
     return;
 }
+
 void play(){
     //IMPLEMENTAR;
     char from[4];
@@ -153,6 +169,7 @@ void play(){
             print("\n\n    CHECK!\n");
         print("Mueve el %s",players[currentPlayer+1]);
         chFont(WCOLOR);
+        printLog();
         print("\nIngresa un movimiento o \"stop\" para pausar: ");
         scan("%s %s",from,to);
         if (strcmp(from,"stop")==0)
@@ -255,4 +272,22 @@ void chess(){
             print("No entendi tu comando! proba con uno de estos: newgame - continue - exit\n");
     }
     return;
+}
+
+void printLog(){
+    chFont(0xAAAAAA);
+    print("\n------------------------------------LOG-----------------------------------------------\n");
+    for (int i=0;i<logSize;i+=4){
+        if (i%8==0){
+            chFont(WCOLOR);
+        }
+        else{
+            chFont(BCOLOR);
+        }
+        
+        print("%s ",log+i);
+    }
+    chFont(0xAAAAAA);
+    print("\n--------------------------------------------------------------------------------------\n");
+    chFont(WCOLOR);
 }

@@ -3,5 +3,6 @@
 
 void initializeGame();
 void chess();
+void printLog();
 
 #endif

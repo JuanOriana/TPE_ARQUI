@@ -200,7 +200,7 @@ int checkKing(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, in
 {
     int absDisX = abs(fromX - toX);
     int absDisY = abs(fromY - toY);
-    if(absDisX <= 1  && absDisY <=1 && !(absDisX ==0 && absDisX==0)) { return side*board[toY][toX] <= 0;}
+    if(absDisX <= 1  && absDisY <=1 && !(absDisY ==0 && absDisX==0)) { return side*board[toY][toX] <= 0;}
     return 0;
 }
 
