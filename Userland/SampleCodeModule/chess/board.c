@@ -121,10 +121,12 @@ int checkRook(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, in
             for (int x= fromX+1; x<toX;x++)
                 if (board[toY][x]!=0)
                     return 0;
+             return side*board[toY][toX] <= 0;
         }
         else for(int x = fromX - 1; x >toX ; x--){
                 if (board[toY][x]!=0)
                     return 0;
+             return side*board[toY][toX] <= 0;
         }
     }
     else
@@ -137,26 +139,15 @@ int checkRook(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, in
             for (int y= fromY+1; y<toY;y++)
                 if (board[y][toX]!=0)
                     return 0;
+            return side*board[toY][toX] <= 0;
         }
         else {
              for (int y= fromY-1; y>toY;y--)
                 if (board[y][toX]!=0)
                     return 0;
+            return side*board[toY][toX] <= 0;
         }
     }
-    if(side*board[toY][toX] <= 0){
-            if(isRook){
-                if(side == WHITE) {
-                    if(fromX == 0 && fromY == 0) { wCastlingChecks[0] = 1;}
-                    else if(fromX==7 && fromY ==0) {wCastlingChecks[2] = 1;}
-                }
-                else{
-                    if(fromX == 0 && fromY == 7) { bCastlingChecks[0] = 1;}
-                    else if(fromX==7 && fromY ==7) {bCastlingChecks[2] = 1;}
-                }
-            }
-            return 1;
-        }
     return -1;
 }
 
