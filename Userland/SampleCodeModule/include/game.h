@@ -5,4 +5,5 @@ void initializeGame();
 void chess();
 void printLog();
 void rotateBoard();
+void castling(int fX, int fY, int tX, int tY);
 #endif

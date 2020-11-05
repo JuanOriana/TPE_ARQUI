@@ -5,11 +5,15 @@
 #include <libc.h>
 #include <stdlib.h>
 
+#define LONG_CASTLING 3
+#define SHORT_CASTLING 2
+
 int activeGame=0;
 int player1Time = 60;
 int player2Time = 60;
 int boardRotation = 0;
 int pieceCaptured = 0;
+int isCastling = 0;
 // 1 blanco, -1 negro
 int currentPlayer = 1;
 int surrounded=0;
@@ -53,12 +57,28 @@ void movePiece(char *from, char *to)
     //Cargo inicial pieza
     if (logSize < LOG_MAX - 4)
     {
+        if(isCastling){
+            if(isCastling == SHORT_CASTLING){
+            log[logSize++]='O';
+            log[logSize++]='-';
+            log[logSize++]='O';
+            }
+            //No es la notacion correcta pero hay que cambiar el log para que imprima de a 5?
+            else {
+                log[logSize++]='O';
+                log[logSize++]='O';
+                log[logSize++]='O';
+            }
+            log[logSize++]=0;
+        }
+        else {
         log[logSize++] = initials[abs(gameBoard[fY][fX]) - 1];
         //Cargo mov
-        if(pieceCaptured) { log[logSize++] = 'x';}
+        //if(pieceCaptured) { log[logSize++] = 'x';} SE ROMPE EL LOG
         log[logSize++] = to[0];
         log[logSize++] = tY + '0';
         log[logSize++] = 0;
+        }
     }
 
     //Asumo que no es MI rey porque el movimiento debe ser valido
@@ -74,13 +94,20 @@ void movePiece(char *from, char *to)
         bKingPos[0] = tX;
         bKingPos[1] = tY;
     }
+    //Promotion de peones
     if (gameBoard[fY][fX]==WPAWN && tY==7)
         gameBoard[fY][fX]=WQUEEN;
     if (gameBoard[fY][fX] == BPAWN &&tY == 0)
         gameBoard[fY][fX] = BQUEEN;
-        
-    gameBoard[tY][tX] = gameBoard[fY][fX];
-    gameBoard[fY][fX] = 0;
+
+    if(isCastling){
+        isCastling = 0;
+        castling(fX,fY,tX,tY);
+    }
+    else{
+        gameBoard[tY][tX] = gameBoard[fY][fX];
+        gameBoard[fY][fX] = 0;
+    }
 }
 
 void initializeGame(){
@@ -121,8 +148,11 @@ int  checkInput(char* from, char* to){
 
     //Es valido el movimiento?
     int flag = checkMove(gameBoard, fX, fY, tX, tY);
+    
     if (!flag)
         return -3;
+    if(flag == LONG_CASTLING || flag == SHORT_CASTLING){ isCastling = flag;}
+    
     return 1;
 }
 void endGame(){
@@ -150,17 +180,17 @@ void endGame(){
 }
 
 void checkConditions(){
-    checked=surrounded=0;
-    int * kingPos = currentPlayer==WHITE?wKingPos:bKingPos;
-    checked= isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
-    surrounded= isSurrounded(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
-    if (surrounded){
-        if (checked)
-            winner= currentPlayer*-1;
-        //STALEMATE NO NECESARIAMENTE CUMPLE ESTA CONDICION
-        // else
-        //     winner=2;
-    }   
+    // checked=surrounded=0;
+    // int * kingPos = currentPlayer==WHITE?wKingPos:bKingPos;
+    // checked= isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
+    // surrounded= isSurrounded(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
+    // // if (surrounded){
+    //     if (checked)
+    //         winner= currentPlayer*-1;
+    //     //STALEMATE NO NECESARIAMENTE CUMPLE ESTA CONDICION
+    //     // else
+    //     //     winner=2;
+    // }   
     return;
 }
 
@@ -301,7 +331,6 @@ void printLog(){
         else{
             chFont(BCOLOR);
         }
-        
         print("%s ",log+i);
     }
     chFont(0xAAAAAA);
@@ -311,4 +340,20 @@ void printLog(){
 
 void rotateBoard(){
     boardRotation= (boardRotation + 90)%360;
+}
+
+void castling(int fX, int fY, int tX,int tY){
+    //Enroque corto
+    if(tX == 7){
+        gameBoard[fY][fX+1] = gameBoard[tY][tX]; //Muevo la torre
+        gameBoard[tY][tX] = EMPTY;
+        gameBoard[tY][tX -1] = gameBoard[fY][fX];//muevo el rey
+    }
+    else{ //enroque largo
+        gameBoard[fY][fX-1] = gameBoard[tY][tX]; 
+        gameBoard[tY][tX] = EMPTY;
+        gameBoard[tY][tX + 2] = gameBoard[fY][fX];
+    }
+    gameBoard[fY][fX] = EMPTY;
+
 }
