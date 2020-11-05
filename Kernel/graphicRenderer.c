@@ -113,7 +113,14 @@ int renderChar(unsigned char c, unsigned int x, unsigned int y, unsigned int col
 }
 
 void clearAll(){
-	renderArea(0,0,width,height,BG_COLOR);
+	//Podria usar
+	//renderArea(0,0,width,height,BG_COLOR);
+	// Pero esta forma es MUCHO mas rapida y eficiente (reduzco la cantidad de llamadas)
+	// Se pudo reducir cuanto tarda el clearAll de 0.5s a practicamente milisegundos.
+	char *pos = (char *)((uint64_t)screenData->framebuffer);
+	for (int i=0;i<height*width*3;i++)
+		pos[i]=0;
+
 }
 
 int scrollUp(int pixels){
