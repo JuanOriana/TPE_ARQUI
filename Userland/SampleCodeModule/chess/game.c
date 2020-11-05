@@ -21,17 +21,17 @@ char initials[] = {'P','B','N','R','Q','K'};
 int wKingPos[2] = {4,7};
 int bKingPos[2] = {4,0};
 int checked =0;
-int winner=0; // -1 gana negro / 0 esta en juego / 1 gana blanco / >1 tablas
+int winner=0; // -1 gana negro / 0 esta en juego / 1 gana blanco / >1 tablas 
 
-static int gameBoard[SIZE][SIZE] = {
-    {BROOK, BKNIGHT, BBISHOP, BQUEEN, BKING, BBISHOP, BKNIGHT, BROOK}, //0
-    {BPAWN, BPAWN, BPAWN, BPAWN, BPAWN, BPAWN, BPAWN, BPAWN},
-    {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-    {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-    {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-    {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-    {WPAWN, WPAWN, WPAWN, WPAWN, WPAWN, WPAWN, WPAWN, WPAWN},
-    {WROOK, WKNIGHT, WBISHOP, WQUEEN, WKING, WBISHOP, WKNIGHT, WROOK} //7
+static int gameBoard[SIZE][SIZE] ={
+    {BROOK,BKNIGHT,BBISHOP,BQUEEN,BKING,BBISHOP,BKNIGHT,BROOK}, //0
+    {BPAWN,BPAWN,BPAWN,BPAWN,BPAWN,BPAWN,BPAWN,BPAWN},
+    {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
+    {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
+    {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
+    {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
+    {WPAWN,WPAWN,WPAWN,WPAWN,WPAWN,WPAWN,WPAWN,WPAWN},
+    {WROOK,WKNIGHT,WBISHOP,WQUEEN,WKING,WBISHOP,WKNIGHT,WROOK}  //7
 };
 
 void movePiece(char *from, char *to)
@@ -78,7 +78,7 @@ void movePiece(char *from, char *to)
 }
 
 void initializeGame(){
-    wKingPos[0]=4;wKingPos[1]=7;bKingPos[0]=3;bKingPos[1]=0;
+    wKingPos[0]=4;wKingPos[1]=7;bKingPos[0]=4;bKingPos[1]=0;
     activeGame=1;
     player1Time=player2Time=60;
     currentPlayer=1;
@@ -207,7 +207,7 @@ void play(){
                 checkConditions();
                 break;
         }
-    } 
+    }
 
     scClear();
     printBoard(gameBoard);

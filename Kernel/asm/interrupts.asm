@@ -20,7 +20,7 @@ GLOBAL _syscallHandler
 EXTERN syscallDispatcher
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
-EXTERN goToSampleCodeModule
+EXTERN getStackBase
 
 SECTION .text
 
@@ -75,18 +75,21 @@ SECTION .text
 %endmacro
 
 
-
+;Las direcciones del stack estan basadas en
+;http://cse.unl.edu/~goddard/Courses/CSCE351/IntelArchitecture/IntelInterupts.pdf
 %macro exceptionHandler 1
 	mov rsi, rsp ;Puntero al stack generado por la excepcion
 	pushState
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
-
 	popState
-	sub rsp, 8*8
+
 	sti ;Reactivo las interrupciones
-	call goToSampleCodeModule; Reinicio el shell
-	iretq
+	call getStackBase
+	mov [rsp + 3*8], rax ;restablezco el stack
+	mov rax, 0x400000 ; Direccion del SampleCodeModule
+	mov [rsp], rax
+	iretq ; Reinicio el shell
 %endmacro
 
 
