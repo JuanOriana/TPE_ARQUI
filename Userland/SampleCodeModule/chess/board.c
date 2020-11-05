@@ -2,7 +2,7 @@
 #include <board.h>
 #include <libc.h>
 
-
+void printPiece(int board[SIZE][SIZE],int i, int j);
 
 int pawn[12] = {0xFFFF, 0x8001, 0x8001, 0xB001, 0xB871, 0xBFF1, 0xBFF1, 0xB871, 0xB001, 0x8001, 0x8001, 0xFFFF};
 int rook[12] = {0xFFFF, 0x8001, 0xA071, 0xB8F1, 0xBFE1, 0xBFF1, 0xBFF1, 0xBFE1, 0xB8F1, 0xA071, 0x8001, 0xFFFF};
@@ -276,45 +276,101 @@ int isSurrounded(int board[SIZE][SIZE], int x, int y, int attacker){
 
 } 
 
-void printBoard(int board[SIZE][SIZE])
+void printBoard(int board[SIZE][SIZE], int rotation)
 {
-    for(int i = 0; i < SIZE; i++){
-        print("%d",SIZE - i );
-        for(int j = 0; j < SIZE ; j++){
-            switch (abs(board[i][j]))
-            {
-            case PAWN:
-                if(board[i][j] < 0) { chFont(BCOLOR);}
-                drawFig(1,pawn);
-                chFont(WCOLOR);
-                break;
+    switch (rotation)
+    {
+    case 0:
+        for(int i = 0; i < SIZE; i++){
+            print("%d",SIZE - i );
+            for(int j = 0; j < SIZE ; j++){
+                printPiece(board,j,i);
+            }
+            print("\n");
+        }
+        for(int i = 0 ;  i  < SIZE ; i++){
+            print("  %c  ", 'A' + i);
+        }
+    break;
 
-            case BISHOP:
-                if(board[i][j] < 0) { chFont(BCOLOR);}
-                drawFig(1,bishop);
-                chFont(WCOLOR);
+    case 90:
+        for(int x = 0; x < SIZE; x++){
+            print("%c",'A' + x );
+            for(int y = SIZE - 1; y>=0 ; y--){
+                printPiece(board,x,y);
+            }
+            print("\n");
+        }
+        for(int i = 1 ;  i  <= SIZE ; i++){
+            print("  %d  ",  i);
+        }
+        break;
+    case 180://180
+         for(int y = SIZE - 1; y >= 0; y--){
+            print("%d",SIZE - y );
+            for(int x = SIZE -1; x>=0 ; x--){
+                printPiece(board,x,y);
+            }
+            print("\n");
+        }
+        for(int i = 0 ;  i  < SIZE ; i++){
+            print("  %c  ", 'H' - i);
+        }
+        break;
+    case 270:
+         for(int x = SIZE - 1; x >= 0; x--){
+            print("%c",'A' + x );
+            for(int y = 0; y < SIZE ; y++){
+                printPiece(board,x,y);
+            }
+            print("\n");
+        }
+        for(int i = 0 ;  i  < SIZE ; i++){
+            print("  %d  ", SIZE - i);
+        }
+        break;
+    default:
+        break;
+    }
+    print("\n");
+}
+
+void printPiece(int board[SIZE][SIZE],int x, int y)
+{
+    switch (abs(board[y][x]))
+    {
+        case PAWN:
+            if(board[y][x] < 0) { chFont(BCOLOR);}
+            drawFig(1,pawn);
+            chFont(WCOLOR);
+        break;
+
+        case BISHOP:
+            if(board[y][x] < 0) { chFont(BCOLOR);}
+            drawFig(1,bishop);
+            chFont(WCOLOR);
                 break;
 
             case KNIGHT:
-                if(board[i][j] < 0) { chFont(BCOLOR);}
+                if(board[y][x] < 0) { chFont(BCOLOR);}
                 drawFig(1,knight);
                 chFont(WCOLOR);
                 break;
 
             case ROOK:
-                if(board[i][j] < 0) { chFont(BCOLOR);}
+                if(board[y][x] < 0) { chFont(BCOLOR);}
                 drawFig(1,rook);
                 chFont(WCOLOR);
                 break;
 
             case QUEEN:
-                if(board[i][j] < 0) { chFont(BCOLOR);}
+                if(board[y][x] < 0) { chFont(BCOLOR);}
                 drawFig(1,queen);
                 chFont(WCOLOR);
                 break;
 
             case KING:
-                if(board[i][j] < 0) { chFont(BCOLOR);}
+                if(board[y][x] < 0) { chFont(BCOLOR);}
                 drawFig(1,king);
                 chFont(WCOLOR);
                 break;
@@ -323,12 +379,5 @@ void printBoard(int board[SIZE][SIZE])
                 drawFig(1,empty);
                 break;
             default: break;
-            }
-        }
-        print("\n");
     }
-    for(int i = 0 ;  i  < SIZE ; i++){
-        print("  %c  ", 'A' + i);
-    }
-    print("\n");
 }

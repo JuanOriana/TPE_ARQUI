@@ -6,7 +6,7 @@
 void initializeBoard(int board[SIZE][SIZE]);
 int checkMove(int board[SIZE][SIZE], int fromX, int fromY, int toX, int toY);
 int castling(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY);
-void printBoard(int board[SIZE][SIZE]);
+void printBoard(int board[SIZE][SIZE],int rotation);
 int checkBounds(int x, int y);
 int isAttacked(int board[SIZE][SIZE], int x, int y, int attacker);
 int isSurrounded(int board[SIZE][SIZE], int x, int y, int attacker);

@@ -8,6 +8,7 @@
 int activeGame=0;
 int player1Time = 60;
 int player2Time = 60;
+int boardRotation = 0;
 // 1 blanco, -1 negro
 int currentPlayer = 1;
 int surrounded=0;
@@ -167,17 +168,24 @@ void play(){
         from[1]=0;
         to[1]=0;
         scClear();
-        printBoard(gameBoard);
+        printBoard(gameBoard,boardRotation);
         chFont(0xDD22DD);
         if (checked)
             print("\n\n    CHECK!\n");
         print("Mueve el %s",players[currentPlayer+1]);
         chFont(WCOLOR);
         printLog();
-        print("\nIngresa un movimiento o \"stop\" para pausar: ");
+        print("\nIngresa un movimiento, \"stop\" para pausar o \"rotate\" para rotar el tablero 90 grados: ");
         scan("%s %s",from,to);
         if (strcmp(from,"stop")==0)
             return;
+        else if(strcmp(from,"rotate")==0){
+            rotateBoard();
+            scClear();
+            printBoard(gameBoard,boardRotation);
+            continue;
+
+        }
         flag = checkInput(from,to);
         switch (flag)
         {
@@ -210,7 +218,7 @@ void play(){
     }
 
     scClear();
-    printBoard(gameBoard);
+    printBoard(gameBoard,boardRotation);
     endGame();
     return;
 }
@@ -294,4 +302,8 @@ void printLog(){
     chFont(0xAAAAAA);
     print("\n--------------------------------------------------------------------------------------\n");
     chFont(WCOLOR);
+}
+
+void rotateBoard(){
+    boardRotation= (boardRotation + 90)%360;
 }

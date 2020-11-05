@@ -4,5 +4,5 @@
 void initializeGame();
 void chess();
 void printLog();
-
+void rotateBoard();
 #endif
