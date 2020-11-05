@@ -9,6 +9,7 @@ int activeGame=0;
 int player1Time = 60;
 int player2Time = 60;
 int boardRotation = 0;
+int pieceCaptured = 0;
 // 1 blanco, -1 negro
 int currentPlayer = 1;
 int surrounded=0;
@@ -47,11 +48,14 @@ void movePiece(char *from, char *to)
     int fY = 8 - (from[1] - '0');
     int tY = 8 - (to[1] - '0');
 
+    pieceCaptured = gameBoard[tY][tX] != 0;
+
     //Cargo inicial pieza
     if (logSize < LOG_MAX - 4)
     {
         log[logSize++] = initials[abs(gameBoard[fY][fX]) - 1];
         //Cargo mov
+        if(pieceCaptured) { log[logSize++] = 'x';}
         log[logSize++] = to[0];
         log[logSize++] = tY + '0';
         log[logSize++] = 0;
@@ -74,6 +78,7 @@ void movePiece(char *from, char *to)
         gameBoard[fY][fX]=WQUEEN;
     if (gameBoard[fY][fX] == BPAWN &&tY == 0)
         gameBoard[fY][fX] = BQUEEN;
+        
     gameBoard[tY][tX] = gameBoard[fY][fX];
     gameBoard[fY][fX] = 0;
 }
