@@ -167,6 +167,7 @@ void help(){
     printCommandDesc("color (numero del 0 al 5 )","Cambiar color de la fuente");
     printCommandDesc("printmem (direcciones)","Dump de 32 bytes desde la direccion dada");
     printCommandDesc("inforeg","Se imprime el valor de los registros");
+    printCommandDesc("exit","Finaliza la ejecucion");
     print("\n\n\n");
 }
 

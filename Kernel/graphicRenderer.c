@@ -78,6 +78,7 @@ int renderPixel(unsigned int x, unsigned int y, unsigned int color)
 
 }
 
+//NO se recomienda su uso para areas grandes, es perfectamente correcto para uso en caracteres/figuras
 int renderArea(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, unsigned int color){
 	if (x2<x1 || y2<y1)
 		return -1;

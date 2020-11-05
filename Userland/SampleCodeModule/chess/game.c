@@ -168,12 +168,13 @@ void play(){
         to[1]=0;
         scClear();
         printBoard(gameBoard);
+        chFont(WCOLOR);
+        printLog();
         chFont(0xDD22DD);
         if (checked)
             print("\n\n    CHECK!\n");
         print("Mueve el %s",players[currentPlayer+1]);
         chFont(WCOLOR);
-        printLog();
         print("\nIngresa un movimiento o \"stop\" para pausar: ");
         scan("%s %s",from,to);
         if (strcmp(from,"stop")==0)
