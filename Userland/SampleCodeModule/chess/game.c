@@ -12,8 +12,8 @@ int player2Time = 60;
 int currentPlayer = 1;
 int surrounded=0;
 char* players[] = {"negro","","blanco"};
-
-char log[512] = {0};
+#define LOG_MAX 512
+char log[LOG_MAX] = {0};
 int logSize=0;
 char initials[] = {'P','B','N','R','Q','K'};
 
@@ -47,11 +47,14 @@ void movePiece(char *from, char *to)
     int tY = 8 - (to[1] - '0');
 
     //Cargo inicial pieza
-    log[logSize++] = initials[abs(gameBoard[fY][fX]) - 1];
-    //Cargo mov
-    log[logSize++] = to[0];
-    log[logSize++] = tY + '0';
-    log[logSize++] = 0;
+    if (logSize < LOG_MAX - 4)
+    {
+        log[logSize++] = initials[abs(gameBoard[fY][fX]) - 1];
+        //Cargo mov
+        log[logSize++] = to[0];
+        log[logSize++] = tY + '0';
+        log[logSize++] = 0;
+    }
 
     //Asumo que no es MI rey porque el movimiento debe ser valido
     if (abs(gameBoard[tY][tX])==KING)
