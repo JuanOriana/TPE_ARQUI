@@ -18,7 +18,7 @@ int isCastling = 0;
 int currentPlayer = 1;
 int surrounded=0;
 char* players[] = {"negro","","blanco"};
-#define LOG_MAX 512
+#define LOG_MAX 1024
 char log[LOG_MAX] = {0};
 int logSize=0;
 char initials[] = {'P','B','N','R','Q','K'};

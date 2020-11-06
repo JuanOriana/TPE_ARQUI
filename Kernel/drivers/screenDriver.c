@@ -39,8 +39,24 @@ int putChar(char c,unsigned int color){
     return res;
 }
 
+//Printeo posicional NO MUEVE EL CURSOR!
+//Es responsabilidad del usuario lidear con las cosas que escribe en pantalla fuera del cursor
+int putCharAtPos(char c, unsigned int color, int x, int y){
+    if (x + ABS_WIDTH > maxX || y+ABS_HEIGHT>maxY) //NO hay newline
+        return -1;
+
+    if (c == '\b') //el backspace funciona como un borrado posicional
+    {
+        renderArea(x, y,
+                   x + ABS_WIDTH, y + ABS_HEIGHT, 0x000000);
+        return 1;
+    }
+    return renderChar(c, x, y, color);
+}
+
 //Posiiconamiento de figuras del tamano del DOBLE de una letra
-int putFig(int*fig, unsigned int color){
+int putFig(int *fig, unsigned int color)
+{
     if (cursorPosX + FIG_WIDTH * FIG_SCALING > maxX) //Me paso de ancho con esta insercion? Si es asi salto
         newLine();
     figLine=1;

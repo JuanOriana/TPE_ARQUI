@@ -10,4 +10,5 @@ int timeInfo(int selector);
 int drawFig(int fd, int* fig);
 int getMem(unsigned char *buff, unsigned long long address, int bytes);
 int getRegs(unsigned long long* arr);
+int writeAtPos(int fd, char *buffer, int length,int x, int y);
 #endif

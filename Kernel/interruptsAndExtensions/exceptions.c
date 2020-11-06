@@ -14,10 +14,10 @@ void exceptionDispatcher(int exceptionSelector,uint64_t rsp){
     switch (exceptionSelector)
     {
     case ZERO_EXCEPTION_ID:
-        sysWrite(2,(uint64_t)"Excepcion: Division por cero\n",29);
+        sysWrite(2,(uint64_t)"Excepcion: Division por cero\n",29,0,0);
         break;
     case INVALID_OP_CODE:
-        sysWrite(2,(uint64_t)"Excepcion: Codigo Invalido\n",26);
+        sysWrite(2,(uint64_t)"Excepcion: Codigo Invalido\n",26,0,0);
     default:
         break;
     }

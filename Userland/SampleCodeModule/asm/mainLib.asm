@@ -7,6 +7,7 @@ GLOBAL chFont
 GLOBAL drawFig
 GLOBAL getMem
 GLOBAL getRegs
+GLOBAL writeAtPos
 
 ; read - lee de un fd determinado
 ; IN- RDI - FD
@@ -157,6 +158,41 @@ getMem:
     mov rdi,4     ; id int
     int 80h
 
+    pop rcx
+    pop rdx
+    pop rsi
+    pop rdi
+
+    leave
+    ret
+
+; write - escribe en un fd determinado
+;IN- RDI - FD
+;    RSI - Buffer
+;    RDX - size
+;    RCX - x
+;    R8  - y
+writeAtPos:
+    push rbp
+    mov rbp,rsp;
+
+    push rdi
+    push rsi
+    push rdx
+    push rcx
+    push r8
+    push r9
+
+    mov r9, r8  ;y en r9
+    mov r8, rcx ;x en r8
+    mov rcx ,rdx ;size en rdx
+    mov rdx, rsi  ;buff en rdx
+    mov rsi,rdi   ; fd en rsi
+    mov rdi,8     ; id int
+    int 80h
+
+    pop r9
+    pop r8
     pop rcx
     pop rdx
     pop rsi
