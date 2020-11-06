@@ -138,6 +138,6 @@ uint64_t sysTimer(uint64_t flag, uint64_t secInt, uint64_t func, uint64_t r8, ui
         timerStop();
         return 0;
     }
-    return timerEnable(3,(functiontype) func);
+    return timerEnable(secInt,(functiontype) func);
     
 }

@@ -9,8 +9,8 @@
 #define SHORT_CASTLING 2
 
 int activeGame=0;
-int player1Time = 60;
-int player2Time = 60;
+int playerWTime = 10*60;
+int playerBTime = 10*60;
 int boardRotation = 0;
 int pieceCaptured = 0;
 int isCastling = 0;
@@ -109,15 +109,44 @@ void movePiece(char *from, char *to)
         gameBoard[fY][fX] = 0;
     }
 }
+void printPlayerTime()
+{
+    if (currentPlayer == WHITE)
+        playerWTime -= 1;
+    else 
+        playerBTime -= 1;
+
+    int wSecs = playerWTime % 60;
+    int bSecs = playerBTime % 60;
+    int wMins = playerWTime / 60;
+    int bMins = playerBTime / 60;
+    char timeW[6] = {0};
+    char timeB[6] = {0};
+    timeW[2] = timeB[2] = ':';
+    timeW[4] = wSecs % 10+'0';
+    timeW[3] = wSecs / 10 + '0';
+    timeW[1] = wMins % 10 + '0';
+    timeW[0] = wMins / 10 + '0';
+    timeB[4] = bSecs % 10 + '0';
+    timeB[3] = bSecs / 10 + '0';
+    timeB[1] = bMins % 10 + '0';
+    timeB[0] = bMins / 10 + '0';
+    writeAtPos(1, "\b\b\b\b\b", 10, 620, 100);
+    writeAtPos(1, "\b\b\b\b\b", 10, 800, 100);
+    writeAtPos(1, " Blanco      ---        Negro ", 35, 610, 80);
+    writeAtPos(1, timeW, 10, 620, 100);
+    writeAtPos(1, timeB, 10, 800, 100);
+}
 
 void initializeGame(){
     wKingPos[0]=4;wKingPos[1]=7;bKingPos[0]=4;bKingPos[1]=0;
     activeGame=1;
-    player1Time=player2Time=60;
+    playerWTime=playerBTime=10*60;
     currentPlayer=1;
     surrounded=winner=checked=0;
     logSize=0;
     initializeBoard(gameBoard);
+    timer(TIMER_START,1,printPlayerTime);
 }
 
 int wellFormatedIn(char* input){
@@ -156,6 +185,7 @@ int  checkInput(char* from, char* to){
     return 1;
 }
 void endGame(){
+    timer(TIMER_STOP,0,0);
     chFont(0xDD5599);
     if (winner<=1){
         if (surrounded&&checked){
@@ -205,12 +235,12 @@ void play(){
         scClear();
         printBoard(gameBoard,boardRotation);
         chFont(WCOLOR);
+        printLog();
         chFont(0xDD22DD);
         if (checked)
             print("\n\n    CHECK!\n");
         print("Mueve el %s", players[currentPlayer + 1]);
         chFont(WCOLOR);
-        printLog();
         print("\nIngresa un movimiento, \"stop\" para pausar o \"rotate\" para rotar el tablero 90 grados: \n");
         scan("%s %s",from,to);
         if (strcmp(from,"stop")==0)
@@ -358,3 +388,5 @@ void castling(int fX, int fY, int tX,int tY){
     gameBoard[fY][fX] = EMPTY;
 
 }
+
+
