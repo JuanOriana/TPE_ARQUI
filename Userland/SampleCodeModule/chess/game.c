@@ -180,9 +180,9 @@ void endGame(){
 }
 
 void checkConditions(){
-    // checked=surrounded=0;
-    // int * kingPos = currentPlayer==WHITE?wKingPos:bKingPos;
-    // checked= isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
+    checked=surrounded=0;
+    int * kingPos = currentPlayer==WHITE?wKingPos:bKingPos;
+    checked= isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
     // surrounded= isSurrounded(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
     // // if (surrounded){
     //     if (checked)
@@ -204,13 +204,14 @@ void play(){
         to[1]=0;
         scClear();
         printBoard(gameBoard,boardRotation);
+        chFont(WCOLOR);
         chFont(0xDD22DD);
         if (checked)
             print("\n\n    CHECK!\n");
-        print("Mueve el %s",players[currentPlayer+1]);
+        print("Mueve el %s", players[currentPlayer + 1]);
         chFont(WCOLOR);
         printLog();
-        print("\nIngresa un movimiento, \"stop\" para pausar o \"rotate\" para rotar el tablero 90 grados: ");
+        print("\nIngresa un movimiento, \"stop\" para pausar o \"rotate\" para rotar el tablero 90 grados: \n");
         scan("%s %s",from,to);
         if (strcmp(from,"stop")==0)
             return;
@@ -270,12 +271,12 @@ void welcomeMessage(){
     print("-- Se ingresan los movimientos con coordenadas alfanumericas con el siguiente formato: \n\n");
     print("        (ORIGEN) (DESTINO)\n");
     print("Por ejemplo: \"A7 A5\" mueve la pieza de A7 a A5, si es valido el movimiento\n\n");
+    print("-- Durante una partida se puede pausar usando el comando especial \"stop\"\n\n");
     print("-- Siempre comienza a jugar el jugador blanco\n\n\n");
-    print("-- Durante una partida se puede pausar usando el comando especial \"stop\"");
     chFont(0xF0FF33);
     print("COMANDOS\n\n");
     chFont(WCOLOR);
-    print("-- Los comandos van escritos sin usar \"!\". Puedes usar \n");
+    print("-- Los comandos van escritos sin usar \"!\". Puedes usar \n\n");
     chFont(0x8844FF);
     print("newgame");
     chFont(WCOLOR);
@@ -287,7 +288,7 @@ void welcomeMessage(){
     chFont(0xFF00);
     print("exit");
     chFont(WCOLOR);
-    print(" para salir de la aplicacion.\n Gracias por jugar!!!\n\n\n");
+    print(" para salir de la aplicacion.\n\n Gracias por jugar!!!\n\n\n");
     return;
 }
 
@@ -297,7 +298,7 @@ void chess(){
     welcomeMessage();
     char command[120] = {0};
     while(1){
-        print("\n\nCHESS - The Game\n");
+        print("\nCHESS - The Game\n");
         command[0] = 0;
         print(">>>");
         scan("%s", command);
@@ -316,7 +317,7 @@ void chess(){
             return;
         }
         else
-            print("No entendi tu comando! proba con uno de estos: newgame - continue - exit\n");
+            print("\nNo entendi tu comando! proba con uno de estos: newgame - continue - exit\n");
     }
     return;
 }

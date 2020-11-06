@@ -310,50 +310,62 @@ void printBoard(int board[SIZE][SIZE], int rotation)
     switch (rotation)
     {
     case 0:
+        print("\n\n");
         for(int i = 0; i < SIZE; i++){
-            print("%d",SIZE - i );
+            print("                    %d ",SIZE - i );
             for(int j = 0; j < SIZE ; j++){
                 printPiece(board,j,i);
             }
             print("\n");
         }
+        print("\n                    ");
         for(int i = 0 ;  i  < SIZE ; i++){
             print("  %c  ", 'A' + i);
         }
     break;
 
     case 90:
+        print("\n\n");
         for(int x = 0; x < SIZE; x++){
-            print("%c",'A' + x );
+            print("     %c ", 'A' + x);
             for(int y = SIZE - 1; y>=0 ; y--){
                 printPiece(board,x,y);
             }
             print("\n");
         }
+        print("\n                    ");
         for(int i = 1 ;  i  <= SIZE ; i++){
-            print("  %d  ",  i);
+            print("  %d  ", i);
         }
         break;
     case 180://180
-         for(int y = SIZE - 1; y >= 0; y--){
-            print("%d",SIZE - y );
-            for(int x = SIZE -1; x>=0 ; x--){
-                printPiece(board,x,y);
+        print("\n\n");
+        for (int y = SIZE - 1; y >= 0; y--)
+        {
+            print("     %d ", SIZE - y);
+            for (int x = SIZE - 1; x >= 0; x--)
+            {
+                printPiece(board, x, y);
             }
             print("\n");
         }
+        print("\n                    ");
         for(int i = 0 ;  i  < SIZE ; i++){
             print("  %c  ", 'H' - i);
         }
         break;
     case 270:
-         for(int x = SIZE - 1; x >= 0; x--){
-            print("%c",'A' + x );
-            for(int y = 0; y < SIZE ; y++){
-                printPiece(board,x,y);
+        print("\n\n");
+        for (int x = SIZE - 1; x >= 0; x--)
+        {
+            print("     %c ", 'A' + x);
+            for (int y = 0; y < SIZE; y++)
+            {
+                printPiece(board, x, y);
             }
             print("\n");
         }
+        print("\n                    ");
         for(int i = 0 ;  i  < SIZE ; i++){
             print("  %d  ", SIZE - i);
         }

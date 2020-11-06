@@ -73,13 +73,7 @@ void shellMainLoop(){
     }
     return;
 }
-void printTime(){
-    chFont(NICE_YELLOW);
-    print("\n  El tiempo actual es: \n");
-    chFont(NICE_RED);
-    print("   %d/%d/%d  %d:%d:%d\n\n", getDays(), getMonth(), getYear(), getHours(), getMinutes(), getSeconds());
-    chFont(fontColor);
-}
+
 void printLogo(){
     print("\n\n");
     print(" _______  _______  ___      ___      _______         _______  _______ \n");
@@ -134,6 +128,8 @@ void printMem(long long address){
     print("\n");
     print("Memoria en address %d :\n\n",address);
     for (int i=0;i<32;i++){
+        if (i==15)
+            print("\n");
         intToHexa((char)buff[i],hexa,1);
         print("%s ",hexa);
     }
@@ -157,7 +153,6 @@ void printRegisters(){
 }
 
 void help(){
-    scClear();
     chFont(NICE_YELLOW);
     print("   Todos los comandos comienzan con un signo de exclamacion!\n    Esta es la lista de los posibles parametros: \n\n");
     printCommandDesc("help", "Informacion de comandos");
@@ -169,5 +164,32 @@ void help(){
     printCommandDesc("inforeg","Se imprime el valor de los registros");
     printCommandDesc("exit","Finaliza la ejecucion");
     print("\n\n\n");
+    chFont(fontColor);
 }
 
+// N positivo!
+void printTwoDig(int n){
+    char num[3] ={0};
+    num[0]=n/10+'0';
+    num[1]=n%10+'0';
+    print("%s",num);
+}
+
+void printTime()
+{
+    chFont(NICE_YELLOW);
+    print("\n  El tiempo actual es: \n\n");
+    chFont(NICE_BLUE);
+    print("     ");
+    printTwoDig(getDays());
+    print("/");
+    printTwoDig(getMonth());
+    print("/%d  ",getYear());
+    printTwoDig(getHours());
+    print(":");
+    printTwoDig(getMinutes());
+    print(":");
+    printTwoDig(getSeconds());
+    print("\n\n");
+    chFont(fontColor);
+}

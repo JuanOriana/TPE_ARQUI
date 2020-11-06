@@ -15,7 +15,7 @@ int isSurrounded(int board[SIZE][SIZE], int x, int y, int attacker);
 #define BLACK -1
 #define EMPTY 0
 #define WCOLOR 0xFFFFFF
-#define BCOLOR 0x00FF22
+#define BCOLOR 0xD9302E
 #define SIZE 8
     enum pieces {
         PAWN = 1,
