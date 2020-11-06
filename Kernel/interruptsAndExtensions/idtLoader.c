@@ -29,10 +29,11 @@ void load_idt() {
   setup_IDT_entry(0x00, (uint64_t)&_exception0Handler); //Div por cero
   setup_IDT_entry(0x06, (uint64_t)&_exception6Handler); //Op invalido
   setup_IDT_entry (0x21, (uint64_t)&_irq01Handler); //Teclado
+  setup_IDT_entry(0x20, (uint64_t)&_irq00Handler); //ttick
   setup_IDT_entry(0x80, (uint64_t)&_syscallHandler); 
             
 
-	picMasterMask(0xFD); //Mask teclado 
+	picMasterMask(0xFC); //Mask teclado  y ttick
 	picSlaveMask(0xFF);
         
 	_sti();

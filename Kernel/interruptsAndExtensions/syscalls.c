@@ -5,6 +5,7 @@
 #include <syscalls.h>
 #include <kbDriver.h>
 #include <font.h>
+#include <timer.h>
 
 #define STDIN 0
 #define STDOUT 1
@@ -13,6 +14,7 @@
 #define STDOUT_COL 0xFFFFFF
 #define STDERR_COL 0xFF0000
 static int fontColour = STDOUT_COL;
+
 
 // static const char *registers[] = {"RAX:", "RBX:", "RCX:", "RDX:", "RBP:", "RDI:", "RSI:", "R8 :", "R9 :", "R10:", "R11:", "R12:", "R13:", "R14:", "R15:"};
 
@@ -127,4 +129,15 @@ uint64_t sysWriteAtPos(uint64_t fd, uint64_t buffer, uint64_t length, uint64_t x
         inserted++;
     }
     return inserted;
+}
+
+uint64_t sysTimer(uint64_t flag, uint64_t secInt, uint64_t func, uint64_t r8, uint64_t r9)
+{
+    if (!flag) //flag = 0 es un stop!
+    {
+        timerStop();
+        return 0;
+    }
+    return timerEnable(3,(functiontype) func);
+    
 }

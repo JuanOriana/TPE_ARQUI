@@ -2,6 +2,8 @@
 #include <idtLoader.h>
 #include <kbDriver.h>
 #include<lib.h>
+#include <timer.h>
+#include <syscalls.h>
 
 static void int_20();
 static void int_21();
@@ -15,7 +17,7 @@ void irqDispatcher(uint64_t irq) {
 }
 
 void int_20(){
-	return;
+	timerCycle();
 }
 void int_21(){
 	keyboardHandler();

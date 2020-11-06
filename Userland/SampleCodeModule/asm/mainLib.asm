@@ -8,6 +8,7 @@ GLOBAL drawFig
 GLOBAL getMem
 GLOBAL getRegs
 GLOBAL writeAtPos
+GLOBAL timer
 
 ; read - lee de un fd determinado
 ; IN- RDI - FD
@@ -218,5 +219,32 @@ getRegs:
 
     pop rsi
     pop rdi
+    leave
+    ret
+
+;timer: inicia o para un timer de funcion f
+;IN- RDI - flag de inicio o stop
+;    RSI - intervalo de tiempo
+;    RDX - funcion
+timer:
+    push rbp
+    mov rbp,rsp;
+
+    push rdi
+    push rsi
+    push rdx
+    push rcx
+
+    mov rcx ,rdx ;function en rcx
+    mov rdx, rsi  ;intervalo en rdx
+    mov rsi,rdi   ; flag en rsi
+    mov rdi,9    ; id int
+    int 80h
+
+    pop rcx
+    pop rdx
+    pop rsi
+    pop rdi
+
     leave
     ret
