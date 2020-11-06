@@ -229,6 +229,7 @@ void play(){
     char from[4];
     char to[4];
     int flag=0;
+    timer(TIMER_START, 1, printPlayerTime);
     while(!winner){
         from[1]=0;
         to[1]=0;
@@ -243,8 +244,10 @@ void play(){
         chFont(WCOLOR);
         print("\nIngresa un movimiento, \"stop\" para pausar o \"rotate\" para rotar el tablero 90 grados: \n");
         scan("%s %s",from,to);
-        if (strcmp(from,"stop")==0)
+        if (strcmp(from, "stop") == 0){
+            timer(TIMER_STOP, 0, 0);
             return;
+        }
         else if(strcmp(from,"rotate")==0){
             rotateBoard();
             scClear();
