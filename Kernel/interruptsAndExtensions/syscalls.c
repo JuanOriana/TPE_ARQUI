@@ -45,6 +45,8 @@ uint64_t sysWrite(uint64_t fd, uint64_t buffer, uint64_t length, uint64_t r8, ui
     case STDERR:
         color = STDERR_COL;
         break;
+    case STDIN:
+        break;
     default:
         return-1;
     }
@@ -54,7 +56,10 @@ uint64_t sysWrite(uint64_t fd, uint64_t buffer, uint64_t length, uint64_t r8, ui
     {
         if (*buff == '\0' || *buff==-1)
             break;
-        putChar(*buff, color);
+        if (fd==STDIN)
+            loadChar(*buff);
+        else
+            putChar(*buff, color);
         buff++;
         inserted++;
         length--;

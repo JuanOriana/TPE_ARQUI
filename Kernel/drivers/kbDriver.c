@@ -47,28 +47,33 @@ void keyboardHandler(uint64_t rsp)
 
         int shiftState =  isShifted==capsEnabled?0:1; //Uno solo esta encendido
         char c = scanToAscii[keyCode][shiftState];
-
-        if (c == '\r') //Normal\izado de saltos de linea.
-            c='\n';
-
-        if (c != 0)
-        {
-            buffer[wrIdx] = c;
-            wrIdx = (wrIdx + 1) % BUFF_SIZE; //Ciclo circularmente por el buffer
-
-            // Si no llene el buffer, aumento su tamaño, si lo llene, agrego igual pero pierdo su ultimo valor
-            // "lectura artificial"
-            if (activeSize < BUFF_SIZE)
-                activeSize++;
-            else
-                rdIdx = (rdIdx + 1) % BUFF_SIZE;
-        }
+        
+        loadChar(c);
 
     }
 }
 
+void loadChar(char c){
 
-int loadChar()
+    if (c == '\r') //Normal\izado de saltos de linea.
+        c = '\n';
+
+    if (c != 0)
+    {
+        buffer[wrIdx] = c;
+        wrIdx = (wrIdx + 1) % BUFF_SIZE; //Ciclo circularmente por el buffer
+
+        // Si no llene el buffer, aumento su tamaño, si lo llene, agrego igual pero pierdo su ultimo valor
+        // "lectura artificial"
+        if (activeSize < BUFF_SIZE)
+            activeSize++;
+        else
+            rdIdx = (rdIdx + 1) % BUFF_SIZE;
+    }
+}
+
+
+int dumpChar()
 {
     if (activeSize <= 0) 
         return -1;
@@ -89,7 +94,7 @@ int dumpBuffer(char* destination, int size){
 
     int idx=0;
     while (idx<size-1 && activeSize){
-        destination[idx] = loadChar();
+        destination[idx] = dumpChar();
         idx++;
     }
     destination[idx]=0;

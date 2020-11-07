@@ -7,6 +7,8 @@
 
 #define LONG_CASTLING 3
 #define SHORT_CASTLING 2
+#define LOG_MAX 1024
+#define MOV_SIZE 4
 
 int activeGame=0;
 int playerWTime = 10*60;
@@ -18,7 +20,6 @@ int isCastling = 0;
 int currentPlayer = 1;
 int surrounded=0;
 char* players[] = {"negro","","blanco"};
-#define LOG_MAX 1024
 char log[LOG_MAX] = {0};
 int logSize=0;
 char initials[] = {'P','B','N','R','Q','K'};
@@ -55,7 +56,7 @@ void movePiece(char *from, char *to)
     pieceCaptured = gameBoard[tY][tX] != 0;
 
     //Cargo inicial pieza
-    if (logSize < LOG_MAX - 4)
+    if (logSize < LOG_MAX - MOV_SIZE)
     {
         if(isCastling){
             if(isCastling == SHORT_CASTLING){
@@ -109,12 +110,26 @@ void movePiece(char *from, char *to)
         gameBoard[fY][fX] = 0;
     }
 }
-void printPlayerTime()
+void timeMainLoop()
 {
-    if (currentPlayer == WHITE)
+    if (currentPlayer == WHITE){
         playerWTime -= 1;
-    else 
+        if (playerWTime < 0 || playerBTime - playerWTime > 60)
+        {
+            winner = BLACK;
+            writer(0,"\n",3);  //Tengo que "echar" al jugador del scanf escribiendo en entrada estandar
+            return;
+        }
+    }
+    else {
         playerBTime -= 1;
+        if (playerBTime<0 || playerWTime- playerBTime > 60){
+            winner=WHITE;
+            writer(0, "\n", 3);
+            return;
+        }
+    }
+
 
     int wSecs = playerWTime % 60;
     int bSecs = playerBTime % 60;
@@ -141,12 +156,11 @@ void printPlayerTime()
 void initializeGame(){
     wKingPos[0]=4;wKingPos[1]=7;bKingPos[0]=4;bKingPos[1]=0;
     activeGame=1;
-    playerWTime=playerBTime=10*60;
+    playerWTime=playerBTime=2*60;
     currentPlayer=1;
     surrounded=winner=checked=0;
     logSize=0;
     initializeBoard(gameBoard);
-    timer(TIMER_START,1,printPlayerTime);
 }
 
 int wellFormatedIn(char* input){
@@ -185,7 +199,7 @@ int  checkInput(char* from, char* to){
     return 1;
 }
 void endGame(){
-    timer(TIMER_STOP,0,0);
+    timer(TIMER_STOP, 0, 0);
     chFont(0xDD5599);
     if (winner<=1){
         if (surrounded&&checked){
@@ -194,7 +208,7 @@ void endGame(){
         print(" \n\n\n\n                                  El ganador fue el %s!!!\n\n",players[winner+1]);
     }
     else{
-        print("\n                                                    TABLAS!\n");
+        print("\n                                                          TABLAS!\n");
         print("                                            Hubo empate por ");
         if (surrounded)
             print("rey ahogado\n\n");
@@ -209,10 +223,28 @@ void endGame(){
     activeGame = 0;
 }
 
+int lastMoveRepeated(){
+    if (logSize<3)
+        return 0;
+    int reps = 1;
+    char* lastMove = log+ logSize-MOV_SIZE;
+    for (int i =0; i<logSize-MOV_SIZE; i+=MOV_SIZE){
+        if (strcmp(lastMove,log+i)==0)
+            reps++;
+        if (reps>=3)
+            return 1;
+    }
+    return 0;
+}
+
 void checkConditions(){
     checked=surrounded=0;
     int * kingPos = currentPlayer==WHITE?wKingPos:bKingPos;
     checked= isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
+    if (lastMoveRepeated()){
+        winner=2;
+        return;
+    }
     // surrounded= isSurrounded(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
     // // if (surrounded){
     //     if (checked)
@@ -229,7 +261,7 @@ void play(){
     char from[4];
     char to[4];
     int flag=0;
-    timer(TIMER_START, 1, printPlayerTime);
+    timer(TIMER_START, 1, timeMainLoop);
     while(!winner){
         from[1]=0;
         to[1]=0;
@@ -244,6 +276,8 @@ void play(){
         chFont(WCOLOR);
         print("\nIngresa un movimiento, \"stop\" para pausar o \"rotate\" para rotar el tablero 90 grados: \n");
         scan("%s %s",from,to);
+        if (winner) //EXISTE LA POSIBILIDAD QUE EL JUGADOR HAYA PERDIDO ESPERANDO UNA JUGADA
+            break;
         if (strcmp(from, "stop") == 0){
             timer(TIMER_STOP, 0, 0);
             return;
@@ -358,8 +392,8 @@ void chess(){
 void printLog(){
     chFont(0xAAAAAA);
     print("\n------------------------------------LOG-----------------------------------------------\n");
-    for (int i=0;i<logSize;i+=4){
-        if (i%8==0){
+    for (int i=0;i<logSize;i+=MOV_SIZE){
+        if (i%(MOV_SIZE*2)==0){
             chFont(WCOLOR);
         }
         else{
