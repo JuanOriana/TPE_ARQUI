@@ -31,7 +31,6 @@ void exceptionDispatcher(int exceptionSelector,uint64_t rsp){
 
 
 void printRegisters(uint64_t rsp){
-    unsigned long long buff[17];
     char hexa[20];
 
     sysWrite(2,(uint64_t)"RSP: ",6,0,0);
