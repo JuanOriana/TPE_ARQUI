@@ -46,5 +46,8 @@ int strcmp(const char *str1, const char *str2);
 //IN: Numero a convertir, buffer a guardar el numero, cuantos bytes ocupa
 //OUT: Referencia al buffer con el numero guardado
 char *intToHexa(long long num, char *str, int bytes);
+//IN: hexa  a convertir
+//OUT: numero
+int hexaToInt(char *num);
 
 #endif

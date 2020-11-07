@@ -9,13 +9,12 @@ int static fontColor = NICE_WHITE;
 int static colors[] = {NICE_WHITE,NICE_RED,NICE_YELLOW,NICE_BLUE,NICE_GREEN,NICE_PINK};
 enum colorPick {WHITE, RED, YELLLOW, BLUE, GREEN, PINK};
 static const char *registers[] = {"RAX:", "RBX:", "RCX:", "RDX:", "RBP:", "RDI:", "RSI:", "R8 :", "R9 :", "R10:", "R11:", "R12:", "R13:", "R14:", "R15:"};
-
 void shellWelcome();
 void shellMainLoop();
 void shellExit();
 void help();
 void printTime();
-void printMem(long long address);
+void printMem(char *hexa);
 void printRegisters();
 void divExc();
 
@@ -52,8 +51,9 @@ void shellMainLoop(){
         else if(strcmp(command,"clear")==0)
             scClear();
         else if (strcmp(command, "printmem") == 0){
-            if (param[0]!=0)
-                printMem(strToInt(param,&aux));
+            if (param[0]=='0'&& param[1]=='x')
+                printMem(param);
+            else print("Se necesita un parametro en hexa valido\n");
         }
         else if (strcmp(command, "chess") == 0)
             chess();
@@ -67,7 +67,7 @@ void shellMainLoop(){
             return;
         else{
             chFont(NICE_YELLOW);
-            print("No entendi tu comando! escriba ");
+            print("   No entendi tu comando! escriba ");
             chFont(NICE_PINK);
             print("!help ");
             chFont(NICE_YELLOW);
@@ -81,13 +81,13 @@ void shellMainLoop(){
 
 void printLogo(){
     print("\n\n");
-    print(" _______  _______  ___      ___      _______         _______  _______ \n");
-    print("|       ||       ||   |    |   |    |       |       |       ||       |\n");
-    print("|    _  ||   _   ||   |    |   |    |   _   | ____  |   _   ||  _____|\n");
-    print("|   |_| ||  | |  ||   |    |   |    |  | |  ||____| |  | |  || |_____ \n");
-    print("|    ___||  |_|  ||   |___ |   |___ |  |_|  |       |  |_|  ||_____  |\n");
-    print("|   |    |       ||       ||       ||       |       |       | _____| |\n");
-    print("|___|    |_______||_______||_______||_______|       |_______||_______|\n");
+    print("      _______  _______  ___      ___      _______         _______  _______ \n");
+    print("     |       ||       ||   |    |   |    |       |       |       ||       |\n");
+    print("     |    _  ||   _   ||   |    |   |    |   _   | ____  |   _   ||  _____|\n");
+    print("     |   |_| ||  | |  ||   |    |   |    |  | |  ||____| |  | |  || |_____ \n");
+    print("     |    ___||  |_|  ||   |___ |   |___ |  |_|  |       |  |_|  ||_____  |\n");
+    print("     |   |    |       ||       ||       ||       |       |       | _____| |\n");
+    print("     |___|    |_______||_______||_______||_______|       |_______||_______|\n");
     print("\n\n\n\n");
 }
 
@@ -110,8 +110,8 @@ void shellWelcome()
     scClear();
     chFont(NICE_YELLOW);
     printLogo();
-    print("Hola y bienvenido a Pollo-OS! Este es un trabajo practico especial para\n la materia Arquitectura de Computadoras.\n\n");
-    print("Para conocer los comandos habilitados, escriba ");
+    print("   Hola y bienvenido a Pollo-OS! Este es un trabajo practico especial para\n la materia Arquitectura de Computadoras.\n\n");
+    print("   Para conocer los comandos habilitados, escriba ");
     chFont(NICE_PINK);
     print("!help \n\n\n");
     chFont(NICE_WHITE);
@@ -126,17 +126,18 @@ void printCommandDesc(char *name, char *desc)
     chFont(fontColor);
 }
 
-void printMem(long long address){
+void printMem(char* hexa){
+    long long address = hexaToInt(hexa);
     unsigned char buff[33];
-    char hexa[10];
+    char byte[10];
     getMem(buff,address,32);
     print("\n");
-    print("Memoria en address %d :\n\n",address);
+    print("Memoria en address %s :\n\n",hexa);
     for (int i=0;i<32;i++){
-        if (i==15)
+        if (i==16)
             print("\n");
-        intToHexa((char)buff[i],hexa,1);
-        print("%s ",hexa);
+        intToHexa((char)buff[i], byte, 1);
+        print("%s ", byte);
     }
     print("\n\n");
 }
