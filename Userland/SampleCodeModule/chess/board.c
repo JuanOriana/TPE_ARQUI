@@ -200,7 +200,8 @@ int checkBishop(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, 
 }
 
 int checkKing(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY)
-{   int isCastling = checkCastling(board,side,fromX,fromY,toX,toY);
+{
+    int isCastling = checkCastling(board,side,fromX,fromY,toX,toY);
     if(isCastling){return isCastling;}
     int absDisX = abs(fromX - toX);
     int absDisY = abs(fromY - toY);
@@ -277,7 +278,7 @@ int isAttacked(int board[SIZE][SIZE], int x, int y, int attacker)
     for (int i=0; i<SIZE;i++)
         for (int j=0; j<SIZE;j++)
             //Hay un movimiento legal de una de mis piezas?
-            if ((board[j][i] * attacker < 0 && checkMove(board, i, j, x, y)))
+            if ((board[j][i] * attacker > 0 && checkMove(board, i, j, x, y)))
                 return 1;
     return 0;
 }

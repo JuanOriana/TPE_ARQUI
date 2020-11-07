@@ -1,4 +1,6 @@
 #include <stdint.h>
+#include <lib.h>
+#include <rtc.h>
 
 void * memset(void * destination, int32_t c, uint64_t length)
 {
@@ -47,5 +49,90 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 	}
 
 	return destination;
+}
+
+int abs(int num){
+    return num < 0? -num : num;
+}
+
+char *intToHexa(long long num, char *str, int bytes) 
+{ 
+    int i = 0;
+    long long n = abs(num);
+
+    /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+    if (n == 0) 
+    {
+        str[i++] = '0';
+        str[i++] = 'x';
+
+        while (i < bytes*2 + 2) {
+            str[i++] = '0';
+        }
+
+        str[i] = '\0'; 
+        return str; 
+    } 
+  
+    // Process individual digits 
+    while (i < bytes*2 && n != 0) 
+    { 
+        int rem = n % 16; 
+        str[i++] = (rem >= 10)? (rem - 10) + 65 : rem + 48; 
+        n = n/16; 
+    } 
+
+    while (i < bytes*2) {
+        str[i++] = '0';
+    }
+
+    str[i++] = 'x';
+    str[i++] = '0';
+    str[i] = '\0'; // Append string terminator 
+  
+    // Reverse the string 
+    return reverse(str, 0, i-1); 
+} 
+
+void swap(char *x, char *y)
+{
+    char t = *x;
+    *x = *y;
+    *y = t;
+}
+
+// function to reverse buffer[i..j]
+char *reverse(char *buffer, int i, int j)
+{
+    while (i < j)
+        swap(&buffer[i++], &buffer[j--]);
+
+    return buffer;
+}
+
+long int getNormSecsInDay(){
+    return getTime(0)+getTime(1)*60+ getTime(2)*3600+getTime(3);
+}
+
+//Espera unos segs determinados
+//IMPLEMENTACION RUDIMENTARIA
+void hold(int secs){
+    long int initTime,currTime;
+    long int timeDif=0;
+    int passedDays =0;
+    initTime = currTime = getNormSecsInDay();
+    while(1){
+        currTime = getNormSecsInDay();
+        timeDif = currTime - initTime + (passedDays * 86400);
+        if (timeDif<0){ //Paso un dia
+            passedDays++;
+            timeDif+=86400;
+        }
+
+        if (timeDif>=secs)
+            return;
+
+    }
+
 }
 

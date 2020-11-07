@@ -9,6 +9,7 @@ GLOBAL getMem
 GLOBAL getRegs
 GLOBAL writeAtPos
 GLOBAL timer
+GLOBAL opCodeExc
 
 ; read - lee de un fd determinado
 ; IN- RDI - FD
@@ -256,4 +257,8 @@ timer:
     pop rdi
 
     leave
+    ret
+
+opCodeExc:
+    UD2
     ret

@@ -14,4 +14,5 @@ int getMem(unsigned char *buff, unsigned long long address, int bytes);
 int getRegs(unsigned long long* arr);
 int writeAtPos(int fd, char *buffer, int length,int x, int y);
 int timer(int flag, int secInt, void(*f)());
+void opCodeExc(void);
 #endif
