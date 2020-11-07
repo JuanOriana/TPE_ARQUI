@@ -2,6 +2,7 @@
 #include <kbDriver.h>
 #include <lib.h>
 #include <keyMap.h>
+#include <syscalls.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -19,8 +20,7 @@ void initKb(){
     rdIdx = wrIdx = activeSize = 0;
 }
 
-
-void keyboardHandler()
+void keyboardHandler(uint64_t rsp)
 {
     if (_inRead(0x64) != 0) // Se puede leer el port?
     {
@@ -38,6 +38,10 @@ void keyboardHandler()
             capsEnabled = 1 - capsEnabled;
             return;
         }
+        if (keyCode == CTRL){
+            loadRegs((uint64_t*)rsp);
+            return;
+         }
         if (keyCode >= 58 || keyCode & 0X80) //No tiene representacion ascii y no es una tecla levantandose
             return;
 
@@ -90,4 +94,10 @@ int dumpBuffer(char* destination, int size){
     }
     destination[idx]=0;
     return idx;
+}
+
+void loadRegs(uint64_t* rsp){
+    uint64_t * regs = getRegs();
+    for (int i =0 ; i<15;i++)
+        regs[i] = rsp[i];
 }

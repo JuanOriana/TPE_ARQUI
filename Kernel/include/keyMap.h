@@ -15,6 +15,7 @@
 #define CAPSLOCK 0x3A
 #define CAPSLOCK_RELEASED 0xBA
 
+#define CTRL 0x1D
 
 #define BACKSPACE 8 /* Ascii codes for Backspace, Tab and enter */
 #define TAB 9       /* keys.                                    */

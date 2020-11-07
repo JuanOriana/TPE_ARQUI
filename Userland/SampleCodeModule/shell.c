@@ -137,14 +137,14 @@ void printMem(long long address){
 }
 
 void printRegisters(){
-    unsigned long long buff[16];
+    unsigned long long buff[17];
     char hexa[20];
     print("\n");
     getRegs(buff);
-    for (int i=0;i<15;i++){
+    for (int i=14;i>=0;i--){
         intToHexa((long long)buff[i],hexa,8);
         chFont(NICE_YELLOW);
-        print("%s",registers[i]);
+        print("%s",registers[14-i]);
         chFont(NICE_WHITE);
         print("%s\n",hexa);
         chFont(fontColor);

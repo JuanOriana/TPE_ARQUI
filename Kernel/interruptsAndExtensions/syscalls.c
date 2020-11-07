@@ -6,6 +6,7 @@
 #include <kbDriver.h>
 #include <font.h>
 #include <timer.h>
+#include <stdint.h>
 
 #define STDIN 0
 #define STDOUT 1
@@ -17,12 +18,16 @@ static int fontColour = STDOUT_COL;
 
 
 // static const char *registers[] = {"RAX:", "RBX:", "RCX:", "RDX:", "RBP:", "RDI:", "RSI:", "R8 :", "R9 :", "R10:", "R11:", "R12:", "R13:", "R14:", "R15:"};
+static uint64_t regs[17] = {0};
 
+uint64_t* getRegs(){
+    return regs;
+}
 uint64_t sysGetReg(uint64_t buffer, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9)
 {
     long long *array = (long long *)buffer;
     for (int i = 0; i < 15; i++) {
-        array[i] = _getReg(i);
+        array[i] = regs[i];
     }
     return 0;
 }

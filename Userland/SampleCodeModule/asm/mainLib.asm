@@ -94,11 +94,14 @@ drawFig:
 scClear:
     push rbp
     mov rbp,rsp
+
     push rdi
+    push rsi
 
     mov rdi, 2
     int 80h
     
+    pop rsi
     pop rdi
     leave
     ret
@@ -109,6 +112,7 @@ chFont:
 
     push rbp
     mov rbp,rsp
+
     push rdi
     push rsi
 
@@ -118,6 +122,7 @@ chFont:
 
     pop rsi
     pop rdi
+
     leave
     ret
 
@@ -128,6 +133,7 @@ timeInfo:
 
     push rbp
     mov rbp,rsp
+
     push rdi
     push rsi
 
@@ -137,6 +143,7 @@ timeInfo:
 
     pop rsi
     pop rdi
+
     leave
     ret
 
@@ -210,6 +217,7 @@ getRegs:
 
     push rbp
     mov rbp,rsp
+
     push rdi
     push rsi
 
@@ -219,6 +227,7 @@ getRegs:
 
     pop rsi
     pop rdi
+    
     leave
     ret
 
