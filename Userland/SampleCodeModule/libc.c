@@ -341,3 +341,41 @@ char *intToHexa(long long num, char *str, int bytes)
     // Reverse the string 
     return reverse(str, 0, i-1); 
 } 
+
+
+int hexaToInt(char* num){
+    int len = strlen(num);
+
+    // Initializing base value to 1, i.e 16^0
+    int base = 1;
+
+    int decVal = 0;
+
+    // Extracting characters as digits from last character
+    for (int i = len - 1; i >= 0; i--)
+    {
+        // if character lies in '0'-'9', converting
+        // it to integral 0-9 by subtracting 48 from
+        // ASCII value
+        if (num[i] >= '0' && num[i] <= '9')
+        {
+            decVal += (num[i] - 48) * base;
+
+            // incrementing base by power
+            base = base * 16;
+        }
+
+        // if character lies in 'A'-'F' , converting
+        // it to integral 10 - 15 by subtracting 55
+        // from ASCII value
+        else if (num[i] >= 'A' && num[i] <= 'F')
+        {
+            decVal += (num[i] - 55) * base;
+
+            // incrementing base by power
+        }
+
+    }
+
+    return decVal;
+}

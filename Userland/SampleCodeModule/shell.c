@@ -9,13 +9,12 @@ int static fontColor = NICE_WHITE;
 int static colors[] = {NICE_WHITE,NICE_RED,NICE_YELLOW,NICE_BLUE,NICE_GREEN,NICE_PINK};
 enum colorPick {WHITE, RED, YELLLOW, BLUE, GREEN, PINK};
 static const char *registers[] = {"RAX:", "RBX:", "RCX:", "RDX:", "RBP:", "RDI:", "RSI:", "R8 :", "R9 :", "R10:", "R11:", "R12:", "R13:", "R14:", "R15:"};
-
 void shellWelcome();
 void shellMainLoop();
 void shellExit();
 void help();
 void printTime();
-void printMem(long long address);
+void printMem(char *hexa);
 void printRegisters();
 void divExc();
 
@@ -52,8 +51,9 @@ void shellMainLoop(){
         else if(strcmp(command,"clear")==0)
             scClear();
         else if (strcmp(command, "printmem") == 0){
-            if (param[0]!=0)
-                printMem(strToInt(param,&aux));
+            if (param[0]=='0'&& param[1]=='x')
+                printMem(param);
+            else print("Se necesita un parametro en hexa valido\n");
         }
         else if (strcmp(command, "chess") == 0)
             chess();
@@ -126,17 +126,18 @@ void printCommandDesc(char *name, char *desc)
     chFont(fontColor);
 }
 
-void printMem(long long address){
+void printMem(char* hexa){
+    long long address = hexaToInt(hexa);
     unsigned char buff[33];
-    char hexa[10];
+    char byte[10];
     getMem(buff,address,32);
     print("\n");
-    print("Memoria en address %d :\n\n",address);
+    print("Memoria en address %s :\n\n",hexa);
     for (int i=0;i<32;i++){
         if (i==16)
             print("\n");
-        intToHexa((char)buff[i],hexa,1);
-        print("%s ",hexa);
+        intToHexa((char)buff[i], byte, 1);
+        print("%s ", byte);
     }
     print("\n\n");
 }
