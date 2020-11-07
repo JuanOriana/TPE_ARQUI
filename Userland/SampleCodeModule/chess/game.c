@@ -76,7 +76,7 @@ void movePiece(char *from, char *to)
         //Cargo mov
         //if(pieceCaptured) { log[logSize++] = 'x';} SE ROMPE EL LOG
         log[logSize++] = to[0];
-        log[logSize++] = tY + '0';
+        log[logSize++] = '8' - tY;
         log[logSize++] = 0;
         }
     }
