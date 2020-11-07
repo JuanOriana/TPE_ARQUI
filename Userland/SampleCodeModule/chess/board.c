@@ -327,7 +327,7 @@ void printBoard(int board[SIZE][SIZE], int rotation)
     case 90:
         print("\n\n");
         for(int x = 0; x < SIZE; x++){
-            print("     %c ", 'A' + x);
+            print("                    %c ", 'A' + x);
             for(int y = SIZE - 1; y>=0 ; y--){
                 printPiece(board,x,y);
             }
@@ -338,11 +338,11 @@ void printBoard(int board[SIZE][SIZE], int rotation)
             print("  %d  ", i);
         }
         break;
-    case 180://180
+    case 180:
         print("\n\n");
         for (int y = SIZE - 1; y >= 0; y--)
         {
-            print("     %d ", SIZE - y);
+            print("                    %d ", SIZE - y);
             for (int x = SIZE - 1; x >= 0; x--)
             {
                 printPiece(board, x, y);
@@ -358,7 +358,7 @@ void printBoard(int board[SIZE][SIZE], int rotation)
         print("\n\n");
         for (int x = SIZE - 1; x >= 0; x--)
         {
-            print("     %c ", 'A' + x);
+            print("                    %c ", 'A' + x);
             for (int y = 0; y < SIZE; y++)
             {
                 printPiece(board, x, y);
