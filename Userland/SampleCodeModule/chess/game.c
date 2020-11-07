@@ -27,7 +27,7 @@ char initials[] = {'P','B','N','R','Q','K'};
 int wKingPos[2] = {4,7};
 int bKingPos[2] = {4,0};
 int checked =0;
-int winner=0; // -1 gana negro / 0 esta en juego / 1 gana blanco / >1 tablas 
+int winner=0; // -1 gana negro / 0 esta en juego / 1 gana blanco / >1 tablas
 
 static int gameBoard[SIZE][SIZE] ={
     {BROOK,BKNIGHT,BBISHOP,BQUEEN,BKING,BBISHOP,BKNIGHT,BROOK}, //0
@@ -210,9 +210,9 @@ void endGame(){
 }
 
 void checkConditions(){
-    checked=surrounded=0;
-    int * kingPos = currentPlayer==WHITE?wKingPos:bKingPos;
-    checked= isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
+    // checked=surrounded=0;
+    // int * kingPos = currentPlayer==WHITE?wKingPos:bKingPos;
+    // checked= isAttacked(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
     // surrounded= isSurrounded(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
     // // if (surrounded){
     //     if (checked)

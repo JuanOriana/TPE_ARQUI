@@ -110,29 +110,5 @@ char *reverse(char *buffer, int i, int j)
     return buffer;
 }
 
-long int getNormSecsInDay(){
-    return getTime(0)+getTime(1)*60+ getTime(2)*3600+getTime(3);
-}
 
-//Espera unos segs determinados
-//IMPLEMENTACION RUDIMENTARIA
-void hold(int secs){
-    long int initTime,currTime;
-    long int timeDif=0;
-    int passedDays =0;
-    initTime = currTime = getNormSecsInDay();
-    while(1){
-        currTime = getNormSecsInDay();
-        timeDif = currTime - initTime + (passedDays * 86400);
-        if (timeDif<0){ //Paso un dia
-            passedDays++;
-            timeDif+=86400;
-        }
-
-        if (timeDif>=secs)
-            return;
-
-    }
-
-}
 

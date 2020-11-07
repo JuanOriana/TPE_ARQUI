@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <syscalls.h>
 #include <lib.h>
+#include <rtc.h>
 
 
 #define ZERO_EXCEPTION_ID 0
@@ -41,7 +42,7 @@ void printRegisters(uint64_t rsp){
     intToHexa((long long)(rsp),hexa,8);
     sysWrite(2,(uint64_t)hexa,20,0,0);
     sysWrite(1,(uint64_t)"\n",1,0,0);
-    getRegs(buff);
+    getRegs();
 
     for (int i=14;i>=0;i--){
         intToHexa((long long)buff[i],hexa,8);

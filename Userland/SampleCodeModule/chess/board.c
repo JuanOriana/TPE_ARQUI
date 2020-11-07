@@ -201,8 +201,8 @@ int checkBishop(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, 
 
 int checkKing(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY)
 {
-    int isCastling = checkCastling(board,side,fromX,fromY,toX,toY);
-    if(isCastling){return isCastling;}
+    // int isCastling = checkCastling(board,side,fromX,fromY,toX,toY);
+    // if(isCastling){return isCastling;}
     int absDisX = abs(fromX - toX);
     int absDisY = abs(fromY - toY);
     if(absDisX <= 1  && absDisY <=1 && !(absDisY ==0 && absDisX==0)) { 
@@ -231,7 +231,7 @@ int checkCastling(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX
 {
     //Chequeo que parto de un rey y me dirijo hacia una torre
     //IF remplazable con flag de movimiento
-    if((abs(board[fromY][fromX]) != 6 ) || bCastlingChecks[1] || wCastlingChecks[1]) { return 0;}
+    if((abs(board[fromY][fromX]) != 6 ) || (side == BLACK && bCastlingChecks[1]) || (side == WHITE && wCastlingChecks[1])) { return 0;}
 
     if(side == BLACK) {
         //Enroque largo
@@ -278,7 +278,7 @@ int isAttacked(int board[SIZE][SIZE], int x, int y, int attacker)
     for (int i=0; i<SIZE;i++)
         for (int j=0; j<SIZE;j++)
             //Hay un movimiento legal de una de mis piezas?
-            if ((board[j][i] * attacker > 0 && checkMove(board, i, j, x, y)))
+            if ((board[j][i] * attacker < 0 && checkMove(board, i, j, x, y)))
                 return 1;
     return 0;
 }
@@ -312,6 +312,7 @@ int isSurrounded(int board[SIZE][SIZE], int x, int y, int attacker){
 
 void printBoard(int board[SIZE][SIZE], int rotation)
 {
+    chFont(0xFFFFFF);
     switch (rotation)
     {
     case 0:
