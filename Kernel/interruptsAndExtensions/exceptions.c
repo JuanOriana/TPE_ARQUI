@@ -42,10 +42,9 @@ void printRegisters(uint64_t rsp){
     intToHexa((long long)(rsp),hexa,8);
     sysWrite(2,(uint64_t)hexa,20,0,0);
     sysWrite(1,(uint64_t)"\n",1,0,0);
-    getRegs();
 
     for (int i=14;i>=0;i--){
-        intToHexa((long long)buff[i],hexa,8);
+        intToHexa((long long)_getReg(i),hexa,8);
         sysWrite(2,(uint64_t)registers[14-i] ,3,0,0);
         sysWrite(2,(uint64_t)": " ,2,0,0);
         sysWrite(2,(uint64_t)hexa,20,0,0);

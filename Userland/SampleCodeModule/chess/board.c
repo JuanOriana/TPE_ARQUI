@@ -201,8 +201,8 @@ int checkBishop(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, 
 
 int checkKing(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY)
 {
-    // int isCastling = checkCastling(board,side,fromX,fromY,toX,toY);
-    // if(isCastling){return isCastling;}
+    int isCastling = checkCastling(board,side,fromX,fromY,toX,toY);
+    if(isCastling){return isCastling;}
     int absDisX = abs(fromX - toX);
     int absDisY = abs(fromY - toY);
     if(absDisX <= 1  && absDisY <=1 && !(absDisY ==0 && absDisX==0)) { 
@@ -235,37 +235,37 @@ int checkCastling(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX
 
     if(side == BLACK) {
         //Enroque largo
-        if(checkRook(board,side,0,0,3,0) && !bCastlingChecks[0]) {
+        if(checkRook(board,side,0,0,3,0) && !bCastlingChecks[0] && toX == 0 && toY == 0) {
             //Chequeo si por donde pasa el rey hacia su posicion final no esta en ataque
-            // for(int i  = 1 ; i <= 4; i ++){
-            //     if(isAttacked(board,i,0,WHITE))
-            //         return 0;
-            // }
+            for(int i  = 1 ; i <= 4; i ++){
+                if(isAttacked(board,i,0,WHITE))
+                    return 0;
+            }
             return 3;
         }
         //Enroque corto
-        if(checkRook(board,side,7,0,5,0) && !bCastlingChecks[2]) {
-            // for(int i  = 6 ; i >= 4; i--){
-            //     if(isAttacked(board,i,0,WHITE))
-            //         return 0;
-            // };
+        if(checkRook(board,side,7,0,5,0) && !bCastlingChecks[2] && toX == 7 && toY == 0) {
+            for(int i  = 6 ; i >= 4; i--){
+                if(isAttacked(board,i,0,WHITE))
+                    return 0;
+            };
             return 2;
         }
     }
     else {//Idem con rey blanco
-        if(checkRook(board,side,0,7,3,7) && !wCastlingChecks[0]) {
-            // for(int i  = 1 ; i <= 4; i++){
-            //     if(isAttacked(board,i,7,BLACK))
-            //         return 0;
-            // }
+        if(checkRook(board,side,0,7,3,7) && !wCastlingChecks[0] && toX == 0 && toY == 7) {
+            for(int i  = 1 ; i <= 4; i++){
+                if(isAttacked(board,i,7,BLACK))
+                    return 0;
+            }
             return 3;
         }
         //Enroque corto
-        if(checkRook(board,side,7,7,5,7) && !wCastlingChecks[2]) {
-            // for(int i  = 6 ; i >= 4; i--){
-            //     if(isAttacked(board,i,7,BLACK))
-            //         return 0;
-            // }
+        if(checkRook(board,side,7,7,5,7) && !wCastlingChecks[2] && toX == 7 && toY == 7) {
+            for(int i  = 6 ; i >= 4; i--){
+                if(isAttacked(board,i,7,BLACK))
+                    return 0;
+            }
             return 2;
         }
     }
@@ -278,7 +278,8 @@ int isAttacked(int board[SIZE][SIZE], int x, int y, int attacker)
     for (int i=0; i<SIZE;i++)
         for (int j=0; j<SIZE;j++)
             //Hay un movimiento legal de una de mis piezas?
-            if ((board[j][i] * attacker < 0 && checkMove(board, i, j, x, y)))
+            //No entiendo pq el producto tiene que ser positivo
+            if ((board[j][i] * attacker > 0 && checkMove(board, i, j, x, y)))
                 return 1;
     return 0;
 }

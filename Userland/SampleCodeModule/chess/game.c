@@ -171,10 +171,10 @@ int wellFormatedIn(char* input){
     return 1;
 }
 
-int  checkInput(char* from, char* to){
+int checkInput(char* from, char* to){
 
     //Mal formato?
-    if (!wellFormatedIn(from)||!wellFormatedIn(to))
+    if (!wellFormatedIn(from)|| !wellFormatedIn(to))
         return -1;
 
     int fX = from[0] - 'A';
@@ -193,11 +193,11 @@ int  checkInput(char* from, char* to){
 
     //Es valido el movimiento?
     int flag = checkMove(gameBoard, fX, fY, tX, tY);
-    
+
     if (!flag)
         return -3;
     if(flag == LONG_CASTLING || flag == SHORT_CASTLING){ isCastling = flag;}
-    
+
     return 1;
 }
 void endGame(){
@@ -254,7 +254,7 @@ void checkConditions(){
     //     //STALEMATE NO NECESARIAMENTE CUMPLE ESTA CONDICION
     //     // else
     //     //     winner=2;
-    // }   
+    // }
     return;
 }
 
