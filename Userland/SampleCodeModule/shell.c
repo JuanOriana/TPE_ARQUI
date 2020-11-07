@@ -128,7 +128,7 @@ void printMem(long long address){
     print("\n");
     print("Memoria en address %d :\n\n",address);
     for (int i=0;i<32;i++){
-        if (i==15)
+        if (i==16)
             print("\n");
         intToHexa((char)buff[i],hexa,1);
         print("%s ",hexa);
