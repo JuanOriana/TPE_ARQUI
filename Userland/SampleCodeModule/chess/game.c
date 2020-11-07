@@ -23,6 +23,7 @@ char* players[] = {"negro","","blanco"};
 char log[LOG_MAX] = {0};
 int logSize=0;
 char initials[] = {'P','B','N','R','Q','K'};
+int autoRotation = 0;
 
 //Resulta mas conveniente por chequeos de jaques ir llevando posicion de los reyes (GUARDADO EN X,Y)
 int wKingPos[2] = {4,7};
@@ -159,6 +160,7 @@ void initializeGame(){
     playerWTime=playerBTime=2*60;
     currentPlayer=1;
     surrounded=winner=checked=0;
+    autoRotation=1;
     logSize=0;
     initializeBoard(gameBoard);
 }
@@ -258,14 +260,25 @@ void checkConditions(){
 
 void play(){
     //IMPLEMENTAR;
-    char from[4];
-    char to[4];
+    char from[10];
+    char to[10];
     int flag=0;
     timer(TIMER_START, 1, timeMainLoop);
     while(!winner){
-        from[1]=0;
-        to[1]=0;
+        from[1]=to[0]=to[1]=0;
         scClear();
+        chFont(0xF800DD);
+        writeAtPos(1, "Rotacion automatica ", 30, 640, 300);
+        writeAtPos(1, "\b\b\b\b\b\b\b\b\b", 10, 800, 300);
+        if (autoRotation)
+        {
+            writeAtPos(1, "ACTIVADA", 10, 800, 300);
+            boardRotation = currentPlayer==WHITE?0:180;
+        }
+        else{
+            writeAtPos(1, "DESACTIVADA", 12, 800, 300);
+            writeAtPos(1, "Usar rotate auto para reactivarla ", 40, 640, 320);
+        }
         printBoard(gameBoard,boardRotation);
         chFont(WCOLOR);
         printLog();
@@ -274,7 +287,7 @@ void play(){
             print("\n\n    CHECK!\n");
         print("Mueve el %s", players[currentPlayer + 1]);
         chFont(WCOLOR);
-        print("\nIngresa un movimiento, \"stop\" para pausar o \"rotate\" para rotar el tablero 90 grados: \n");
+        print("\nIngresa un movimiento, \"stop\" para pausar o \"rotate\" para rotar el tablero 90 grados: \n>>>");
         scan("%s %s",from,to);
         if (winner) //EXISTE LA POSIBILIDAD QUE EL JUGADOR HAYA PERDIDO ESPERANDO UNA JUGADA
             break;
@@ -283,7 +296,14 @@ void play(){
             return;
         }
         else if(strcmp(from,"rotate")==0){
-            rotateBoard();
+            if (strcmp(to,"auto")==0){
+                autoRotation=1;
+                boardRotation=currentPlayer+1;
+            }
+            else if(to[0]==0){
+                autoRotation=0;
+                rotateBoard();
+            }
             scClear();
             printBoard(gameBoard,boardRotation);
             continue;
@@ -327,35 +347,48 @@ void play(){
 }
 
 void welcomeMessage(){
+    print("\n\n-----------------------------------------------------------------------------------------------------\n");
+    chFont(0xF0FF33);
+    print("                        Bienvenido a \"CHESS - The Game!\"\n\n\n");
+    chFont(WCOLOR);
+    print(" Este es un juego de ajedrez para dos jugadores con tiempo limitado.\n\n");
     chFont(0x00FFFF);
-    print("Bienvenido a \"CHESS - The Game!\"\n\n\n");
+    print("////REGLAS\n\n");
     chFont(WCOLOR);
-    print("Este es un juego de ajedrez para dos jugadores con tiempo limitado.\n\n");
-    chFont(0xF0FF33);
-    print("REGLAS\n\n");
+    print("-- Cada jugador tiene 10 minutos de juego total\n");
+    print("-- Acabarse esos 10 minutos o tener una diferencia de mas de 1 minuto con el oponente\n");
+    print("   implica perder al partida\n\n");
+    print("-- Se ingresan los movimientos con coordenadas alfanumericas con el siguiente formato: \n");
+    chFont(0xFCFF83);
+    print("            (ORIGEN) (DESTINO)\n");
     chFont(WCOLOR);
-    print("-- Cada jugador tiene 1 minuto de juego total\n");
-    print("-- Se ingresan los movimientos con coordenadas alfanumericas con el siguiente formato: \n\n");
-    print("        (ORIGEN) (DESTINO)\n");
-    print("Por ejemplo: \"A7 A5\" mueve la pieza de A7 a A5, si es valido el movimiento\n\n");
+    print(" Por ejemplo: \"A7 A5\" mueve la pieza de A7 a A5, si es valido el movimiento\n\n");
     print("-- Durante una partida se puede pausar usando el comando especial \"stop\"\n\n");
-    print("-- Siempre comienza a jugar el jugador blanco\n\n\n");
-    chFont(0xF0FF33);
-    print("COMANDOS\n\n");
+    print("-- Durante la partida se puede rotar la pantalla con el comando \"rotate\"\n\n");
+    print("-- Siempre comienza a jugar el jugador blanco\n\n");
+    print("-- La repeticion de una misma posicion 3 veces implica TABLAS\n\n");
+    print("-- La rotacion automatica esta ACTIVADA por defecto\n");
+    print("   rota una vez para desactivarla\n\n\n");
+    chFont(0x00FFFF);
+    print("////COMANDOS\n\n");
     chFont(WCOLOR);
-    print("-- Los comandos van escritos sin usar \"!\". Puedes usar \n\n");
-    chFont(0x8844FF);
-    print("newgame");
+    print("-- Los comandos van escritos sin usar \"!\". Puedes usar: \n\n");
+    chFont(0x8899FF);
+    print("  newgame");
     chFont(WCOLOR);
     print(" para comenzar un juego nuevo\n");
-    chFont(0x8844FF);
-    print("continue");
+    chFont(0x8899FF);
+    print("  continue");
     chFont(WCOLOR);
     print(" para continuar uno ya comenzado\n");
-    chFont(0xFF00);
-    print("exit");
+    chFont(0xDD4422);
+    print("  exit");
     chFont(WCOLOR);
-    print(" para salir de la aplicacion.\n\n Gracias por jugar!!!\n\n\n");
+    print(" para salir de la aplicacion.\n\n");
+    chFont(0xF0FF33);
+    print("                      Gracias por jugar!!!\n\n");
+    chFont(WCOLOR);
+    print("-----------------------------------------------------------------------------------------------------");
     return;
 }
 
@@ -383,8 +416,11 @@ void chess(){
             scClear();
             return;
         }
-        else
+        else{
+            chFont(0xF0FF33);
             print("\nNo entendi tu comando! proba con uno de estos: newgame - continue - exit\n");
+            chFont(WCOLOR);
+        }
     }
     return;
 }

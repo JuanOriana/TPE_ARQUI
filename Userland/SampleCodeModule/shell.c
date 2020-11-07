@@ -67,7 +67,7 @@ void shellMainLoop(){
             return;
         else{
             chFont(NICE_YELLOW);
-            print("No entendi tu comando! escriba ");
+            print("   No entendi tu comando! escriba ");
             chFont(NICE_PINK);
             print("!help ");
             chFont(NICE_YELLOW);
@@ -81,13 +81,13 @@ void shellMainLoop(){
 
 void printLogo(){
     print("\n\n");
-    print(" _______  _______  ___      ___      _______         _______  _______ \n");
-    print("|       ||       ||   |    |   |    |       |       |       ||       |\n");
-    print("|    _  ||   _   ||   |    |   |    |   _   | ____  |   _   ||  _____|\n");
-    print("|   |_| ||  | |  ||   |    |   |    |  | |  ||____| |  | |  || |_____ \n");
-    print("|    ___||  |_|  ||   |___ |   |___ |  |_|  |       |  |_|  ||_____  |\n");
-    print("|   |    |       ||       ||       ||       |       |       | _____| |\n");
-    print("|___|    |_______||_______||_______||_______|       |_______||_______|\n");
+    print("      _______  _______  ___      ___      _______         _______  _______ \n");
+    print("     |       ||       ||   |    |   |    |       |       |       ||       |\n");
+    print("     |    _  ||   _   ||   |    |   |    |   _   | ____  |   _   ||  _____|\n");
+    print("     |   |_| ||  | |  ||   |    |   |    |  | |  ||____| |  | |  || |_____ \n");
+    print("     |    ___||  |_|  ||   |___ |   |___ |  |_|  |       |  |_|  ||_____  |\n");
+    print("     |   |    |       ||       ||       ||       |       |       | _____| |\n");
+    print("     |___|    |_______||_______||_______||_______|       |_______||_______|\n");
     print("\n\n\n\n");
 }
 
@@ -110,8 +110,8 @@ void shellWelcome()
     scClear();
     chFont(NICE_YELLOW);
     printLogo();
-    print("Hola y bienvenido a Pollo-OS! Este es un trabajo practico especial para\n la materia Arquitectura de Computadoras.\n\n");
-    print("Para conocer los comandos habilitados, escriba ");
+    print("   Hola y bienvenido a Pollo-OS! Este es un trabajo practico especial para\n la materia Arquitectura de Computadoras.\n\n");
+    print("   Para conocer los comandos habilitados, escriba ");
     chFont(NICE_PINK);
     print("!help \n\n\n");
     chFont(NICE_WHITE);
