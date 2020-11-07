@@ -287,7 +287,7 @@ void play(){
             print("\n\n    CHECK!\n");
         print("Mueve el %s", players[currentPlayer + 1]);
         chFont(WCOLOR);
-        print("\nIngresa un movimiento, \"stop\" para pausar o \"rotate\" para rotar el tablero 90 grados: \n>>>");
+        print("\nIngresa un movimiento, \"stop\" para pausar o \"rotate\" para rotar el tablero 90 grados: \n>>> ");
         scan("%s %s",from,to);
         if (winner) //EXISTE LA POSIBILIDAD QUE EL JUGADOR HAYA PERDIDO ESPERANDO UNA JUGADA
             break;
@@ -400,7 +400,7 @@ void chess(){
     while(1){
         print("\nCHESS - The Game\n");
         command[0] = 0;
-        print(">>>");
+        print(">>> ");
         scan("%s", command);
         if (strcmp(command,"newgame")==0){
             initializeGame();
