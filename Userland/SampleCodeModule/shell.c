@@ -17,6 +17,7 @@ void help();
 void printTime();
 void printMem(long long address);
 void printRegisters();
+void divExc();
 
 void shellRun()
 {
@@ -58,6 +59,10 @@ void shellMainLoop(){
             chess();
         else if (strcmp(command, "inforeg") == 0)
             printRegisters();
+        else if (strcmp(command,"divex") == 0)
+            divExc();
+        else if(strcmp(command,"opex")==0)
+            opCodeExc();
         else if (strcmp(command, "exit") == 0) 
             return;
         else{
@@ -162,6 +167,8 @@ void help(){
     printCommandDesc("color (numero del 0 al 5 )","Cambiar color de la fuente");
     printCommandDesc("printmem (direcciones)","Dump de 32 bytes desde la direccion dada");
     printCommandDesc("inforeg","Se imprime el valor de los registros");
+    printCommandDesc("divex","Para lanzar una excepcion por division por cero");
+    printCommandDesc("opex","Para lanzar una excepcion por operador de codigo invalido");
     printCommandDesc("exit","Finaliza la ejecucion");
     print("\n\n\n");
     chFont(fontColor);
@@ -192,4 +199,9 @@ void printTime()
     printTwoDig(getSeconds());
     print("\n\n");
     chFont(fontColor);
+}
+
+void divExc(){
+    int a = 1, b = 0 ;
+    a = a/b;
 }
