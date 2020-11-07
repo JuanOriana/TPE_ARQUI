@@ -29,7 +29,7 @@ int autoRotation = 0;
 int wKingPos[2] = {4,7};
 int bKingPos[2] = {4,0};
 int checked =0;
-int winner=0; // -1 gana negro / 0 esta en juego / 1 gana blanco / >1 tablas 
+int winner=0; // -1 gana negro / 0 esta en juego / 1 gana blanco / >1 tablas
 
 static int gameBoard[SIZE][SIZE] ={
     {BROOK,BKNIGHT,BBISHOP,BQUEEN,BKING,BBISHOP,BKNIGHT,BROOK}, //0
@@ -171,10 +171,10 @@ int wellFormatedIn(char* input){
     return 1;
 }
 
-int  checkInput(char* from, char* to){
+int checkInput(char* from, char* to){
 
     //Mal formato?
-    if (!wellFormatedIn(from)||!wellFormatedIn(to))
+    if (!wellFormatedIn(from)|| !wellFormatedIn(to))
         return -1;
 
     int fX = from[0] - 'A';
@@ -193,11 +193,11 @@ int  checkInput(char* from, char* to){
 
     //Es valido el movimiento?
     int flag = checkMove(gameBoard, fX, fY, tX, tY);
-    
+
     if (!flag)
         return -3;
     if(flag == LONG_CASTLING || flag == SHORT_CASTLING){ isCastling = flag;}
-    
+
     return 1;
 }
 void endGame(){
@@ -254,7 +254,7 @@ void checkConditions(){
     //     //STALEMATE NO NECESARIAMENTE CUMPLE ESTA CONDICION
     //     // else
     //     //     winner=2;
-    // }   
+    // }
     return;
 }
 

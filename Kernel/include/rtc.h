@@ -14,5 +14,7 @@
 
 int _RTC(unsigned int rtcSelector);
 int getTime(unsigned int timeSelector);
+long int getNormSecsInDay(void);
+void hold(int secs);
 
 
