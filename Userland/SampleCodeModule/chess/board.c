@@ -21,6 +21,7 @@ int checkKnight(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, 
 int checkBishop(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY);
 int checkKing(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY);
 int checkQueen(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY);
+int checkEnPassant(int board[SIZE][SIZE],int side, int fromX, int fromY,int toX, int toY, char* previousMov);
 
 int initialBoard[SIZE][SIZE] = {
     {BROOK, BKNIGHT, BBISHOP, BQUEEN, BKING, BBISHOP, BKNIGHT, BROOK}, //0
