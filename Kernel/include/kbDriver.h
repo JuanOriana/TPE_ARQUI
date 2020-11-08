@@ -10,4 +10,7 @@ int dumpChar();
 // devuelve cuantos chars se pudieron dumpear
 int dumpBuffer(char *destination, int size);
 void loadRegs(uint64_t *rsp);
+int setKeyFun(int key, void (*f)());
+int cleanKeyFun(int key);
+
 #endif 

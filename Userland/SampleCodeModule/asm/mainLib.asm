@@ -10,6 +10,7 @@ GLOBAL getRegs
 GLOBAL writeAtPos
 GLOBAL timer
 GLOBAL opCodeExc
+GLOBAL keyBinder
 
 ; read - lee de un fd determinado
 ; IN- RDI - FD
@@ -249,6 +250,33 @@ timer:
     mov rdx, rsi  ;intervalo en rdx
     mov rsi,rdi   ; flag en rsi
     mov rdi,9    ; id int
+    int 80h
+
+    pop rcx
+    pop rdx
+    pop rsi
+    pop rdi
+
+    leave
+    ret
+
+;keyBinder: bindea una tecla de funcion (F1 o F2) a una funcion
+;IN- RDI - flag de bind o unbind
+;    RSI - tecla a bindear
+;    RDX - funcion
+keyBinder:
+    push rbp
+    mov rbp,rsp;
+
+    push rdi
+    push rsi
+    push rdx
+    push rcx
+
+    mov rcx ,rdx ;function en rcx
+    mov rdx, rsi  ;tecla en rdx
+    mov rsi,rdi   ; flag en rsi
+    mov rdi,10    ; id int
     int 80h
 
     pop rcx
