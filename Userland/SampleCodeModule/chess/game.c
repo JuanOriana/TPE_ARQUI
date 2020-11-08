@@ -229,6 +229,7 @@ void endGame()
     keyBinder(0,F2,manualRotRight);
     chFont(0xDD5599);
     if (winner<=1){
+        // surrounden no llego a ser implementaddo!
         if (surrounded&&checked){
             print("\n                                                    ---- CHECK MATE ------\n");
         }
@@ -312,7 +313,7 @@ void play(){
         printLog();
         chFont(0xDD22DD);
         if (checked)
-            print("\n\n    CHECK!\n");
+            print("\n    CHECK!\n");
         print("Mueve el %s", players[currentPlayer + 1]);
         chFont(WCOLOR);
         print("\nIngresa un movimiento, \"stop\" para pausar o \"rotate\" para rotar el tablero 90 grados: \n>>> ");
