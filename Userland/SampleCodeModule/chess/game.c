@@ -173,7 +173,7 @@ void timeMainLoop()
 void initializeGame(){
     wKingPos[0]=4;wKingPos[1]=7;bKingPos[0]=4;bKingPos[1]=0;
     activeGame=1;
-    playerWTime=playerBTime=2*60;
+    playerWTime=playerBTime=10*60;
     currentPlayer=1;
     surrounded=winner=checked=0;
     autoRotation=1;
