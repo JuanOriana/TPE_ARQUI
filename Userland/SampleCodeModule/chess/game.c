@@ -7,6 +7,7 @@
 
 #define LONG_CASTLING 3
 #define SHORT_CASTLING 2
+#define EN_PASS 4
 #define LOG_MAX 1024
 #define MOV_SIZE 4
 
@@ -16,6 +17,7 @@ int playerBTime = 10*60;
 int boardRotation = 0;
 int pieceCaptured = 0;
 int isCastling = 0;
+int isEnPass = 0;
 // 1 blanco, -1 negro
 int currentPlayer = 1;
 int surrounded=0;
@@ -102,7 +104,11 @@ void movePiece(char *from, char *to)
     if (gameBoard[fY][fX] == BPAWN &&tY == 0)
         gameBoard[fY][fX] = BQUEEN;
 
-    if(isCastling){
+    if(isEnPass){
+        isEnPass= 0;
+        enPassant(fX,fY,tX,tY);
+    }
+    else if(isCastling){
         isCastling = 0;
         castling(fX,fY,tX,tY);
     }
@@ -192,11 +198,13 @@ int checkInput(char* from, char* to){
     int tY = 8 - (to[1] - '0');
 
     //Es valido el movimiento?
-    int flag = checkMove(gameBoard, fX, fY, tX, tY);
+    char* prevMov = logSize> 0 ? log + logSize - 4 : log;
+    int flag = checkMove(gameBoard, fX, fY, tX, tY,prevMov);
 
     if (!flag)
         return -3;
     if(flag == LONG_CASTLING || flag == SHORT_CASTLING){ isCastling = flag;}
+    if(flag == EN_PASS) { isEnPass = 1;}
 
     return 1;
 }
@@ -460,6 +468,15 @@ void castling(int fX, int fY, int tX,int tY){
     }
     gameBoard[fY][fX] = EMPTY;
 
+}
+
+void enPassant(int fX, int fY, int tX,int tY){
+    
+    //Como el peon contrario
+    gameBoard[fY][tX] = EMPTY;
+    //Muevo mi peon
+    gameBoard[tY][tX] = gameBoard[fY][fX];
+    gameBoard[fY][fX] = EMPTY;
 }
 
 

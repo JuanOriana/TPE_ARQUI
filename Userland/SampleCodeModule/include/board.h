@@ -4,7 +4,7 @@
 #define SIZE 8
 
 void initializeBoard(int board[SIZE][SIZE]);
-int checkMove(int board[SIZE][SIZE], int fromX, int fromY, int toX, int toY);
+int checkMove(int board[SIZE][SIZE], int fromX, int fromY, int toX, int toY, char* prevMov);
 int checkCastling(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY);
 void printBoard(int board[SIZE][SIZE],int rotation);
 int checkBounds(int x, int y);
