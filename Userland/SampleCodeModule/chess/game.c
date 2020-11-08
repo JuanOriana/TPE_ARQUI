@@ -335,8 +335,10 @@ void play(){
                 autoRotation=1;
                 boardRotation=currentPlayer+1;
             }
-            else if(to[0]==0){
+            else if(to[0]==0){{
                 rotate(90);
+                autoRotation=0;
+            }
             }
             continue;
 
