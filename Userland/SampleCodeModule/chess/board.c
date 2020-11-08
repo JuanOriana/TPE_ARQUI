@@ -4,8 +4,6 @@
 
 void printPiece(int board[SIZE][SIZE],int i, int j);
 
-int wCastlingChecks[3] = {0}; //Para chequear si se movieron las torres o el rey. Formato: T - R - T
-int bCastlingChecks[3] = {0};
 
 int pawn[12] = {0xFFFF, 0x8001, 0x8001, 0xB001, 0xB871, 0xBFF1, 0xBFF1, 0xB871, 0xB001, 0x8001, 0x8001, 0xFFFF};
 int rook[12] = {0xFFFF, 0x8001, 0xA071, 0xB8F1, 0xBFE1, 0xBFF1, 0xBFF1, 0xBFE1, 0xB8F1, 0xA071, 0x8001, 0xFFFF};
@@ -19,7 +17,7 @@ int checkPawn(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, in
 int checkRook(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY);
 int checkKnight(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY);
 int checkBishop(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY);
-int checkKing(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY);
+int checkKing(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY, int castPcsMov[2][3]);
 int checkQueen(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY);
 int checkEnPassant(int board[SIZE][SIZE],int side, int fromX, int fromY,int toX, int toY, char* previousMov);
 
@@ -42,13 +40,9 @@ void initializeBoard(int board[SIZE][SIZE])
         board[row][col] = initialBoard[row][col];
         }
     }
-    for(int i = 0 ; i < 3 ; i++){
-        bCastlingChecks[i] = 0;
-        wCastlingChecks[i] = 0;
-    }
 }
 
-int checkMove(int board[SIZE][SIZE], int fromX, int fromY, int toX, int toY,char* prevMov)
+int checkMove(int board[SIZE][SIZE], int fromX, int fromY, int toX, int toY,char* prevMov, int castPcsMov[2][3])
 {
     int flag = checkBounds(fromX, fromY) * checkBounds(toX,toY);
     if (!flag)
@@ -84,11 +78,12 @@ int checkMove(int board[SIZE][SIZE], int fromX, int fromY, int toX, int toY,char
             break;
         case(WKING):
         case(BKING):
-            return checkKing(board,side,fromX,fromY,toX,toY);
+            return checkKing(board,side,fromX,fromY,toX,toY,castPcsMov);
             break;
     }
     return 0;
 }
+
 int checkBounds(int x,int y){
     if(x<0 || x>SIZE-1 || y<0 || y>SIZE-1)
         return 0;
@@ -111,14 +106,12 @@ int checkPawn(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, in
     if (absDistX==0)
         return board[toY][toX] == 0;
     if (board[toY][toX]*side < 0) { return 1;}
+
     return checkEnPassant(board,side,fromX,fromY,toX,toY,prevMov);
 }
 
 int checkRook(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY)
 {
-    // int isLeftRook = (fromX == 0 && (fromY == 0 || fromY == 7));
-    // int isRightRook = (fromX == 7 && (fromY==0 || fromY == 7));
-
     if (fromX!=toX){
         //si X cambia, y no puede hacerlo
         if (fromY!=toY)
@@ -135,24 +128,8 @@ int checkRook(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, in
         else for(int x = fromX - 1; x >toX ; x--){
                 if (board[toY][x]!=0)
                     return 0;
-                return side*board[toY][toX] <= 0;
+            return side*board[toY][toX] <= 0;
         }
-        //Paso los chequeos, es un mov valido. Es una torre?
-        // if(side*board[toY][toX] <= 0){
-        //     if(isLeftRook) {
-        //         if(side == WHITE)
-        //             wCastlingChecks[0] = 1;
-        //         else
-        //              bCastlingChecks[0] = 1;
-        //     }
-        //     else if(isRightRook) {
-        //         if(side == WHITE)
-        //             wCastlingChecks[2] = 1;
-        //         else
-        //             bCastlingChecks[2] = 1;
-        //     }
-        //     return 1;
-        // }
     }
     else
     {
@@ -172,20 +149,6 @@ int checkRook(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, in
                     return 0;
             return side*board[toY][toX] <= 0;
         }
-        //Paso los chequeos, es un mov valido?.Si lo es, es una torre?
-        // if(side*board[toY][toX] <= 0){
-        //     if(isLeftRook) {
-        //         if(side == WHITE)
-        //             wCastlingChecks[0] = 1;
-        //         else bCastlingChecks[0] = 1;
-        //         }
-        //     else if(isRightRook) {
-        //         if(side == WHITE)
-        //             wCastlingChecks[2] = 1;
-        //         else bCastlingChecks[2] = 1;
-        //     }
-        //     return 1;
-        // }
     }
     return -1;
 }
@@ -238,18 +201,14 @@ int checkBishop(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, 
     return 0;
 }
 
-int checkKing(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY)
+int checkKing(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY, int castPcsMov[2][3])
 {
-    int isCastling = checkCastling(board,side,fromX,fromY,toX,toY);
+    int isCastling = checkCastling(board,side,fromX,fromY,toX,toY,castPcsMov);
     if(isCastling){return isCastling;}
     int absDisX = abs(fromX - toX);
     int absDisY = abs(fromY - toY);
-    if(absDisX <= 1  && absDisY <=1 && !(absDisY ==0 && absDisX==0)) { 
-        if (side*board[toY][toX] <= 0){
-            if(side == BLACK) { bCastlingChecks[1]=1;}
-            else {wCastlingChecks[1] = 1;}
-            return 1;
-        }
+    if(absDisX <= 1  && absDisY <=1 && !(absDisY ==0 && absDisX==0)) {
+        return side*board[toY][toX] <= 0;
     }
     return 0;
 }
@@ -265,34 +224,34 @@ int checkQueen(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, i
     //Caso contrario es diagonal
     return checkBishop(board,side,fromX,fromY,toX,toY);
 }
-//Faltaria chequear si el rey ya se movio, quizas alguna variable booleana externa? Consultar con chicken little
-int checkCastling(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY)
+
+int checkCastling(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX, int toY, int castPcsMov[2][3])
 {
-    //Chequeo que parto de un rey y me dirijo hacia una torre
-    //IF remplazable con flag de movimiento
-    if((abs(board[fromY][fromX]) != 6 ) || (side == BLACK && bCastlingChecks[1]) || (side == WHITE && wCastlingChecks[1])) { return 0;}
+    //El rey ya se movio?
+    if((side == BLACK && castPcsMov[1][1]) || (side == WHITE && castPcsMov[0][1])) { return 0;}
 
     if(side == BLACK) {
-        //Enroque largo
-        if(checkRook(board,side,0,0,3,0) && !bCastlingChecks[0] && toX == 0 && toY == 0) {
-            //Chequeo si por donde pasa el rey hacia su posicion final no esta en ataque
+        //Chequeo si por donde pasa el rey hacia su posicion final no esta en ataque,
+        //si la torre ya se movio y si efectivamente se mueve hacia la torre
+        if(checkRook(board,side,0,0,3,0) && !castPcsMov[1][0] && toX == 0 && toY == 0) {
+
             for(int i  = 1 ; i <= 4; i ++){
                 if(isAttacked(board,i,0,WHITE))
                     return 0;
             }
-            return 3;
+            return 3; //Hubo enroque largo
         }
-        //Enroque corto
-        if(checkRook(board,side,7,0,5,0) && !bCastlingChecks[2] && toX == 7 && toY == 0) {
+        if(checkRook(board,side,7,0,5,0) && !castPcsMov[1][2] && toX == 7 && toY == 0) {
             for(int i  = 6 ; i >= 4; i--){
                 if(isAttacked(board,i,0,WHITE))
                     return 0;
             };
-            return 2;
+            return 2; //Enroque corto
         }
     }
-    else {//Idem con rey blanco
-        if(checkRook(board,side,0,7,3,7) && !wCastlingChecks[0] && toX == 0 && toY == 7) {
+    else {
+        //Idem con rey blanco
+        if(checkRook(board,side,0,7,3,7) && !castPcsMov[0][0] && toX == 0 && toY == 7) {
             for(int i  = 1 ; i <= 4; i++){
                 if(isAttacked(board,i,7,BLACK))
                     return 0;
@@ -300,7 +259,7 @@ int checkCastling(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX
             return 3;
         }
         //Enroque corto
-        if(checkRook(board,side,7,7,5,7) && !wCastlingChecks[2] && toX == 7 && toY == 7) {
+        if(checkRook(board,side,7,7,5,7) && !castPcsMov[0][2] && toX == 7 && toY == 7) {
             for(int i  = 6 ; i >= 4; i--){
                 if(isAttacked(board,i,7,BLACK))
                     return 0;
@@ -310,26 +269,28 @@ int checkCastling(int board[SIZE][SIZE], int side, int fromX, int fromY, int toX
     }
     return 0;
 }
+
 //Devuelve si un lado tiene posibilidad de ataque sobre una celda en particular
 int isAttacked(int board[SIZE][SIZE], int x, int y, int attacker)
 {
+    int useless[2][3] = {{1,1,1},{1,1,1}};
     //Busco todas mis piezas en el tablero
     for (int i=0; i<SIZE;i++)
         for (int j=0; j<SIZE;j++)
             //Hay un movimiento legal de una de mis piezas?
-            //No entiendo pq el producto tiene que ser positivo
-            if ((board[j][i] * attacker > 0 && checkMove(board, i, j, x, y,"")))
+            if ((board[j][i] * attacker > 0 && checkMove(board, i, j, x, y,"",useless))) //No me interesa el movimiento previo ni el estado de las piezas de enroque
                 return 1;
     return 0;
 }
 //Devuelve si una pieza no tiene movimientos posibles a su alrededor
 int isSurrounded(int board[SIZE][SIZE], int x, int y, int attacker){
+    int useless[2][3] = {{1,1,1},{1,1,1}};
     for (int i=-1;i<=1;i++){
         for (int j=-1;j<=1;j++){
             if (j==0&&i==0)
                 continue;
             //Me puedo mover a un lugar que no este atacado?
-            if (checkMove(board, x, y, x + i, y + j,"") && !isAttacked(board, x + i, y + j, attacker))
+            if (checkMove(board, x, y, x + i, y + j,"",useless) && !isAttacked(board, x + i, y + j, attacker))
                 return 0;
         }
     }

@@ -30,6 +30,7 @@ int logSize=0;
 char initials[] = {'P','B','N','R','Q','K'};
 int autoRotation = 0;
 int justRotated=0;
+int castlingPiecesMoved[2][3]; //(blancas,negras) (formato: T.izq - R - T.der)
 
 //Resulta mas conveniente por chequeos de jaques ir llevando posicion de los reyes (GUARDADO EN X,Y)
 int wKingPos[2] = {4,7};
@@ -117,9 +118,14 @@ void movePiece(char *from, char *to)
         castling(fX,fY,tX,tY);
     }
     else{
+        //Chequeo si se mueven piezas involucradas en el enroque
+        //Si hubo enroque se actualiza la posicion del rey en cuestion
+        castPiecesMov(fX,fY,tX,tY);
         gameBoard[tY][tX] = gameBoard[fY][fX];
         gameBoard[fY][fX] = 0;
+        
     }
+
 }
 void timeMainLoop()
 {
@@ -173,6 +179,9 @@ void initializeGame(){
     autoRotation=1;
     justRotated=0;
     logSize=0;
+    for(int i = 0 ; i < 2 ; i++)
+        for(int j = 0 ; j < 3 ; j++)
+            castlingPiecesMoved[i][j] = 0;
     initializeBoard(gameBoard);
 }
 
@@ -204,7 +213,7 @@ int checkInput(char* from, char* to){
 
     //Es valido el movimiento?
     char* prevMov = logSize> 0 ? log + logSize - 4 : log;
-    int flag = checkMove(gameBoard, fX, fY, tX, tY,prevMov);
+    int flag = checkMove(gameBoard, fX, fY, tX, tY,prevMov,castlingPiecesMoved);
 
     if (!flag)
         return -3;
@@ -414,7 +423,6 @@ void welcomeMessage(){
     return;
 }
 
-
 void chess(){
     scClear();
     welcomeMessage();
@@ -468,10 +476,12 @@ void noAutoRotation(){
     autoRotation=0;
     return;
 }
+
 void rotate(int rot){
     boardRotation = (boardRotation+rot)%360;
     return;
 }
+
 void manualRotRight()
 {
     noAutoRotation();
@@ -480,6 +490,7 @@ void manualRotRight()
     writer(0, "\n", 3);
     return;
 }
+
 void manualRotLeft()
 {
     noAutoRotation();
@@ -489,31 +500,65 @@ void manualRotLeft()
     return;
 }
 
-
-
 void castling(int fX, int fY, int tX,int tY){
     //Enroque corto
     if(tX == 7){
         gameBoard[fY][fX+1] = gameBoard[tY][tX]; //Muevo la torre
         gameBoard[tY][tX] = EMPTY;
         gameBoard[tY][tX -1] = gameBoard[fY][fX];//muevo el rey
+        //Se movieron torre y rey
+        castlingPiecesMoved[currentPlayer == WHITE? 0 : 1][0] = 1;
     }
     else{ //enroque largo
         gameBoard[fY][fX-1] = gameBoard[tY][tX]; 
         gameBoard[tY][tX] = EMPTY;
         gameBoard[tY][tX + 2] = gameBoard[fY][fX];
+        castlingPiecesMoved[currentPlayer == WHITE? 0 : 1][2] = 1;
+
     }
     gameBoard[fY][fX] = EMPTY;
 
 }
 
 void enPassant(int fX, int fY, int tX,int tY){
-    
-    //Como el peon contrario
+    //Capturo el peon contrario
     gameBoard[fY][tX] = EMPTY;
     //Muevo mi peon
     gameBoard[tY][tX] = gameBoard[fY][fX];
     gameBoard[fY][fX] = EMPTY;
 }
 
+void castPiecesMov(int fX, int fY, int tX, int tY){
+    //No chequeo el to(x,y) pues ya esta validado el movimiento
+    if(fX ==  4 && fY == 7)
+    {
+        wKingPos[0] = tX; wKingPos[1] = tY;
+        //Se movio el rey, prendo el flag
+        castlingPiecesMoved[0][1] = 1;
+    }
+
+    if(fX == 4 && fY == 0)
+    {
+        bKingPos[0] = tX; bKingPos[1] = tY;
+        //Se movio el rey, prendo el flag
+        castlingPiecesMoved[1][1] = 1;
+    }
+    //Torre izquierda
+    if(fX == 0 && (fY == 0 || fY == 7))
+    {
+        //El que juega es el blanco? se movio la torre blanca (en el caso de que sea otra pieza
+        //entonces ya se movio dicha torre)
+        if(currentPlayer == WHITE) { castlingPiecesMoved[0][0] = 1;}
+        else castlingPiecesMoved[1][0] = 1;
+    }
+    //Torre derecha
+    if(fX == 7 && (fY == 0 || fY == 7))
+    {
+        //El que juega es el blanco? se movio la torre blanca (en el caso de que sea otra pieza
+        //entonces ya se movio dicha torre)
+        if(currentPlayer == WHITE) { castlingPiecesMoved[0][2] = 1;}
+        else castlingPiecesMoved[1][2] = 1;
+    }
+
+}
 
