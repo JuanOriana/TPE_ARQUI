@@ -7,5 +7,6 @@ void printLog();
 void manualRotLeft();
 void manualRotRight();
 void castling(int fX, int fY, int tX, int tY);
+void enPassant(int fX, int fY, int tX,int tY);
 void rotate(int rot);
 #endif

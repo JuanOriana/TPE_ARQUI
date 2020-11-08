@@ -19,7 +19,7 @@ void exceptionDispatcher(int exceptionSelector,uint64_t rsp){
         sysWrite(2,(uint64_t)"Excepcion: Division por cero\n",29,0,0);
         break;
     case INVALID_OP_CODE:
-        sysWrite(2,(uint64_t)"Excepcion: Codigo Invalido\n",27,0,0);
+        sysWrite(2,(uint64_t)"Excepcion: Operacion invalida\n",30,0,0);
     default:
         break;
     }
