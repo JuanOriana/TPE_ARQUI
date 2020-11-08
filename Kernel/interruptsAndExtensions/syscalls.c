@@ -151,3 +151,12 @@ uint64_t sysTimer(uint64_t flag, uint64_t secInt, uint64_t func, uint64_t r8, ui
     return timerEnable(secInt,(functiontype) func);
     
 }
+
+uint64_t keyBind(uint64_t flag, uint64_t key, uint64_t func, uint64_t r8, uint64_t r9)
+{
+    if (!flag) //flag = 0 es un Unbind!
+    {
+        return cleanKeyFun(key);
+    }
+    return setKeyFun(key, (functiontype)func);
+}

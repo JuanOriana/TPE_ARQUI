@@ -10,6 +10,9 @@
 #define LOG_MAX 1024
 #define MOV_SIZE 4
 
+#define F1 0x3B
+#define F2 0x3C
+
 int activeGame=0;
 int playerWTime = 10*60;
 int playerBTime = 10*60;
@@ -24,6 +27,7 @@ char log[LOG_MAX] = {0};
 int logSize=0;
 char initials[] = {'P','B','N','R','Q','K'};
 int autoRotation = 0;
+int justRotated=0;
 
 //Resulta mas conveniente por chequeos de jaques ir llevando posicion de los reyes (GUARDADO EN X,Y)
 int wKingPos[2] = {4,7};
@@ -161,6 +165,7 @@ void initializeGame(){
     currentPlayer=1;
     surrounded=winner=checked=0;
     autoRotation=1;
+    justRotated=0;
     logSize=0;
     initializeBoard(gameBoard);
 }
@@ -200,8 +205,11 @@ int checkInput(char* from, char* to){
 
     return 1;
 }
-void endGame(){
+void endGame()
+{   //Unbinding
     timer(TIMER_STOP, 0, 0);
+    keyBinder(0,F1,manualRotLeft);
+    keyBinder(0,F2,manualRotRight);
     chFont(0xDD5599);
     if (winner<=1){
         if (surrounded&&checked){
@@ -263,7 +271,10 @@ void play(){
     char from[10];
     char to[10];
     int flag=0;
+    //Binding
     timer(TIMER_START, 1, timeMainLoop);
+    keyBinder(1, F1, manualRotLeft);
+    keyBinder(1, F2, manualRotRight);
     while(!winner){
         from[1]=to[0]=to[1]=0;
         scClear();
@@ -291,7 +302,13 @@ void play(){
         scan("%s %s",from,to);
         if (winner) //EXISTE LA POSIBILIDAD QUE EL JUGADOR HAYA PERDIDO ESPERANDO UNA JUGADA
             break;
+        if (justRotated){
+            justRotated=0;
+            continue;
+        }
         if (strcmp(from, "stop") == 0){
+            keyBinder(0, F1, manualRotLeft);
+            keyBinder(0, F2, manualRotRight);
             timer(TIMER_STOP, 0, 0);
             return;
         }
@@ -301,11 +318,8 @@ void play(){
                 boardRotation=currentPlayer+1;
             }
             else if(to[0]==0){
-                autoRotation=0;
-                rotateBoard();
+                rotate(90);
             }
-            scClear();
-            printBoard(gameBoard,boardRotation);
             continue;
 
         }
@@ -442,9 +456,32 @@ void printLog(){
     chFont(WCOLOR);
 }
 
-void rotateBoard(){
-    boardRotation= (boardRotation + 90)%360;
+void noAutoRotation(){
+    autoRotation=0;
+    return;
 }
+void rotate(int rot){
+    boardRotation = (boardRotation+rot)%360;
+    return;
+}
+void manualRotRight()
+{
+    noAutoRotation();
+    rotate(90);
+    justRotated=1;
+    writer(0, "\n", 3);
+    return;
+}
+void manualRotLeft()
+{
+    noAutoRotation();
+    rotate(270);
+    justRotated=1;
+    writer(0, "\n", 3);
+    return;
+}
+
+
 
 void castling(int fX, int fY, int tX,int tY){
     //Enroque corto

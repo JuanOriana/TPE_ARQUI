@@ -17,6 +17,9 @@
 
 #define CTRL 0x1D
 
+#define F1 0x3B
+#define F2 0x3C
+
 #define BACKSPACE 8 /* Ascii codes for Backspace, Tab and enter */
 #define TAB 9       /* keys.                                    */
 #define ENTER_KEY 13

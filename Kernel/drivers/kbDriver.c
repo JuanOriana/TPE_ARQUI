@@ -12,6 +12,9 @@ static int rdIdx = 0; //Posicion de escritura
 static int wrIdx = 0; //Posicion de lectura
 static int activeSize = 0; //Elementos legibles en el buffer
 
+void foo();
+void (*keyFuncs[])() = {foo,foo};
+
 static int isShifted=FALSE;
 static int capsEnabled = FALSE;
 
@@ -25,6 +28,11 @@ void keyboardHandler(uint64_t rsp)
     if (_inRead(0x64) != 0) // Se puede leer el port?
     {
         unsigned char keyCode = _inRead(0x60); 
+
+        if (keyCode>=F1 && keyCode<=F2){ //Tecla de funcion!
+            (*keyFuncs[keyCode-F1])();
+            return;
+        }
 
         if (keyCode==LSHIFT_PRESSED || keyCode==RSHIFT_PRESSED){
             isShifted=TRUE;
@@ -47,7 +55,7 @@ void keyboardHandler(uint64_t rsp)
 
         int shiftState =  isShifted==capsEnabled?0:1; //Uno solo esta encendido
         char c = scanToAscii[keyCode][shiftState];
-        
+
         loadChar(c);
 
     }
@@ -105,4 +113,21 @@ void loadRegs(uint64_t* rsp){
     uint64_t * regs = getRegs();
     for (int i =0 ; i<15;i++)
         regs[i] = rsp[i];
+}
+
+int setKeyFun(int key, void (*f)())
+{
+    if (key>= F1 && key<=F2){ //Valor aceptados son hasta f2 (podria agregarse mas en un futuro)
+        keyFuncs[key-F1]=f;
+        return 0;
+    }
+    return -1;
+}
+
+int cleanKeyFun(int key){
+    return setKeyFun(key,foo);
+}
+
+void foo(){
+    return;
 }
