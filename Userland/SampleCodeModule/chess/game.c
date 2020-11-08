@@ -396,6 +396,7 @@ void welcomeMessage(){
     print(" Por ejemplo: \"A7 A5\" mueve la pieza de A7 a A5, si es valido el movimiento\n\n");
     print("-- Durante una partida se puede pausar usando el comando especial \"stop\"\n\n");
     print("-- Durante la partida se puede rotar la pantalla con el comando \"rotate\"\n\n");
+    print("   Tambien se puede rotar con F1 y F2!!!");
     print("-- Siempre comienza a jugar el jugador blanco\n\n");
     print("-- La repeticion de una misma posicion 3 veces implica TABLAS\n\n");
     print("-- La rotacion automatica esta ACTIVADA por defecto\n");
