@@ -21,13 +21,10 @@ static const uint64_t PageSize = 0x1000;
 
 static void * const sampleCodeModuleAddress = (void*)0x400000;
 static void * const sampleDataModuleAddress = (void*)0x500000;
-void goToSampleCodeModule();
+
 
 typedef int (*EntryPoint)();
 
-void goToSampleCodeModule(){
-	((EntryPoint)sampleCodeModuleAddress)();
-}
 
 
 void clearBSS(void * bssAddress, uint64_t bssSize)
@@ -121,23 +118,6 @@ int main()
 	ncPrint("[Finished]");
 	ncClear();
 
-
-	// char text[10];
-	//intToStr(text,getTime(2));
-	// syscallDispatcher(1,1,(uint64_t)text,10);
-
-
-	//  char naso[] = "Naso la concha de tu madre";
-	// char c;
-	//  for (int i=0;i<27;i++)
-	//  	renderChar(naso[i],x+i*18,y, 0xFF036F);
-
-	// //SOLO PROPOSITOS DE TESTEO
-	// while(1){
-	// 	if ( (c=getChar())!=-1){
-	// 		putChar(c,0xFFFFFF);
-	// 	}
-	// }
 
 	return 0;
 }

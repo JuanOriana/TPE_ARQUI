@@ -63,7 +63,7 @@ void shellMainLoop(){
             divExc();
         else if(strcmp(command,"opex")==0)
             opCodeExc();
-        else if (strcmp(command, "exit") == 0) 
+        else if (strcmp(command, "exit") == 0)
             return;
         else{
             chFont(NICE_YELLOW);
@@ -203,6 +203,8 @@ void printTime()
 }
 
 void divExc(){
+    int aa = 1;
+    for(int p = 0 ; p < 1000 ; p++){}
     int a = 1, b = 0 ;
     a = a/b;
 }

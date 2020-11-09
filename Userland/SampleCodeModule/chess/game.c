@@ -18,7 +18,6 @@ int activeGame=0;
 int playerWTime = 10*60;
 int playerBTime = 10*60;
 int boardRotation = 0;
-int pieceCaptured = 0;
 int isCastling = 0;
 int isEnPass = 0;
 // 1 blanco, -1 negro
@@ -61,7 +60,6 @@ void movePiece(char *from, char *to)
     int fY = 8 - (from[1] - '0');
     int tY = 8 - (to[1] - '0');
 
-    pieceCaptured = gameBoard[tY][tX] != 0;
 
     //Cargo inicial pieza
     if (logSize < LOG_MAX - MOV_SIZE)
@@ -72,7 +70,6 @@ void movePiece(char *from, char *to)
             log[logSize++]='-';
             log[logSize++]='O';
             }
-            //No es la notacion correcta pero hay que cambiar el log para que imprima de a 5?
             else {
                 log[logSize++]='O';
                 log[logSize++]='O';
@@ -82,8 +79,6 @@ void movePiece(char *from, char *to)
         }
         else {
         log[logSize++] = initials[abs(gameBoard[fY][fX]) - 1];
-        //Cargo mov
-        //if(pieceCaptured) { log[logSize++] = 'x';} SE ROMPE EL LOG
         log[logSize++] = to[0];
         log[logSize++] = '8' - tY;
         log[logSize++] = 0;
@@ -119,11 +114,9 @@ void movePiece(char *from, char *to)
     }
     else{
         //Chequeo si se mueven piezas involucradas en el enroque
-        //Si hubo enroque se actualiza la posicion del rey en cuestion
         castPiecesMov(fX,fY,tX,tY);
         gameBoard[tY][tX] = gameBoard[fY][fX];
         gameBoard[fY][fX] = 0;
-        
     }
 
 }
@@ -273,6 +266,7 @@ void checkConditions(){
         winner=2;
         return;
     }
+    //No se llego a implementar
     // surrounded= isSurrounded(gameBoard,kingPos[0],kingPos[1],currentPlayer*-1);
     // // if (surrounded){
     //     if (checked)
@@ -285,7 +279,6 @@ void checkConditions(){
 }
 
 void play(){
-    //IMPLEMENTAR;
     char from[10];
     char to[10];
     int flag=0;
@@ -536,14 +529,12 @@ void castPiecesMov(int fX, int fY, int tX, int tY){
     //No chequeo el to(x,y) pues ya esta validado el movimiento
     if(fX ==  4 && fY == 7)
     {
-        wKingPos[0] = tX; wKingPos[1] = tY;
         //Se movio el rey, prendo el flag
         castlingPiecesMoved[0][1] = 1;
     }
 
     if(fX == 4 && fY == 0)
     {
-        bKingPos[0] = tX; bKingPos[1] = tY;
         //Se movio el rey, prendo el flag
         castlingPiecesMoved[1][1] = 1;
     }
