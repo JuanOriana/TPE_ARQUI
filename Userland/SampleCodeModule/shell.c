@@ -203,8 +203,6 @@ void printTime()
 }
 
 void divExc(){
-    int aa = 1;
-    for(int p = 0 ; p < 1000 ; p++){}
     int a = 1, b = 0 ;
     a = a/b;
 }
