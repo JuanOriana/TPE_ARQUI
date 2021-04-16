@@ -9,3 +9,8 @@
 
 #Object files
 *.o
+
+#Test
+PVS-Studio.log
+strace_out
+report.tasks
