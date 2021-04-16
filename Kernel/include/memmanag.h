@@ -2,10 +2,7 @@
 
 #include <stdio.h>
 
-
-
-
-void *mallocCust(unsigned nbytes);
+void *mallocCust(unsigned long nbytes);
 void freeCust(void *ap);
 
 #endif

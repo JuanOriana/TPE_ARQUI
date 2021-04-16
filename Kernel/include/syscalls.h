@@ -14,6 +14,8 @@ uint64_t sysFig(uint64_t fd, uint64_t fig, uint64_t rcx, uint64_t r8, uint64_t r
 uint64_t sysWriteAtPos(uint64_t fd, uint64_t buffer, uint64_t length, uint64_t x, uint64_t y);
 uint64_t sysTimer(uint64_t flag, uint64_t secInt, uint64_t func, uint64_t r8, uint64_t r9);
 uint64_t keyBind(uint64_t flag, uint64_t key, uint64_t func, uint64_t r8, uint64_t r9);
+uint64_t sysMalloc(uint64_t bytes, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+uint64_t sysFree(uint64_t memDirec, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 uint64_t *getRegs();
 
 #endif

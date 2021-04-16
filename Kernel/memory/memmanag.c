@@ -1,11 +1,10 @@
 #define NALLOC 1024
-#define MEMORY_CAPACITY 16*1024 + 1
+#define MEMORY_CAPACITY 16 * 1024 + 1
 #define NULL 0
 #include "memmanag.h"
 
 typedef long Align;
 typedef union header Header;
-
 
 union header
 {
@@ -17,19 +16,18 @@ union header
     Align x;
 };
 
-Header *morecoreCust(unsigned);
-char *sbrkCust(int size);
-
+Header *morecoreCust(unsigned long);
+char *sbrkCust(unsigned long);
 
 static Header base;
 static Header *freep = NULL;
-
+char global_mem[MEMORY_CAPACITY] = {0};
 
 // Ref for malloc/free : The C Programming Language  - K&R
-void *mallocCust(unsigned nbytes)
+void *mallocCust(unsigned long nbytes)
 {
     Header *p, *prevp;
-    unsigned nunits;
+    unsigned long nunits;
 
     nunits = (nbytes + sizeof(Header) - 1) / sizeof(Header) + 1;
 
@@ -39,7 +37,7 @@ void *mallocCust(unsigned nbytes)
         base.s.size = 0;
     }
 
-    for (p = prevp->s.ptr; ; prevp = p, p = p->s.ptr)
+    for (p = prevp->s.ptr;; prevp = p, p = p->s.ptr)
     {
         if (p->s.size >= nunits)
         {
@@ -60,7 +58,7 @@ void *mallocCust(unsigned nbytes)
     }
 }
 
-Header *morecoreCust(unsigned nu)
+Header *morecoreCust(unsigned long nu)
 {
     char *cp;
     Header *up;
@@ -104,9 +102,8 @@ void freeCust(void *ap)
 }
 
 // https://codereview.stackexchange.com/questions/226231/implementing-sbrk-for-a-custom-allocator-in-c
-char *sbrkCust(int increment)
+char *sbrkCust(unsigned long increment)
 {
-    static char global_mem[MEMORY_CAPACITY] = {0};
     static char *p_break = global_mem;
 
     char *const limit = global_mem + MEMORY_CAPACITY;
