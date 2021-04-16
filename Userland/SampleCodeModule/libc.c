@@ -381,3 +381,11 @@ int hexaToInt(char* num){
 
     return decVal;
 }
+
+void * malloc(unsigned long nbytes) {
+    return memManag(nbytes);
+}
+
+void free(void * memDirec) {
+    freer(memDirec);
+}

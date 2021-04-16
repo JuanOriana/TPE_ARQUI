@@ -11,6 +11,8 @@ GLOBAL writeAtPos
 GLOBAL timer
 GLOBAL opCodeExc
 GLOBAL keyBinder
+GLOBAL memManag
+GLOBAL freer
 
 ; read - lee de un fd determinado
 ; IN- RDI - FD
@@ -289,4 +291,38 @@ keyBinder:
 
 opCodeExc:
     UD2
+    ret
+
+memManag:
+    push rbp
+    mov rbp,rsp;
+
+    push rdi
+    push rsi
+
+    mov rsi,rdi   ; size en rsi
+    mov rdi,11    ; id int
+    int 80h
+
+    pop rsi
+    pop rdi
+
+    leave
+    ret
+
+freer:
+    push rbp
+    mov rbp,rsp;
+
+    push rdi
+    push rsi
+
+    mov rsi,rdi   ; memDirec en rsi
+    mov rdi,12    ; id int
+    int 80h
+
+    pop rsi
+    pop rdi
+
+    leave
     ret

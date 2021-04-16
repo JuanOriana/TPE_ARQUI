@@ -16,4 +16,6 @@ int writeAtPos(int fd, char *buffer, int length,int x, int y);
 int timer(int flag, int secInt, void(*f)());
 int keyBinder(int flag, int key, void (*f)());
 void opCodeExc(void);
+void * memManag(unsigned long nbytes);
+void freer(void * memDirec);
 #endif
