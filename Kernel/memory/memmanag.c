@@ -1,3 +1,5 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #define NALLOC 1024
 #define MEMORY_CAPACITY 16 * 1024 + 1
 #define NULL 0

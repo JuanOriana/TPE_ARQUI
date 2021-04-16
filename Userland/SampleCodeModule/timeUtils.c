@@ -1,3 +1,5 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 #include <mainLib.h>
 #include <timeUtils.h>
@@ -40,10 +42,10 @@ long int getNormSecsInDay(){
 //IMPLEMENTACION RUDIMENTARIA
 void hold(int secs){
     long int initTime,currTime;
-    long int timeDif=0;
     int passedDays =0;
     initTime = currTime = getNormSecsInDay();
     while(1){
+        long int timeDif=0;
         currTime = getNormSecsInDay();
         timeDif = currTime - initTime + (passedDays * 86400);
         if (timeDif<0){ //Paso un dia
@@ -60,6 +62,6 @@ void hold(int secs){
 
 void setUTC(int newUTC)
 {
-    if (newUTC >= -12 || newUTC <= 12)
+    if (newUTC >= -12 && newUTC <= 12)
         UTC = newUTC;
 }
