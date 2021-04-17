@@ -1,9 +1,10 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #define NALLOC 1024
-#define MEMORY_CAPACITY 16 * 1024 + 1
+#define MEMORY_CAPACITY 0x8000000
 #define NULL 0
 #include "memmanag.h"
+#define GLOBAL_MEM (char*)( 0x600000)
 
 typedef long Align;
 typedef union header Header;
@@ -23,7 +24,7 @@ char *sbrkCust(unsigned long);
 
 static Header base;
 static Header *freep = NULL;
-char global_mem[MEMORY_CAPACITY] = {0};
+char* global_mem = GLOBAL_MEM;
 
 // Ref for malloc/free : The C Programming Language  - K&R
 void *mallocCust(unsigned long nbytes)
@@ -106,7 +107,7 @@ void freeCust(void *ap)
 // https://codereview.stackexchange.com/questions/226231/implementing-sbrk-for-a-custom-allocator-in-c
 char *sbrkCust(unsigned long increment)
 {
-    static char *p_break = global_mem;
+    static char *p_break = GLOBAL_MEM;
 
     char *const limit = global_mem + MEMORY_CAPACITY;
     char *const original = p_break;

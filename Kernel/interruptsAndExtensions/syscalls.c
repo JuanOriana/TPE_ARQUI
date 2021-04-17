@@ -176,4 +176,5 @@ uint64_t sysMalloc(uint64_t bytes, uint64_t rdx, uint64_t rcx, uint64_t r8, uint
 uint64_t sysFree(uint64_t memDirec, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9)
 {
     freeCust((void *)memDirec);
+    return 0;
 }

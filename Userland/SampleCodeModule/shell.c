@@ -98,6 +98,7 @@ void shellExit(){
     scClear();
     chFont(NICE_YELLOW);
     printLogo();
+    
     print("\n\n\n");
     chFont(NICE_BLUE);
     print("      Muchas gracias por usar Pollo-OS! Nos vemos!");

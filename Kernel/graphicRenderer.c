@@ -69,7 +69,7 @@ int getWidth()
 
 int renderPixel(unsigned int x, unsigned int y, unsigned int color)
 {
-	if (x < 0 || y < 0 || x > width || y > height)
+	if (x > width || y > height)
 		return -1;
 
 	char *pos = (char *)((uint64_t)screenData->framebuffer + (x + y * width) * 3);
@@ -84,7 +84,7 @@ int renderPixel(unsigned int x, unsigned int y, unsigned int color)
 int renderArea(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, unsigned int color){
 	if (x2<x1 || y2<y1)
 		return -1;
-	if (x1 < 0 || y1 < 0 || x2 > width || y2 > height)
+	if (x2 > width || y2 > height)
 		return -2;
 	for (int i=x1;i<=x2;i++){
 		for (int j=y1;j<=y2;j++)
@@ -96,7 +96,7 @@ int renderArea(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y
 	// segun https://jared.geek.nz/2014/jan/custom-fonts-for-microcontrollers
 int renderChar(unsigned char c, unsigned int x, unsigned int y, unsigned int color)
 {
-	if (x < 0 || y < 0 || x + (ABS_WIDTH) > width || y + (ABS_HEIGHT) > height)
+	if (x + (ABS_WIDTH) > width || y + (ABS_HEIGHT) > height)
 		return -1;
 
 	// 'font' es un arreglo multidimensional de [96][FONT_WIDTH]
@@ -147,7 +147,7 @@ int scrollUp(int pixels){
 //Posibilidad de printear figuras de 12*16
 
 int renderFig(int* fig,unsigned int x, unsigned int y, unsigned int color){
-    if (x < 0 || y < 0 || x + FIG_WIDTH * FIG_SCALING > width || y + FIG_HEIGHT * FIG_SCALING > height)
+    if (x + FIG_WIDTH * FIG_SCALING > width || y + FIG_HEIGHT * FIG_SCALING > height)
         return -1;
     for (int i = 0; i < FIG_WIDTH; i++)
     {
