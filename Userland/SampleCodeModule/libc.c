@@ -1,7 +1,6 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
-
 #include <libc.h>
 #include <mainLib.h>
 #include <stdarg.h>
@@ -10,11 +9,11 @@
 
 #define BUFFER_SIZE 512
 char buffer[BUFFER_SIZE] = {0};
-int buffSize=0;
+int buffSize = 0;
 int print(char *str, ...)
 {
     va_list args;
-    int i = 0, j = 0;  // i lectura en str  - j pos en buffer
+    int i = 0, j = 0; // i lectura en str  - j pos en buffer
     char buff[100] = {0}, tmp[20];
     char *str_arg;
     va_start(args, str);
@@ -25,26 +24,26 @@ int print(char *str, ...)
             i++;
             switch (str[i])
             {
-                case 'c':
-                {
-                    buff[j] = (char)va_arg(args, int);
-                    j++;
-                    break;
-                }
-                case 'd':
-                {
-                    intToStr(va_arg(args, int),tmp,10);
-                    strcpy(&buff[j], tmp);
-                    j += strlen(tmp);
-                    break;
-                }
-                case 's':
-                {
-                    str_arg = (char *)va_arg(args, char *);
-                    strcpy(&buff[j], str_arg);
-                    j += strlen(str_arg);
-                    break;
-                }
+            case 'c':
+            {
+                buff[j] = (char)va_arg(args, int);
+                j++;
+                break;
+            }
+            case 'd':
+            {
+                intToStr(va_arg(args, int), tmp, 10);
+                strcpy(&buff[j], tmp);
+                j += strlen(tmp);
+                break;
+            }
+            case 's':
+            {
+                str_arg = (char *)va_arg(args, char *);
+                strcpy(&buff[j], str_arg);
+                j += strlen(str_arg);
+                break;
+            }
             }
         }
         else
@@ -54,23 +53,23 @@ int print(char *str, ...)
         }
         i++;
     }
-    writer(1,buff,j);
+    writer(1, buff, j);
     va_end(args);
     return j;
 }
 
-
-int putChar(char c){
+int putChar(char c)
+{
     char buff[2] = {0};
     buff[0] = c;
-    return writer(1,buff,2);
+    return writer(1, buff, 2);
 }
 
 int readLn()
 {
     int c;
 
-    while ((c = getChar()) != '\n' )
+    while ((c = getChar()) != '\n')
     {
         if (c == '\b')
         {
@@ -102,12 +101,12 @@ int scan(const char *format, ...)
     clearBuff();
     readLn();
     int fmtIdx = 0;
-    int bufferIdx=0;
+    int bufferIdx = 0;
     int flag = 0;
 
     char *auxStr;
-    int auxNum =0;
-    while (format[fmtIdx] != '\0' &&  buffer[bufferIdx] != '\0' && !flag)
+    int auxNum = 0;
+    while (format[fmtIdx] != '\0' && buffer[bufferIdx] != '\0' && !flag)
     {
         if (format[fmtIdx] != '%')
         {
@@ -125,24 +124,23 @@ int scan(const char *format, ...)
             fmtIdx++;
             switch (format[fmtIdx])
             {
-                case 'd':
-                    *(int *)va_arg(args, int *) = strToInt(&buffer[bufferIdx], &auxNum);
-                    bufferIdx += auxNum;
-                    break;
-                case 'c':
-                    *(char *)va_arg(args, char *) = buffer[bufferIdx];
-                    bufferIdx++;
-                    break;
-                case 's': //String hasta espacio
-                    auxStr = (char *)va_arg(args, char *);
-                    strcpyTilSpace(auxStr,&buffer[bufferIdx]);
-                    bufferIdx += strlen(auxStr);
-                    break;
+            case 'd':
+                *(int *)va_arg(args, int *) = strToInt(&buffer[bufferIdx], &auxNum);
+                bufferIdx += auxNum;
+                break;
+            case 'c':
+                *(char *)va_arg(args, char *) = buffer[bufferIdx];
+                bufferIdx++;
+                break;
+            case 's': //String hasta espacio
+                auxStr = (char *)va_arg(args, char *);
+                strcpyTilSpace(auxStr, &buffer[bufferIdx]);
+                bufferIdx += strlen(auxStr);
+                break;
 
-                default:
-                    flag = -1;
-                    break;
-                
+            default:
+                flag = -1;
+                break;
             }
         }
         fmtIdx++;
@@ -163,9 +161,10 @@ int getChar()
 int strlen(const char *s)
 {
     int i;
-    for (i = 0; s[i] != '\0'; i++);
+    for (i = 0; s[i] != '\0'; i++)
+        ;
     return i;
-    }
+}
 
 char *strcpy(char *destination, const char *source)
 {
@@ -181,61 +180,60 @@ char *strcpy(char *destination, const char *source)
 
     *destination = '\0';
     return ptr;
- }
+}
 
- //Copia del destino HASTA el espacio
- char *strcpyTilSpace(char *destination, const char *source)
- {
+//Copia del destino HASTA el espacio
+char *strcpyTilSpace(char *destination, const char *source)
+{
 
+    char *ptr = destination;
 
-     char *ptr = destination;
+    while (*source != '\0' && *source != ' ')
+    {
+        *destination = *source;
+        destination++;
+        source++;
+    }
 
-     while (*source != '\0' && *source!= ' ')
-     {
-         *destination = *source;
-         destination++;
-         source++;
-     }
+    *destination = '\0';
+    return ptr;
+}
 
-     *destination = '\0';
-     return ptr;
- }
-
- int strcmp(const char *str1, const char *str2)
- {
-     if (str1==0 || str2==0)
+int strcmp(const char *str1, const char *str2)
+{
+    if (str1 == 0 || str2 == 0)
         return 0;
 
-     while (*str1)
-     {
-         
-         if (*str1 != *str2)
-             break;
+    while (*str1)
+    {
 
-         str1++;
-         str2++;
-     }
+        if (*str1 != *str2)
+            break;
 
-     return *(const unsigned char *)str1 - *(const unsigned char *)str2;
- }
+        str1++;
+        str2++;
+    }
 
- //https://www.geeksforgeeks.org/write-your-own-atoi/
- int strToInt(char *str, int* size)
- {
+    return *(const unsigned char *)str1 - *(const unsigned char *)str2;
+}
 
-    *size=0;
-     int res = 0;
-     int i = 0;
+//https://www.geeksforgeeks.org/write-your-own-atoi/
+int strToInt(char *str, int *size)
+{
 
-     for (; str[i] != '\0'; i++)
-     {
-         if (str[i] < '0' || str[i] > '9')
-             return res;
-         res = res * 10 + str[i] - '0';
-         *size += 1;
-     }
+    *size = 0;
+    int res = 0;
+    int i = 0;
 
-     return res;
+    for (; str[i] != '\0'; i++)
+    {
+        if (str[i] < '0' || str[i] > '9')
+            return res;
+        res = res * 10 + str[i] - '0';
+        *size += 1;
+    }
+
+    return res;
 }
 
 void swap(char *x, char *y)
@@ -293,59 +291,63 @@ char *intToStr(int value, char *buffer, int base)
     return reverse(buffer, 0, i - 1);
 }
 
-void clearBuff(){
+void clearBuff()
+{
     buffSize = 0;
-    do {
-        reader(0,buffer,512);
-    }
-    while (getChar()!=-1);
+    do
+    {
+        reader(0, buffer, 512);
+    } while (getChar() != -1);
 }
 
-int abs(int num){
-    return num < 0? -num : num;
+int abs(int num)
+{
+    return num < 0 ? -num : num;
 }
 
-char *intToHexa(long long num, char *str, int bytes) 
-{ 
+char *intToHexa(long long num, char *str, int bytes)
+{
     int i = 0;
     long long n = abs(num);
 
     /* Handle 0 explicitely, otherwise empty string is printed for 0 */
-    if (n == 0) 
+    if (n == 0)
     {
         str[i++] = '0';
         str[i++] = 'x';
 
-        while (i < bytes*2 + 2) {
+        while (i < bytes * 2 + 2)
+        {
             str[i++] = '0';
         }
 
-        str[i] = '\0'; 
-        return str; 
-    } 
-  
-    // Process individual digits 
-    while (i < bytes*2 && n != 0) 
-    { 
-        int rem = n % 16; 
-        str[i++] = (rem >= 10)? (rem - 10) + 65 : rem + 48; 
-        n = n/16; 
-    } 
+        str[i] = '\0';
+        return str;
+    }
 
-    while (i < bytes*2) {
+    // Process individual digits
+    while (i < bytes * 2 && n != 0)
+    {
+        int rem = n % 16;
+        str[i++] = (rem >= 10) ? (rem - 10) + 65 : rem + 48;
+        n = n / 16;
+    }
+
+    while (i < bytes * 2)
+    {
         str[i++] = '0';
     }
 
     str[i++] = 'x';
     str[i++] = '0';
-    str[i] = '\0'; // Append string terminator 
-  
-    // Reverse the string 
-    return reverse(str, 0, i-1); 
-} 
+    str[i] = '\0'; // Append string terminator
 
+    // Reverse the string
+    return reverse(str, 0, i - 1);
+}
 
-int hexaToInt(char* num){
+int hexaToInt(char *num)
+{
     int len = strlen(num);
 
     // Initializing base value to 1, i.e 16^0
@@ -376,16 +378,17 @@ int hexaToInt(char* num){
 
             // incrementing base by power
         }
-
     }
 
     return decVal;
 }
 
-void * malloc(unsigned long nbytes) {
-    return memManag(nbytes);
+void *malloc(unsigned long nbytes)
+{
+    return pureMalloc(nbytes);
 }
 
-void free(void * memDirec) {
-    freer(memDirec);
+void free(void *memDirec)
+{
+    pureFree(memDirec);
 }

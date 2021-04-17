@@ -11,8 +11,8 @@ GLOBAL writeAtPos
 GLOBAL timer
 GLOBAL opCodeExc
 GLOBAL keyBinder
-GLOBAL memManag
-GLOBAL freer
+GLOBAL pureMalloc
+GLOBAL pureFree
 
 ; read - lee de un fd determinado
 ; IN- RDI - FD
@@ -293,7 +293,7 @@ opCodeExc:
     UD2
     ret
 
-memManag:
+pureMalloc:
     push rbp
     mov rbp,rsp;
 
@@ -310,7 +310,7 @@ memManag:
     leave
     ret
 
-freer:
+pureFree:
     push rbp
     mov rbp,rsp;
 

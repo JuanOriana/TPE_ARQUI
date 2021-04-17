@@ -170,10 +170,10 @@ uint64_t keyBind(uint64_t flag, uint64_t key, uint64_t func, uint64_t r8, uint64
 
 uint64_t sysMalloc(uint64_t bytes, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9)
 {
-    return mallocCust(bytes);
+    return (uint64_t)mallocCust(bytes);
 }
 
 uint64_t sysFree(uint64_t memDirec, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9)
 {
-    freeCust(memDirec);
+    freeCust((void *)memDirec);
 }
