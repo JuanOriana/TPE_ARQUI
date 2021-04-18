@@ -1,10 +1,11 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
-#define NALLOC 1024
-#define MEMORY_CAPACITY 0x8000000
-#define NULL 0
 #include "memmanag.h"
-#define GLOBAL_MEM (char*)( 0x600000)
+#define MEMORY_CAPACITY 0x8000000
+#define GLOBAL_MEM (char *)(0x600000)
+#define LIMIT GLOBAL_MEM + MEMORY_CAPACITY
+#define NALLOC 1024
+#define NULL 0
 
 typedef long Align;
 typedef union header Header;
@@ -24,7 +25,6 @@ char *sbrkCust(unsigned long);
 
 static Header base;
 static Header *freep = NULL;
-char* global_mem = GLOBAL_MEM;
 
 // Ref for malloc/free : The C Programming Language  - K&R
 void *mallocCust(unsigned long nbytes)
@@ -32,9 +32,9 @@ void *mallocCust(unsigned long nbytes)
     Header *p, *prevp;
     unsigned long nunits;
 
-    nunits = (nbytes + sizeof(Header) - 1) / sizeof(Header) + 1;
+    nunits = (nbytes + sizeof(Header) - 1) / sizeof(Header) + 1; //Normalize to header units
 
-    if ((prevp = freep) == NULL)
+    if ((prevp = freep) == NULL) //Init ptr on first malloc
     {
         base.s.ptr = freep = prevp = &base;
         base.s.size = 0;
@@ -42,64 +42,64 @@ void *mallocCust(unsigned long nbytes)
 
     for (p = prevp->s.ptr;; prevp = p, p = p->s.ptr)
     {
-        if (p->s.size >= nunits)
+        if (p->s.size >= nunits) //If >=, can use this block
         {
-            if (p->s.size == nunits)
+            if (p->s.size == nunits) // Equal just use
                 prevp->s.ptr = p->s.ptr;
-            else
+            else // Fragment block
             {
                 p->s.size -= nunits;
                 p += p->s.size;
                 p->s.size = nunits;
             }
             freep = prevp;
-            return (void *)(p + 1);
+            return (void *)(p + 1); //Return new memspace WITHOUT header
         }
-        if (p == freep)
+        if (p == freep) // No block found, need more space
             if ((p = morecoreCust(nunits)) == NULL)
                 return NULL;
     }
 }
 
-Header *morecoreCust(unsigned long nu)
+Header *morecoreCust(unsigned long nunits)
 {
-    char *cp;
-    Header *up;
-    if (nu < NALLOC)
-        nu = NALLOC;
-    cp = sbrkCust(nu * sizeof(Header));
-    if (cp == (char *)-1)
+    char *newMem;
+    Header *memToHeader;
+    if (nunits < NALLOC)
+        nunits = NALLOC;
+    newMem = sbrkCust(nunits * sizeof(Header));
+    if (newMem == (char *)-1)
         return NULL;
-    up = (Header *)cp;
-    up->s.size = nu;
-    freeCust((void *)(up + 1));
+    memToHeader = (Header *)newMem;
+    memToHeader->s.size = nunits;
+    freeCust((void *)(memToHeader + 1));
     return freep;
 }
 
-void freeCust(void *ap)
+void freeCust(void *freeMem)
 {
-    Header *bp, *p;
+    Header *freeBlock, *p;
 
-    bp = (Header *)ap - 1;
-    for (p = freep; !(bp > p && bp < p->s.ptr); p = p->s.ptr)
-        if (p >= p->s.ptr && (bp > p || bp < p->s.ptr))
+    freeBlock = (Header *)freeMem - 1;                                      //Add header to mem to free
+    for (p = freep; !(freeBlock > p && freeBlock < p->s.ptr); p = p->s.ptr) // Find blocks that surround
+        if (p >= p->s.ptr && (freeBlock > p || freeBlock < p->s.ptr))       //Free block might be on the ends
             break;
 
-    if (bp + bp->s.size == p->s.ptr)
+    if (freeBlock + freeBlock->s.size == p->s.ptr) //Join right
     {
-        bp->s.size += p->s.ptr->s.size;
-        bp->s.ptr = p->s.ptr->s.ptr;
+        freeBlock->s.size += p->s.ptr->s.size;
+        freeBlock->s.ptr = p->s.ptr->s.ptr;
     }
     else
-        bp->s.ptr = p->s.ptr;
+        freeBlock->s.ptr = p->s.ptr;
 
-    if (p + p->s.size == bp)
+    if (p + p->s.size == freeBlock) //Join left
     {
-        p->s.size += bp->s.size;
-        p->s.ptr = bp->s.ptr;
+        p->s.size += freeBlock->s.size;
+        p->s.ptr = freeBlock->s.ptr;
     }
     else
-        p->s.ptr = bp;
+        p->s.ptr = freeBlock;
 
     freep = p;
 }
@@ -107,16 +107,14 @@ void freeCust(void *ap)
 // https://codereview.stackexchange.com/questions/226231/implementing-sbrk-for-a-custom-allocator-in-c
 char *sbrkCust(unsigned long increment)
 {
-    static char *p_break = GLOBAL_MEM;
+    static char *pBreak = GLOBAL_MEM;
+    char *const original = pBreak;
 
-    char *const limit = global_mem + MEMORY_CAPACITY;
-    char *const original = p_break;
-
-    if (increment < global_mem - p_break || increment >= limit - p_break)
+    if (increment < GLOBAL_MEM - pBreak || increment >= LIMIT - pBreak)
     {
         return (char *)-1;
     }
-    p_break += increment;
+    pBreak += increment;
 
     return original;
 }
