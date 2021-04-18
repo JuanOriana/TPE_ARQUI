@@ -402,5 +402,5 @@ void *mMemset(void* pointer, int c, __uint128_t size)
         p++;
         size--;
     }
-  return p;
+  return pointer;
 }
