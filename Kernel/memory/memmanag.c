@@ -3,7 +3,7 @@
 #include "memmanag.h"
 #define MEMORY_CAPACITY 0x8000000
 #define GLOBAL_MEM (char *)(0x600000)
-#define LIMIT GLOBAL_MEM + MEMORY_CAPACITY
+#define LIMIT ((GLOBAL_MEM) + (MEMORY_CAPACITY))
 #define NALLOC 1024
 #define NULL 0
 
