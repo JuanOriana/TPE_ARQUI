@@ -5,6 +5,10 @@
 #include <libc.h>
 #include <timeUtils.h>
 #include <game.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <testMM.h>
 
 int static runningState = 1;
 int static fontColor = NICE_WHITE;
@@ -22,7 +26,7 @@ void divExc();
 
 void shellRun()
 {
-
+    //test_mm();
     shellWelcome();
     shellMainLoop();
     shellExit();
