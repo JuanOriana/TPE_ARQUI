@@ -393,6 +393,10 @@ void mFree(void *memDirec)
     pureFree(memDirec);
 }
 
+void memDump(long* base, long* freeMem, long* totalMem){
+    pureMemDump(base, freeMem, totalMem);
+}
+
 void *mMemset(void* pointer, int c, __uint128_t size)
 {
     unsigned char *p = pointer;

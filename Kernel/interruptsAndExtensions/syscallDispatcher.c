@@ -17,7 +17,8 @@ static uint64_t (*systemCalls[])(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint6
     sysTimer,      //9
     keyBind,       //10
     sysMalloc,     //11
-    sysFree        //12
+    sysFree,       //12
+    sysMMDump      //13
 };
 
 uint64_t syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9)

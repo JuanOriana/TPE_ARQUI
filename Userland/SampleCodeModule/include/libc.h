@@ -56,6 +56,7 @@ void *mMalloc(unsigned long nbytes);
 
 void *mMemset(void* pointer, int c, __uint128_t size);
 
+void memDump(long* base, long* freeMem, long* totalMem);
 
 
 #endif
