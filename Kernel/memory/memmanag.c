@@ -2,8 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 #include "memmanag.h"
-#define MEMORY_CAPACITY 0x8000000
-#define GLOBAL_MEM (char *)(0x600000)
+
 #define NULL 0
 
 typedef long Align;
@@ -25,7 +24,7 @@ static Header *freep = NULL;
 unsigned long totalUnits;
 unsigned long freeUnits;
 
-void memInit(unsigned long memBase, unsigned long memSize){
+void memInit(char * memBase, unsigned long memSize){
     // Initially its all a very large block
     freeUnits = totalUnits = (memSize + sizeof(Header) - 1) / sizeof(Header) + 1;
     freep = base = (Header *)memBase;
@@ -76,17 +75,21 @@ void freeCust(void *freeMem)
     Header *freeBlock, *p;
     freeBlock = (Header *)freeMem - 1; //Add header to mem to free
 
-    if (freeBlock < base || freeBlock >= (base + totalUnits*sizeof(Header) + 1) || (freeBlock - base)  % sizeof(Header) != 0)
+    if (freeBlock < base || freeBlock >= (base + totalUnits*sizeof(Header) + 1))
         return;                    
+    
+    char isExternal = 0;
                        
     for (p = freep; !(freeBlock > p && freeBlock < p->s.ptr); p = p->s.ptr){ // Find blocks that surround
         if (freeBlock == p) // block is already free!
             return;
-        if (p >= p->s.ptr && (freeBlock > p || freeBlock < p->s.ptr))       //Free block might be on the ends
+        if (p >= p->s.ptr && (freeBlock > p || freeBlock < p->s.ptr)){       //Free block might be on the ends
+            isExternal = 1;
             break;
+        }
     }
 
-    if (p + p->s.size > freeBlock || freeBlock + freeBlock->s.size > p->s.ptr) //Absurd!!
+    if (!isExternal && (p + p->s.size > freeBlock || freeBlock + freeBlock->s.size > p->s.ptr)) //Absurd!!
         return;
 
     if (freeBlock + freeBlock->s.size == p->s.ptr) //Join right
