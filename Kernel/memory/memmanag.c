@@ -31,7 +31,6 @@ void memInit(unsigned long memBase, unsigned long memSize){
     freep = base = (Header *)memBase;
     freep->s.size = totalUnits;
     freep->s.ptr = freep;
-
 }
 
 // Ref for malloc/free : The C Programming Language  - K&R
@@ -39,7 +38,6 @@ void *mallocCust(unsigned long nbytes)
 {
     if (nbytes <= 0)
         return NULL;
-
    
     unsigned long nunits = (nbytes + sizeof(Header) - 1) / sizeof(Header) + 1; //Normalize to header units
 
@@ -76,14 +74,20 @@ void freeCust(void *freeMem)
         return;
 
     Header *freeBlock, *p;
-    freeBlock = (Header *)freeMem - 1;
+    freeBlock = (Header *)freeMem - 1; //Add header to mem to free
 
     if (freeBlock < base || freeBlock >= (base + totalUnits*sizeof(Header) + 1) || (freeBlock - base)  % sizeof(Header) != 0)
         return;                    
-                       //Add header to mem to free
-    for (p = freep; !(freeBlock > p && freeBlock < p->s.ptr); p = p->s.ptr) // Find blocks that surround
+                       
+    for (p = freep; !(freeBlock > p && freeBlock < p->s.ptr); p = p->s.ptr){ // Find blocks that surround
+        if (freeBlock == p) // block is already free!
+            return;
         if (p >= p->s.ptr && (freeBlock > p || freeBlock < p->s.ptr))       //Free block might be on the ends
             break;
+    }
+
+    if (p + p->s.size > freeBlock || freeBlock + freeBlock->s.size > p->s.ptr) //Absurd!!
+        return;
 
     if (freeBlock + freeBlock->s.size == p->s.ptr) //Join right
     {
