@@ -1,4 +1,4 @@
-#ifndef _MEMMANAG_H
+#ifndef _BUDDYMEM_H
 
 void *mallocCust(unsigned long nbytes);
 void freeCust(void *ap);

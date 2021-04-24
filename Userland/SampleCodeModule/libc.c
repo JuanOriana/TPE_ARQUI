@@ -383,12 +383,24 @@ int hexaToInt(char *num)
     return decVal;
 }
 
-void *malloc(unsigned long nbytes)
+void *mMalloc(unsigned long nbytes)
 {
     return pureMalloc(nbytes);
 }
 
-void free(void *memDirec)
+void mFree(void *memDirec)
 {
     pureFree(memDirec);
+}
+
+void *mMemset(void* pointer, int c, __uint128_t size)
+{
+    unsigned char *p = pointer;
+    while(size > 0)
+    {
+        *p = (unsigned char)c;
+        p++;
+        size--;
+    }
+  return pointer;
 }

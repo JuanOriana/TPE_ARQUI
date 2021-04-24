@@ -50,4 +50,12 @@ char *intToHexa(long long num, char *str, int bytes);
 //OUT: numero
 int hexaToInt(char *num);
 
+void mFree(void *memDirec);
+
+void *mMalloc(unsigned long nbytes);
+
+void *mMemset(void* pointer, int c, __uint128_t size);
+
+
+
 #endif
