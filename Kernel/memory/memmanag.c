@@ -75,14 +75,16 @@ void freeCust(void *freeMem)
     Header *freeBlock, *p;
     freeBlock = (Header *)freeMem - 1; //Add header to mem to free
 
-    if (freeBlock < base || freeBlock >= (base + totalUnits*sizeof(Header) + 1))
+    if (freeBlock < base || freeBlock >= (base + totalUnits*sizeof(Header)))
         return;                    
     
     char isExternal = 0;
                        
     for (p = freep; !(freeBlock > p && freeBlock < p->s.ptr); p = p->s.ptr){ // Find blocks that surround
-        if (freeBlock == p) // block is already free!
+
+        if (freeBlock == p || freeBlock == p->s.ptr) // block is already free!
             return;
+            
         if (p >= p->s.ptr && (freeBlock > p || freeBlock < p->s.ptr)){       //Free block might be on the ends
             isExternal = 1;
             break;
