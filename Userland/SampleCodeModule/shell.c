@@ -26,6 +26,7 @@ void divExc();
 
 void shellRun()
 {
+    //test_mm();
     shellWelcome();
 
     //Error!
