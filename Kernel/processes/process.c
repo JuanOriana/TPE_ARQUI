@@ -42,7 +42,8 @@ long initProcess(uint64_t entryPoint, int argc, char** argv, uint8_t fg) {
     process->rsp = process->rbp - sizeof(t_stackFrame);
     initStackFrame(entryPoint, argc, argv, process->rbp);
 
-    addProcess(process);
+    if(addProcess(process) == -1){
+    }
 
     return pid++;
 }

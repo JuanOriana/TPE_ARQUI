@@ -11,4 +11,22 @@ void initScheduler() {
       processes->last = processes->first;
       processes->size = 0;
       processes->readyProcesses = 0;
+
+
 }
+
+// void* scheduler(){
+//       pr
+//       t_pNode *node = processes->first;
+//       while(node->state!=READY)
+
+// }
+
+// int addProcess(t_PCB* process){
+//       t_pNode *auxNode = mallocCust(sizeof(t_pNode));
+//       if(auxNode == NULL)
+//             return -1;
+//       if(processes->size == 0)
+
+       
+// }
