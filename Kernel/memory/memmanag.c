@@ -69,7 +69,7 @@ void *mallocCust(unsigned long nbytes)
 
 void freeCust(void *freeMem)
 {
-    if (freeMem == NULL)
+    if (freeMem == NULL || (((long)freeMem-(long)base) % sizeof(Header)) != 0) //Discard null and unaligned
         return;
 
     Header *freeBlock, *p;
@@ -84,7 +84,7 @@ void freeCust(void *freeMem)
 
         if (freeBlock == p || freeBlock == p->s.ptr) // block is already free!
             return;
-            
+
         if (p >= p->s.ptr && (freeBlock > p || freeBlock < p->s.ptr)){       //Free block might be on the ends
             isExternal = 1;
             break;
