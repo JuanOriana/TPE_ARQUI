@@ -11,10 +11,6 @@
 #include <stdint.h>
 #include <memmanag.h>
 
-#define STDIN 0
-#define STDOUT 1
-#define STDERR 2
-
 #define STDOUT_COL 0xFFFFFF
 #define STDERR_COL 0xFF0000
 static int fontColour = STDOUT_COL;
