@@ -1,4 +1,5 @@
 #ifndef _PROCESS_H
+#define _PROCESS_H
 
 #include <stdint.h>
 #include "syscalls.h"
@@ -6,6 +7,7 @@
 #define SIZE_OF_STACK (8 * 1024)
 #define MAX_FD 5
 #define NULL 0
+
 
 typedef struct {
       uint64_t r15;
@@ -41,10 +43,11 @@ typedef struct {
       uint64_t rsp;
       uint64_t rbp;
       uint64_t stackBase;
+
 } t_PCB;
 
-static long initProcess(uint64_t entryPoint, int argc, char** argv, uint8_t fg);
-static void wrapper(void (*entryPoint)(int, char**), int argc, char** argv);
-static void freeProcess(t_PCB * process);
+long initProcess(uint64_t entryPoint, int argc, char** argv, uint8_t fg, uint8_t priority);
+void wrapper(void (*entryPoint)(int, char**), int argc, char** argv);
+void freeProcess(t_PCB * process);
 
 #endif

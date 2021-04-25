@@ -1,60 +1,72 @@
-#include "process.h"
 #include "scheduler.h"
 
 uint64_t pid = 0;
 
-long initProcess(uint64_t entryPoint, int argc, char** argv, uint8_t fg) {
-    if (entryPoint == NULL) return -1;
+long initProcess(uint64_t entryPoint, int argc, char **argv, uint8_t fg, uint8_t priority)
+{
+    if (entryPoint == NULL)
+        return -1;
 
-    t_PCB * process;
-    if ((process = mallocCust(sizeof(t_PCB))) == NULL) return -1;
+    t_PCB *process;
+    if ((process = mallocCust(sizeof(t_PCB))) == NULL)
+        return -1;
 
     strcpy(process->name, argv[0]);
 
-    if (pid != 0) {
+    if (pid != 0)
+    {
         process->ppid = getCurrentPid();
     }
-    else {
+    else
+    {
         process->ppid = -1;
     }
     process->pid = pid;
     process->fg = fg;
-    if (pid == 0) {
-        for (int i = 0; i < MAX_FD; i++) {
+    if (pid == 0)
+    {
+        for (int i = 0; i < MAX_FD; i++)
+        {
             process->fd[i] = -1;
         }
         process->fd[0] = STDIN;
         process->fd[1] = STDOUT;
         process->fd[2] = STDERR;
     }
-    else {
-        t_PCB * currProc = getCurrentProcess();
-        for (int i = 0; i < MAX_FD; i++) {
+    else
+    {
+        t_PCB *currProc = getCurrentProcess();
+        for (int i = 0; i < MAX_FD; i++)
+        {
             process->fd[i] = currProc->fd[i];
         }
     }
 
-    if( (process->stackBase = mallocCust(SIZE_OF_STACK)) == NULL) {
+    if ((process->stackBase = mallocCust(SIZE_OF_STACK)) == NULL)
+    {
         freeCust((void *)process);
         return -1;
     }
     process->rbp = process->stackBase + SIZE_OF_STACK - 16;
     process->rsp = process->rbp - sizeof(t_stackFrame);
     initStackFrame(entryPoint, argc, argv, process->rbp);
+    process->priority = priority;
 
-    if(addProcess(process) == -1){
-    }
+    if (addProcess(process) == -1)
+        freeProcess(process);
 
     return pid++;
 }
 
-void freeProcess(t_PCB * process) {
+void freeProcess(t_PCB *process)
+{
     freeCust(process->stackBase);
     freeCust(process);
 }
 
-void initStackFrame(uint64_t entryPoint, int argc, char** argv, uint64_t rbp) {
-    t_stackFrame * frame = (t_stackFrame*) rbp;
+void initStackFrame(uint64_t entryPoint, int argc, char **argv, uint64_t rbp)
+{
+    t_stackFrame *frame = (t_stackFrame *)rbp;
     frame->r15 = 0x001;
     frame->r14 = 0x002;
     frame->r13 = 0x003;
@@ -77,7 +89,14 @@ void initStackFrame(uint64_t entryPoint, int argc, char** argv, uint64_t rbp) {
     frame->ss = 0x000;
 }
 
-void wrapper(void (*entryPoint)(int, char**), int argc, char** argv) {
-      entryPoint(argc, argv);
-      exit();
+
+static void exit() {
+      killProcess(getCurrentPid());
+      intTtick();
+}
+
+void wrapper(void (*entryPoint)(int, char **), int argc, char **argv)
+{
+    entryPoint(argc, argv);
+    exit();
 }
