@@ -31,11 +31,6 @@ typedef struct {
       uint64_t ss;
 } t_stackFrame;
 
-typedef enum { READY,
-               BLOCKED,
-               KILLED }
-t_state;
-
 typedef struct {
       uint64_t pid;
       uint64_t ppid;
@@ -50,5 +45,6 @@ typedef struct {
 
 static long initProcess(uint64_t entryPoint, int argc, char** argv, uint8_t fg);
 static void wrapper(void (*entryPoint)(int, char**), int argc, char** argv);
+static void freeProcess(t_PCB * process);
 
 #endif

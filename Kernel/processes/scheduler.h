@@ -1,5 +1,10 @@
 #ifndef _SCHEDULER_H
 
+typedef enum { READY,
+               BLOCKED,
+               KILLED }
+t_state;
+
 typedef struct t_pNode {
       t_PCB pcb;
       t_state state;
