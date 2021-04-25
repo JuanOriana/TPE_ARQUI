@@ -11,6 +11,7 @@
 #include <kbDriver.h>
 #include <syscallDispatcher.h>
 #include <rtc.h>
+#include <memmanag.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -23,6 +24,9 @@ static const uint64_t PageSize = 0x1000;
 
 static void * const sampleCodeModuleAddress = (void*)0x400000;
 static void * const sampleDataModuleAddress = (void*)0x500000;
+
+#define MEMORY_CAPACITY 0x8000000
+#define GLOBAL_MEM (char *)(0x600000)
 
 
 typedef int (*EntryPoint)();
@@ -94,6 +98,7 @@ void * initializeKernelBinary()
 	initVideo(0x0000000000005C00);
 	initKb();
 	load_idt();
+	memInit(GLOBAL_MEM,MEMORY_CAPACITY);
 
 	return getStackBase();
 }

@@ -20,6 +20,7 @@ uint64_t sysTimer(uint64_t flag, uint64_t secInt, uint64_t func, uint64_t r8, ui
 uint64_t keyBind(uint64_t flag, uint64_t key, uint64_t func, uint64_t r8, uint64_t r9);
 uint64_t sysMalloc(uint64_t bytes, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 uint64_t sysFree(uint64_t memDirec, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+uint64_t sysMMDump(uint64_t baseRetPtr, uint64_t freeMemPtr, uint64_t totalMemPtr, uint64_t r8, uint64_t r9);
 uint64_t *getRegs();
 
 #endif

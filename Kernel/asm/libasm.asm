@@ -201,7 +201,7 @@ _getReg:
         mov rax, r15
         jmp .exit
 
-_getMem;
+_getMem:
     push rbp
 	mov rbp,rsp
 

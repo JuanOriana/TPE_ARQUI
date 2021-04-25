@@ -18,4 +18,5 @@ int keyBinder(int flag, int key, void (*f)());
 void opCodeExc(void);
 void *pureMalloc(unsigned long nbytes);
 void pureFree(void *memDirec);
+void pureMemDump(long* base, long* freeMem, long* totalMem);
 #endif

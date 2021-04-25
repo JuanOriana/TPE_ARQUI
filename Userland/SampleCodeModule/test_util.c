@@ -1,3 +1,5 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include <stdint.h>
 #include "test_util.h"
 
@@ -22,6 +24,5 @@ uint8_t memcheck(void *start, uint8_t value, uint32_t size){
   for (i = 0; i < size; i++, p++)
     if (*p != value)
       return 0;
-
   return 1;
 }

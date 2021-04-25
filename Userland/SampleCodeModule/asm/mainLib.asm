@@ -13,6 +13,7 @@ GLOBAL opCodeExc
 GLOBAL keyBinder
 GLOBAL pureMalloc
 GLOBAL pureFree
+GLOBAL pureMemDump
 
 ; read - lee de un fd determinado
 ; IN- RDI - FD
@@ -321,6 +322,29 @@ pureFree:
     mov rdi,12    ; id int
     int 80h
 
+    pop rsi
+    pop rdi
+
+    leave
+    ret
+
+pureMemDump:
+    push rbp
+    mov rbp,rsp;
+
+    push rdi
+    push rsi
+    push rdx
+    push rcx
+
+    mov rcx ,rdx  ;puntero a memoria total en rcx
+    mov rdx, rsi  ;puntero a memoria libre en rdx
+    mov rsi,rdi   ; puntero a base en rsi
+    mov rdi,13    ; id int
+    int 80h
+
+    pop rcx
+    pop rdx
     pop rsi
     pop rdi
 

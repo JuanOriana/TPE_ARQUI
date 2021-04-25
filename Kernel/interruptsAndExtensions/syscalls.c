@@ -174,3 +174,8 @@ uint64_t sysFree(uint64_t memDirec, uint64_t rdx, uint64_t rcx, uint64_t r8, uin
     freeCust((void *)memDirec);
     return 0;
 }
+
+uint64_t sysMMDump(uint64_t baseRetPtr, uint64_t freeMemPtr, uint64_t totalMemPtr, uint64_t r8, uint64_t r9){
+    dumpMM((long*) baseRetPtr, (long*) freeMemPtr, (long*) totalMemPtr);
+    return 0;
+}

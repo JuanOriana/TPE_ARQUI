@@ -1,3 +1,5 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include <stdio.h>
 #include <stdlib.h>
 #include <test_util.h>
@@ -13,10 +15,10 @@ typedef struct MM_rq{
 
 void test_mm(){
   mm_rq mm_rqs[MAX_BLOCKS];
-  uint8_t rq;
-  uint32_t total;
 
   while (1){
+    uint8_t rq;
+    uint32_t total;
     rq = 0;
     total = 0;
 
