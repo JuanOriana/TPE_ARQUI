@@ -28,6 +28,7 @@ int getCurrentPid();
 t_pNode *findProcess(uint64_t pid);
 int changeState(uint64_t pid, int state);
 t_PCB* getCurrentProcess();
+int killProcess(uint64_t pid);
 
 //getCurrentProcess
 //addProcess
