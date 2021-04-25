@@ -48,6 +48,11 @@ long initProcess(uint64_t entryPoint, int argc, char** argv, uint8_t fg) {
     return pid++;
 }
 
+void freeProcess(t_PCB * process) {
+    freeCust(process->stackBase);
+    freeCust(process);
+}
+
 void initStackFrame(uint64_t entryPoint, int argc, char** argv, uint64_t rbp) {
     t_stackFrame * frame = (t_stackFrame*) rbp;
     frame->r15 = 0x001;
