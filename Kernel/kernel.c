@@ -102,9 +102,9 @@ int main()
 	memInit(GLOBAL_MEM, MEMORY_CAPACITY);
 	initScheduler();
 
-	
+	char *argv[] = {"SCM"};
+	initProcess((uint64_t)sampleCodeModuleAddress, 1, argv, 1, 0);
 	_hlt();
-	ncPrint("Antiquerido");
 
 	return 0;
 }
