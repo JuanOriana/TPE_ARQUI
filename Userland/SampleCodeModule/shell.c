@@ -29,15 +29,6 @@ void shellRun()
     //test_mm();
     shellWelcome();
 
-    //Error!
-    long base,freeMem,totalMem;
-    void* freeLocA = mMalloc(800000);
-    void* freeLoc = mMalloc(300);
-    mFree(freeLoc);
-    mFree(freeLocA);
-    memDump(&base,&freeMem,&totalMem);
-    print("%d %d %d\n",base,freeMem,totalMem);
-
     shellMainLoop();
     shellExit();
     return;

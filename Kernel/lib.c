@@ -4,6 +4,8 @@
 #include <lib.h>
 #include <rtc.h>
 
+#define NULL 0
+
 void *memset(void *destination, int32_t c, uint64_t length)
 {
     uint8_t chr = (uint8_t)c;
@@ -113,4 +115,27 @@ char *reverse(char *buffer, int i, int j)
         swap(&buffer[i++], &buffer[j--]);
 
     return buffer;
+}
+
+char* strcopy(char* destination, char* source) {
+      // return if no memory is allocated to the destination
+      if (destination == NULL)
+            return NULL;
+
+      // take a pointer pointing to the beginning of destination string
+      char* ptr = destination;
+
+      // copy the C-string pointed by source into the array
+      // pointed by destination
+      while (*source != '\0') {
+            *destination = *source;
+            destination++;
+            source++;
+      }
+
+      // include the terminating null character
+      *destination = '\0';
+
+      // destination is returned by standard strcpy()
+      return ptr;
 }

@@ -6,7 +6,6 @@
 #include "memmanag.h"
 #define SIZE_OF_STACK (8 * 1024)
 #define MAX_FD 5
-#define NULL 0
 
 
 typedef struct {

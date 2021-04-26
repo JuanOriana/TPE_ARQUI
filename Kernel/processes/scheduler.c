@@ -1,6 +1,8 @@
 #include "process.h"
 #include "scheduler.h"
 
+#define NULL 0
+
 void initScheduler();
 static t_pNode *dequeueProcess();
 static void enqueueProcess(t_pNode* newProcess);
@@ -19,6 +21,7 @@ void idleFunction()
 
 void initScheduler()
 {
+      
       processes = mallocCust(sizeof(t_pList));
       processes->first = NULL;
       processes->last = processes->first;
@@ -27,6 +30,7 @@ void initScheduler()
       char *argv[] = {"System Idle Process"};
       initProcess((uint64_t)&idleFunction, 1, argv, 1,1);
       idleProcess = dequeueProcess();
+      
 }
 
 uint64_t scheduler(uint64_t rsp)

@@ -2,6 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include <stdint.h>
 #include <string.h>
+#include <stdint.h>
 #include <lib.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
@@ -12,6 +13,7 @@
 #include <syscallDispatcher.h>
 #include <rtc.h>
 #include <memmanag.h>
+#include <scheduler.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -22,35 +24,29 @@ extern uint8_t endOfKernel;
 
 static const uint64_t PageSize = 0x1000;
 
-static void * const sampleCodeModuleAddress = (void*)0x400000;
-static void * const sampleDataModuleAddress = (void*)0x500000;
+static void *const sampleCodeModuleAddress = (void *)0x400000;
+static void *const sampleDataModuleAddress = (void *)0x500000;
 
 #define MEMORY_CAPACITY 0x8000000
 #define GLOBAL_MEM (char *)(0x600000)
 
-
 typedef int (*EntryPoint)();
 
-
-
-void clearBSS(void * bssAddress, uint64_t bssSize)
+void clearBSS(void *bssAddress, uint64_t bssSize)
 {
 	memset(bssAddress, 0, bssSize);
 }
 
-void * getStackBase()
+void *getStackBase()
 {
-	return (void*)(
-		(uint64_t)&endOfKernel
-		+ PageSize * 8				//The size of the stack itself, 32KiB
-		- sizeof(uint64_t)			//Begin at the top of the stack
+	return (void *)((uint64_t)&endOfKernel + PageSize * 8 //The size of the stack itself, 32KiB
+					- sizeof(uint64_t)					  //Begin at the top of the stack
 	);
 }
 
-void * initializeKernelBinary()
+void *initializeKernelBinary()
 {
 	char buffer[10];
-	
 
 	ncPrint("[x64BareBones]");
 	ncNewline();
@@ -61,10 +57,9 @@ void * initializeKernelBinary()
 
 	ncPrint("[Loading modules]");
 	ncNewline();
-	void * moduleAddresses[] = {
+	void *moduleAddresses[] = {
 		sampleCodeModuleAddress,
-		sampleDataModuleAddress
-	};
+		sampleDataModuleAddress};
 
 	loadModules(&endOfKernelBinary, moduleAddresses);
 	ncPrint("[Done]");
@@ -94,37 +89,22 @@ void * initializeKernelBinary()
 	ncNewline();
 	ncClear();
 
-	//NUESTROS INITS
-	initVideo(0x0000000000005C00);
-	initKb();
-	load_idt();
-	memInit(GLOBAL_MEM,MEMORY_CAPACITY);
-
 	return getStackBase();
 }
 
 int main()
-{	
-	ncPrint("[Kernel Main]");
-	ncNewline();
-	ncPrint("  Sample code module at 0x");
-	ncPrintHex((uint64_t)sampleCodeModuleAddress);
-	ncNewline();
-	ncPrint("  Calling the sample code module returned: ");
-	ncPrintHex(((EntryPoint)sampleCodeModuleAddress)());
-	ncNewline();
-	ncNewline();
+{
 
-	ncPrint("  Sample data module at 0x");
-	ncPrintHex((uint64_t)sampleDataModuleAddress);
-	ncNewline();
-	ncPrint("  Sample data module contents: ");
-	ncPrint((char*)sampleDataModuleAddress);
-	ncNewline();
+	//NUESTROS INITS
+	initVideo(0x0000000000005C00);
+	initKb();
+	load_idt();
+	memInit(GLOBAL_MEM, MEMORY_CAPACITY);
+	initScheduler();
 
-	ncPrint("[Finished]");
-	ncClear();
-
+	
+	_hlt();
+	ncPrint("Antiquerido");
 
 	return 0;
 }

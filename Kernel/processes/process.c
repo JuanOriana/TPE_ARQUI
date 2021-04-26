@@ -1,4 +1,6 @@
 #include "scheduler.h"
+#define NULL 0
+
 
 uint64_t pid = 0;
 
@@ -11,7 +13,7 @@ long initProcess(uint64_t entryPoint, int argc, char **argv, uint8_t fg, uint8_t
     if ((process = mallocCust(sizeof(t_PCB))) == NULL)
         return -1;
 
-    strcpy(process->name, argv[0]);
+    strcopy(process->name, argv[0]);
 
     if (pid != 0)
     {

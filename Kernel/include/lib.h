@@ -16,6 +16,7 @@ char *reverse(char *buffer, int i, int j);
 char *intToHexa(long long num, char *str, int bytes);
 void printRegisters(uint64_t rsp);
 int abs(int n);
+char* strcopy(char* destination, char* source);
 
 
 #endif
