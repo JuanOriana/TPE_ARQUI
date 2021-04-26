@@ -1,36 +1,36 @@
 #include "process.h"
 #include "scheduler.h"
+#include "interrupts.h"
 
 #define NULL 0
 
 void initScheduler();
 static t_pNode *dequeueProcess();
-static void enqueueProcess(t_pNode* newProcess);
-
+static void enqueueProcess(t_pNode *newProcess);
 
 static t_pList *processes;
 static t_pNode *currentProcess;
 static t_pNode *idleProcess;
 static uint64_t currentProcessTicksLeft;
 
-
 void idleFunction()
 {
-      haltcpu();
+      while (1)
+      {
+            _hlt();
+      }
 }
 
 void initScheduler()
 {
-      
       processes = mallocCust(sizeof(t_pList));
       processes->first = NULL;
       processes->last = processes->first;
       processes->size = 0;
       processes->readyProcesses = 0;
       char *argv[] = {"System Idle Process"};
-      initProcess((uint64_t)&idleFunction, 1, argv, 1,1);
+      initProcess((uint64_t)&idleFunction, 1, argv, 1, 1);
       idleProcess = dequeueProcess();
-      
 }
 
 uint64_t scheduler(uint64_t rsp)
@@ -50,15 +50,15 @@ uint64_t scheduler(uint64_t rsp)
 
                   enqueueProcess(currentProcess);
             }
-      }
-      if (processes->readyProcesses > 0)
-      {
-            currentProcess = dequeueProcess();
-
-            while (currentProcess->state != READY)
+            if (processes->readyProcesses > 0)
             {
-                  enqueueProcess(currentProcess);
                   currentProcess = dequeueProcess();
+
+                  while (currentProcess->state != READY)
+                  {
+                        enqueueProcess(currentProcess);
+                        currentProcess = dequeueProcess();
+                  }
             }
       }
       else
@@ -80,14 +80,7 @@ int addProcess(t_PCB *process)
       auxNode->pcb = process;
       auxNode->state = READY;
       auxNode->next = NULL;
-      if (processes->size == 0)
-      {
-            processes->last = processes->first = auxNode;
-      }
-      else
-      {
-            enqueueProcess(auxNode);
-      }
+      enqueueProcess(auxNode);
       processes->readyProcesses++;
       processes->size++;
       return 0;
@@ -134,28 +127,34 @@ static t_pNode *dequeueProcess()
 
       return p;
 }
-static void enqueueProcess(t_pNode* newProcess) {
-      if (processes->size == 0) {
+static void enqueueProcess(t_pNode *newProcess)
+{
+      if (processes->size == 0)
+      {
             processes->first = newProcess;
             processes->last = processes->first;
-      } else {
+      }
+      else
+      {
             processes->last->next = newProcess;
             newProcess->next = NULL;
             processes->last = newProcess;
       }
 
-      if (newProcess->state == READY){
+      if (newProcess->state == READY)
+      {
             processes->readyProcesses++;
       }
 
       processes->size++;
 }
 
-
-int getCurrentPid(){
-    return currentProcess->pcb->pid;
+int getCurrentPid()
+{
+      return currentProcess->pcb->pid;
 }
 
-t_PCB* getCurrentProcess(){
+t_PCB *getCurrentProcess()
+{
       return currentProcess->pcb;
 }

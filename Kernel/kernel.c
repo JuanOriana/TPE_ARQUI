@@ -100,6 +100,8 @@ int main()
 	initKb();
 	load_idt();
 	memInit(GLOBAL_MEM, MEMORY_CAPACITY);
+		ncPrint("deruta");
+
 	initScheduler();
 
 	char *argv[] = {"SCM"};
